@@ -38,8 +38,8 @@
 <use   name="RecoEcal/EgammaCoreTools"/>
 <use   name="PhysicsTools/SelectorUtils"/>
 <use   name="MagneticField/Records"/>
-<use   name="JHUGenMELA/MELA"/>
 <use   name="KinZfitter/KinZfitter"/>
+<use   name="RecoJets/JetProducers"/>
 <use   name="CondFormats/JetMETObjects"/>
 <use   name="JetMETCorrections/Objects"/>
 <use   name="CondCore/PluginSystem"/>

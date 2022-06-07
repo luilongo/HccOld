@@ -95,7 +95,7 @@ public:
     std::vector<pat::Photon> goodLoosePhotons2015(edm::Handle<edm::View<pat::Photon> > Photons, double phoPtCut);
 
     std::vector<pat::Electron> goodElectrons2015_noIso_noBdt(std::vector<pat::Electron> Electrons, double elecPtCut, std::string elecID, const reco::Vertex *&vertex,const edm::Event& iEvent, double sip3dCut, bool ScaleAndSmearing); 
-    std::vector<pat::Muon> goodMuons2015_noIso_noPf(std::vector<pat::Muon> Muons, double muPtCut, const reco::Vertex *&vertex, double sip3dCut);
+    std::vector<pat::Muon> goodMuons2015_noIso_noPf(std::vector<pat::Muon> Muons, double muPtCut, const reco::Vertex *&vertex);
     std::vector<pat::Tau> goodTaus2015(std::vector<pat::Tau> Taus, double tauPtCut);
     std::vector<pat::Photon> goodPhotons2015(std::vector<pat::Photon> Photons, double phoPtCut, int year);
 
@@ -351,9 +351,7 @@ std::vector<pat::Electron> HZZ4LHelper::goodLooseElectrons2012(edm::Handle<edm::
     vector <bool> Ele_passLoose;
     for(edm::View<pat::Electron>::const_iterator elec=Electrons->begin(); elec!=Electrons->end(); ++elec) {
 
-//        if( abs(elec->eta()) < 2.5 && elec->pt() > elPtCut) {
         if( abs(elec->eta()) < 2.5 && elec->pt() > 0) {
-            //bestElectrons.push_back(*elec);
             Ele_passLoose.push_back(true);
         }
         else    Ele_passLoose.push_back(false);
@@ -374,7 +372,7 @@ std::vector<pat::Muon> HZZ4LHelper::goodLooseMuons2012(edm::Handle<edm::View<pat
     vector<pat::Muon> bestMuons;    
     for(edm::View<pat::Muon>::const_iterator mu=Muons->begin(); mu != Muons->end(); ++mu) {
         //std::cout<<"global? "<<mu->isGlobalMuon()<<" tracker? "<<mu->isTrackerMuon()<<" PF "<<mu->isPFMuon()<<" pt: "<< mu->pt()<<std::endl;
-        if( (mu->isGlobalMuon() || mu->isTrackerMuon() || mu->isPFMuon()) && fabs(mu->eta()) < 2.4 && mu->pt() > muPtCut) {
+		if(mu->pt() > muPtCut && fabs(mu->eta()) < 2.4 && mu->isLooseMuon()){
             bestMuons.push_back(*mu);
         }
     }
@@ -408,36 +406,16 @@ std::vector<pat::Photon> HZZ4LHelper::goodLoosePhotons2015(edm::Handle<edm::View
 }
 
 
-std::vector<pat::Muon> HZZ4LHelper::goodMuons2015_noIso_noPf(std::vector<pat::Muon> Muons, double muPtCut, const reco::Vertex *&vertex, double sip3dCut)
+std::vector<pat::Muon> HZZ4LHelper::goodMuons2015_noIso_noPf(std::vector<pat::Muon> Muons, double muPtCut, const reco::Vertex *&vertex)
 {
     //using namespace edm;
     using namespace pat;
     using namespace std;
     vector<pat::Muon> bestMuons;
-    /********** M U O N  C U T S **********/
-    //sip3dCut = 99999;
-    double muEtaCut = 2.4;
-    double dxyCut = 0.5;
-    double dzCut = 1;
-    /**************************************/
     for(unsigned int i = 0; i < Muons.size(); i++) {
         //std::cout<<"pt: "<<Muons[i].pt()<<std::endl;
-        if( Muons[i].pt() > muPtCut && abs(Muons[i].eta()) < muEtaCut &&
-            (Muons[i].isGlobalMuon() || (Muons[i].isTrackerMuon() && Muons[i].numberOfMatches() > 0 ) ) &&
-            Muons[i].muonBestTrackType() != 2 ) {
-            //std::cout<<"test1 "<<std::endl;
-            if( abs(getSIP3D(Muons[i])) < sip3dCut ) {
-                //std::cout<<"test2 "<<std::endl;
-                if( fabs(Muons[i].muonBestTrack()->dxy(vertex->position())) < dxyCut ) { //miniAOD 
-                    //std::cout<<"test3 "<<std::endl;
-                    if( fabs(Muons[i].muonBestTrack()->dz(vertex->position())) < dzCut ) {// miniAOD       
-
-                        //std::cout<<"test4 "<<std::endl;
-                        bestMuons.push_back(Muons[i]);
-                    } //else {cout<<"muon "<<i<<" failed dz cut, |dz|="<<fabs(Muons[i].muonBestTrack()->dxy(vertex->position()))<<endl;}
-                } //else {cout<<"muon "<<i<<" failed dxy cut, |dxz|="<<fabs(Muons[i].muonBestTrack()->dz(vertex->position()))<<endl;}
-            } //else {cout<<"muon "<<i<<" failed sip cut, |sip|="<<abs(getSIP3D(Muons[i]))<<endl;}
-        } //else {cout<<"muon "<<i<<" failed pt, eta, or (isGlobal || isTracker)"<<endl;}
+        if( Muons[i].pt() > muPtCut && abs(Muons[i].eta()) < 2.4 && Muons[i].isTightMuon(*vertex))
+			bestMuons.push_back(Muons[i]);
     }
     return bestMuons;
 
