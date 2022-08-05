@@ -3,7 +3,7 @@ cmsrel CMSSW_10_6_26
 cd CMSSW_10_6_26/src/
 cmsenv
 git cms-init
-git clone -b UL20_10_6_26 https://ferrico@github.com/ferrico/UFHZZAnalysisRun2.git
+git clone git@github.com:angzaza/hcc_v2.git
 git cms-merge-topic bonanomi:ElectronsMVA_UL
 #git cms-merge-topic asculac:Electron_XGBoost_MVA_16UL_17UL
 git cms-addpkg GeneratorInterface/RivetInterface
