@@ -3,7 +3,7 @@ cmsrel CMSSW_11_3_4
 cd CMSSW_11_3_4/src/
 cmsenv
 git cms-init
-git clone git@github.com:ferrico/Hcc_v2.git
+git clone -b 11_3_4 https://github.com/ferrico/Hcc_v2.git
 mv Hcc_v2 hcc_v2
 git cms-addpkg GeneratorInterface/RivetInterface
 git cms-addpkg SimDataFormats/HTXS
