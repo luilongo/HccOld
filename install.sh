@@ -1,3 +1,24 @@
+SCRAM_ARCH=slc7_amd64_gcc900; export SCRAM_ARCH
+cmsrel CMSSW_11_3_4
+cd CMSSW_11_3_4/src/
+cmsenv
+git cms-init
+git clone git@github.com:ferrico/Hcc_v2.git
+mv Hcc_v2 hcc_v2
+git cms-addpkg GeneratorInterface/RivetInterface
+git cms-addpkg SimDataFormats/HTXS
+git cms-addpkg RecoEgamma/EgammaTools
+git cms-addpkg RecoEgamma/PhotonIdentification
+git cms-addpkg EgammaAnalysis/ElectronTools
+git cms-addpkg RecoJets/JetProducers
+git cms-addpkg PhysicsTools/PatAlgos/
+scramv1 b -j 8
+
+
+
+
+
+#### OLD: USELESS ####
 SCRAM_ARCH=slc7_amd64_gcc700; export SCRAM_ARCH
 cmsrel CMSSW_10_6_26
 cd CMSSW_10_6_26/src/

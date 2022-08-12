@@ -58,7 +58,8 @@
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+//#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "CommonTools/Egamma/interface/ConversionTools.h"
 
 // PAT
 #include "DataFormats/PatCandidates/interface/Electron.h"
@@ -255,67 +256,67 @@ HZZ4LHelper::HZZ4LHelper()
     elEAtarget = kElEAData2015;
     //declarations
 
-    edm::FileInPath DbkgkinSpline2e2mufileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_2e2mu13TeV.root");
+    edm::FileInPath DbkgkinSpline2e2mufileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_2e2mu13TeV.root");
     TFile *fDbkgkinSpline2e2mu = TFile::Open(DbkgkinSpline2e2mufileInPath.fullPath().c_str());
     DbkgkinSpline2e2mu = (TSpline3*) fDbkgkinSpline2e2mu->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgkinSpline2e2mu->Close();
     delete fDbkgkinSpline2e2mu;
 
-    edm::FileInPath DbkgkinSpline4efileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_4e13TeV.root");
+    edm::FileInPath DbkgkinSpline4efileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_4e13TeV.root");
     TFile *fDbkgkinSpline4e = TFile::Open(DbkgkinSpline4efileInPath.fullPath().c_str());
     DbkgkinSpline4e = (TSpline3*) fDbkgkinSpline4e->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgkinSpline4e->Close();
     delete fDbkgkinSpline4e;
 
-    edm::FileInPath DbkgkinSpline4mufileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_4mu13TeV.root");
+    edm::FileInPath DbkgkinSpline4mufileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_Dbkgkin_4mu13TeV.root");
     TFile *fDbkgkinSpline4mu = TFile::Open(DbkgkinSpline4mufileInPath.fullPath().c_str());
     DbkgkinSpline4mu = (TSpline3*) fDbkgkinSpline4mu->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgkinSpline4mu->Close();
     delete fDbkgkinSpline4mu;
 
-    edm::FileInPath DbkgVBFdecSpline2l2lfileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_2l2l_JJVBFTagged_13TeV.root");
+    edm::FileInPath DbkgVBFdecSpline2l2lfileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_2l2l_JJVBFTagged_13TeV.root");
     TFile *fDbkgVBFdecSpline2l2l = TFile::Open(DbkgVBFdecSpline2l2lfileInPath.fullPath().c_str());
     DbkgVBFdecSpline2l2l = (TSpline3*) fDbkgVBFdecSpline2l2l->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgVBFdecSpline2l2l->Close();
     delete fDbkgVBFdecSpline2l2l;
 
-    edm::FileInPath DbkgVBFdecSpline4lfileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_4l_JJVBFTagged_13TeV.root");
+    edm::FileInPath DbkgVBFdecSpline4lfileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_4l_JJVBFTagged_13TeV.root");
     TFile *fDbkgVBFdecSpline4l = TFile::Open(DbkgVBFdecSpline4lfileInPath.fullPath().c_str());
     DbkgVBFdecSpline4l = (TSpline3*) fDbkgVBFdecSpline4l->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgVBFdecSpline4l->Close();
     delete fDbkgVBFdecSpline4l;
 
-    edm::FileInPath DbkgVHdecSpline2l2lfileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_2l2l_HadVHTagged_13TeV.root");
+    edm::FileInPath DbkgVHdecSpline2l2lfileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_2l2l_HadVHTagged_13TeV.root");
     TFile *fDbkgVHdecSpline2l2l = TFile::Open(DbkgVHdecSpline2l2lfileInPath.fullPath().c_str());
     DbkgVHdecSpline2l2l = (TSpline3*) fDbkgVHdecSpline2l2l->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgVHdecSpline2l2l->Close();
     delete fDbkgVHdecSpline2l2l;
 
-    edm::FileInPath DbkgVHdecSpline4lfileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_4l_HadVHTagged_13TeV.root");
+    edm::FileInPath DbkgVHdecSpline4lfileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DbkgjjEWQCD_4l_HadVHTagged_13TeV.root");
     TFile *fDbkgVHdecSpline4l = TFile::Open(DbkgVHdecSpline4lfileInPath.fullPath().c_str());
     DbkgVHdecSpline4l = (TSpline3*) fDbkgVHdecSpline4l->Get("sp_gr_varReco_Constant_Smooth");
     fDbkgVHdecSpline4l->Close();
     delete fDbkgVHdecSpline4l;
 
-    edm::FileInPath DjjVBFSplinefileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjVBF13TeV.root");
+    edm::FileInPath DjjVBFSplinefileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjVBF13TeV.root");
     TFile *fDjjVBFSpline = TFile::Open(DjjVBFSplinefileInPath.fullPath().c_str());
     DjjVBFSpline = (TSpline3*) fDjjVBFSpline->Get("sp_gr_varReco_Constant_Smooth");
     fDjjVBFSpline->Close();
     delete fDjjVBFSpline;
 
-    edm::FileInPath DjVBFSplinefileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjVBF13TeV.root");
+    edm::FileInPath DjVBFSplinefileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjVBF13TeV.root");
     TFile *fDjVBFSpline = TFile::Open(DjVBFSplinefileInPath.fullPath().c_str());
     DjVBFSpline = (TSpline3*) fDjVBFSpline->Get("sp_gr_varReco_Constant_Smooth");
     fDjVBFSpline->Close();
     delete fDjVBFSpline;
 
-    edm::FileInPath DjjZHSplinefileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjZH13TeV.root");
+    edm::FileInPath DjjZHSplinefileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjZH13TeV.root");
     TFile *fDjjZHSpline = TFile::Open(DjjZHSplinefileInPath.fullPath().c_str());
     DjjZHSpline = (TSpline3*) fDjjZHSpline->Get("sp_gr_varReco_Constant_Smooth");
     fDjjZHSpline->Close();
     delete fDjjZHSpline;
 
-    edm::FileInPath DjjWHSplinefileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjWH13TeV.root");
+    edm::FileInPath DjjWHSplinefileInPath("hcc_v2/UFHZZ4LAna/data/SmoothKDConstant_m4l_DjjWH13TeV.root");
     TFile *fDjjWHSpline = TFile::Open(DjjWHSplinefileInPath.fullPath().c_str());
     DjjWHSpline = (TSpline3*) fDjjWHSpline->Get("sp_gr_varReco_Constant_Smooth");
     fDjjWHSpline->Close();
@@ -720,7 +721,7 @@ bool HZZ4LHelper::passTight_BDT_Id(pat::Electron electron, int year) {
             if(fSCeta >= 0.8 && fSCeta < 1.479) cutVal = 0.0759172100;
             if(fSCeta >= 1.479) cutVal = -0.5169136775;
         }
-        mvaVal = electron.userFloat("ElectronMVAEstimatorRun2Summer18ULIdIsoValues");
+        mvaVal = electron.userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values");
     }
     if(year==2017)
     {
@@ -809,7 +810,7 @@ bool HZZ4LHelper::passTight_Id_SUS(pat::Electron electron, std::string elecID, c
             if(fSCeta >= 0.8 && fSCeta < 1.479) cutVal = 0.0759172100;
             if(fSCeta >= 1.479) cutVal = -0.5169136775;
         }
-        mvaVal = electron.userFloat("ElectronMVAEstimatorRun2Summer18ULIdIsoValues");
+        mvaVal = electron.userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values");
     }
     if(year==2017)
     {
@@ -840,7 +841,7 @@ bool HZZ4LHelper::passTight_Id_SUS(pat::Electron electron, std::string elecID, c
         mvaVal = electron.userFloat("ElectronMVAEstimatorRun2Summer16ULIdIsoValues");
     }
 
-    //if (electron.userFloat("ElectronMVAEstimatorRun2Summer18ULIdIsoValues") <= cutVal ) return false;
+    //if (electron.userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values") <= cutVal ) return false;
     if( mvaVal <= cutVal ) return false;
 
     bool vtxFitConversion = ConversionTools::hasMatchedConversion(reco::GsfElectron(electron), theConversions, BS.position());
