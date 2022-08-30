@@ -36,6 +36,7 @@
 #include "TCanvas.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
+//#include "FWCore/Framework/interface/limited/EDAnalyzerBase.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -143,7 +144,7 @@
 #include "hcc_v2/UFHZZ4LAna/interface/EwkCorrections.h"
 
 // JEC related
-#include "PhysicsTools/PatAlgos/plugins/PATJetUpdater.h"
+//#include "PhysicsTools/PatAlgos/plugins/PATJetUpdater.h"
 #include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
  
 //JER related
@@ -165,7 +166,7 @@
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 // Rochester Corrections
-#include "hcc_v2/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
+//#include "hcc_v2/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
 
 #include "RecoVertex/KalmanVertexFit/interface/SingleTrackVertexConstraint.h"
 
@@ -542,6 +543,7 @@ private:
     //edm::EDGetTokenT<HZZFid::FiducialSummary> fidRivetSrc_;
     edm::EDGetTokenT< double > prefweight_token_;
 
+
     // Configuration
     const float Zmass;
     float mZ1Low, mZ2Low, mZ1High, mZ2High, m4lLowCut;
@@ -574,6 +576,12 @@ private:
 
     int year;///use to choose Muon BDT
     bool isCode4l;
+
+edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
+
+std::string res_pt_config;
+std::string res_phi_config;
+std::string res_sf_config;
 
     // register to the TFileService
     edm::Service<TFileService> fs;
@@ -681,8 +689,8 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     // 2017
     // 2018
     // to select correct training
-    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true))    
-
+    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true)),
+mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
 {
   
     if(!isMC){reweightForPU = false;}
@@ -762,7 +770,9 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     string csv_name_161718[4] = {"DeepCSV_106XUL16preVFPSF_v1_hzz.csv", "DeepCSV_106XUL16postVFPSF_v2_hzz.csv", "wp_deepCSV_106XUL17_v3_hzz.csv", "wp_deepCSV_106XUL18_v2_hzz.csv"};
     edm::FileInPath btagfileInPath(("hcc_v2/UFHZZ4LAna/data/"+csv_name_161718[YEAR]).c_str());
 
-    BTagCalibration calib("DeepCSV", btagfileInPath.fullPath().c_str());
+
+bool validate = true; // HARDCODED --> IT COULD BE FALSE!!!
+    BTagCalibration calib("DeepCSV", btagfileInPath.fullPath().c_str(), validate);
     reader = new BTagCalibrationReader(BTagEntry::OP_MEDIUM,  // operating point
                                        "central",             // central sys type
                                        {"up", "down"});      // other sys types
@@ -890,15 +900,52 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByToken(jetSrc_,jets);
 
     if (!jecunc) {
-        edm::ESHandle<JetCorrectorParametersCollection> jetCorrParameterSet;
-        iSetup.get<JetCorrectionsRecord>().get("AK4PFchs", jetCorrParameterSet);
-        const JetCorrectorParameters& jetCorrParameters = (*jetCorrParameterSet)["Uncertainty"];
+
+
+
+//        edm::ESHandle<JetCorrectorParametersCollection> jetCorrParameterSet;
+//        iSetup.get<JetCorrectionsRecord>().get("AK4PFchs", jetCorrParameterSet);
+
+
+auto const& jetCorrParameterSet = iSetup.getData(mPayloadToken);//"AK4PFchs");
+std::vector<JetCorrectorParametersCollection::key_type> keys;
+jetCorrParameterSet.validKeys(keys);
+
+
+//        const JetCorrectorParameters& jetCorrParameters = (*jetCorrParameterSet)["Uncertainty"]; 
+        JetCorrectorParameters jetCorrParameters = (jetCorrParameterSet)["Uncertainty"];
+
+
+
+
+
+
+
+
+
+
+
+
         jecunc.reset(new JetCorrectionUncertainty(jetCorrParameters));
     }
 
-    resolution_pt = JME::JetResolution::get(iSetup, "AK4PFchs_pt");
-    resolution_phi = JME::JetResolution::get(iSetup, "AK4PFchs_phi");
-    resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs");
+
+//JME::JetResolution::Token resolution_pt_token;
+//res_pt_config = "AK4PFchs_pt";
+//resolution_pt_token = esConsumes(edm::ESInputTag("", res_pt_config));
+//resolution_pt = JME::JetResolution::get(iSetup, resolution_pt_token);
+
+//JME::JetResolution::Token resolution_phi_token;
+//res_phi_config = "AK4PFchs_phi";
+//resolution_phi_token = esConsumes(edm::ESInputTag("", res_phi_config));
+//resolution_phi = JME::JetResolution::get(iSetup, resolution_phi_token);
+
+//JME::JetResolutionScaleFactor::Token resolution_sf_token;
+//res_sf_config = "AK4PFchs_sf";
+//resolution_sf_token = esConsumes(edm::ESInputTag("", res_sf_config));
+//resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, resolution_sf_token);
+
+
 
     edm::Handle<edm::ValueMap<float> > qgHandle;
     iEvent.getByToken(qgTagSrc_, qgHandle);
@@ -1322,8 +1369,11 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     
     bool passedOnlySingle=((passedSingleEl && !passedAnyOther) || (passedSingleMu && !passedSingleEl && !passedAnyOther));
-//     bool trigConditionData = ( passedTrig && (!checkOnlySingle || (checkOnlySingle && passedOnlySingle)) );
-    bool trigConditionData = true;
+    bool trigConditionData = ( passedTrig && (!checkOnlySingle || (checkOnlySingle && passedOnlySingle)) );
+if(trigConditionData && verbose)
+	std::cout<<""<<std::endl;
+
+//    bool trigConditionData = true;
         
     if (verbose) cout<<"checking PV"<<endl;       
     const reco::Vertex *PV = 0;
@@ -1410,9 +1460,6 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if (verbose) cout<<"start pt-sorting leptons"<<endl;
         if (verbose) cout<<"adding muons to sorted list"<<endl;
 
-	    edm::ESHandle<TransientTrackBuilder> ttkb_recoLepton; 
-		iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", ttkb_recoLepton);
-
         if( (recoMuons.size() + recoElectrons.size()) >= (uint)skimLooseLeptons ) {
 
             if (verbose) cout<<"found two leptons"<<endl;
@@ -1471,10 +1518,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     lep_pt.push_back(recoElectrons[lep_ptindex[i]].pt());
                     lep_pterrold.push_back(recoElectrons[lep_ptindex[i]].p4Error(reco::GsfElectron::P4_COMBINATION));
 					lep_pt_genFromReco.push_back(-999);
-                     lep_errPre_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
-                     lep_errPost_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
-                     lep_errPre_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
-                     lep_errPost_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
+//                     lep_errPre_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
+//                     lep_errPost_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
+//                     lep_errPre_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
+//                     lep_errPost_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
 
                     double perr = 0.0;
                     if (recoElectrons[lep_ptindex[i]].ecalDriven()) {
@@ -2847,16 +2894,16 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
         parameters.setJetPt(goodJets[k].pt());
         parameters.setJetEta(goodJets[k].eta());
         parameters.setRho(muRho);
-        float relpterr = resolution_pt.getResolution(parameters);
-        float phierr = resolution_phi.getResolution(parameters);
+        float relpterr = 1;//resolution_pt.getResolution(parameters);
+        float phierr = 1;//resolution_phi.getResolution(parameters);
         
         double jercorr = 1.0; double jercorrup = 1.0; double jercorrdn = 1.0;
         
         if (isMC && doJER) {
             JME::JetParameters sf_parameters = {{JME::Binning::JetPt, goodJets[k].pt()}, {JME::Binning::JetEta, goodJets[k].eta()}, {JME::Binning::Rho, muRho}};
-            float factor = resolution_sf.getScaleFactor(sf_parameters);
-            float factorup = resolution_sf.getScaleFactor(sf_parameters, Variation::UP);
-            float factordn = resolution_sf.getScaleFactor(sf_parameters, Variation::DOWN);
+            float factor = 1;//resolution_sf.getScaleFactor(sf_parameters);
+            float factorup = 1;//resolution_sf.getScaleFactor(sf_parameters, Variation::UP);
+            float factordn = 1;//resolution_sf.getScaleFactor(sf_parameters, Variation::DOWN);
             
             double pt_jer, pt_jerup, pt_jerdn;
             const reco::GenJet * genJet = goodJets[k].genJet();

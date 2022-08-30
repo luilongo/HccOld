@@ -447,7 +447,7 @@ std::vector<pat::Electron> HZZ4LHelper::goodElectrons2015_noIso_noBdt(std::vecto
 if(ScaleAndSmearing){
 //std::cout<<"Before = "<<Electrons[i].pt()<<"\t"<<Electrons[i].eta()<<"\t"<<Electrons[i].phi()<<"\t"<<Electrons[i].mass()<<std::endl;
 
-	auto corrP4  = Electrons[i].p4() * Electrons[i].userFloat("ecalTrkEnergyPostCorr") / Electrons[i].energy();
+	auto corrP4  = Electrons[i].p4();// * Electrons[i].userFloat("ecalTrkEnergyPostCorr") / Electrons[i].energy();
 	Electrons[i].setP4(corrP4);
 
 //std::cout<<"After = "<<Electrons[i].pt()<<"\t"<<Electrons[i].eta()<<"\t"<<Electrons[i].phi()<<"\t"<<Electrons[i].mass()<<std::endl;
