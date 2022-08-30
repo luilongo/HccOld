@@ -1,9 +1,9 @@
 SCRAM_ARCH=slc7_amd64_gcc900; export SCRAM_ARCH
-cmsrel CMSSW_11_3_4
+cmsrel CMSSW_12_4_3
 cd CMSSW_11_3_4/src/
 cmsenv
 git cms-init
-git clone -b 11_3_4 https://github.com/ferrico/Hcc_v2.git
+git clone -b 12_4_3 https://github.com/ferrico/Hcc_v2.git
 mv Hcc_v2 hcc_v2
 git cms-addpkg GeneratorInterface/RivetInterface
 git cms-addpkg SimDataFormats/HTXS
