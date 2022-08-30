@@ -1,6 +1,6 @@
 SCRAM_ARCH=slc7_amd64_gcc900; export SCRAM_ARCH
 cmsrel CMSSW_12_4_3
-cd CMSSW_11_3_4/src/
+cd CMSSW_12_4_3/src/
 cmsenv
 git cms-init
 git clone -b 12_4_3 https://github.com/ferrico/Hcc_v2.git
