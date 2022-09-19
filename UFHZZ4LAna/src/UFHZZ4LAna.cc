@@ -261,6 +261,9 @@ private:
     int finalState;
     std::string triggersPassed;
     bool passedTrig, passedFullSelection, passedZ4lSelection, passedQCDcut;
+
+		std::vector<string>  Trigger_hltname;
+    std::vector<int> Trigger_hltdecision;
     
     float PV_x, PV_y, PV_z; 
     float BS_x, BS_y, BS_z; 
@@ -1045,7 +1048,8 @@ jetCorrParameterSet.validKeys(keys);
     finalState = -1;
     triggersPassed="";
     passedTrig=false; passedFullSelection=false; passedZ4lSelection=false; passedQCDcut=false; 
-
+		Trigger_hltname.clear();
+    Trigger_hltdecision.clear();
 
     // Event Weights
     genWeight=1.0; pileupWeight=1.0; pileupWeightUp=1.0; pileupWeightDn=1.0; dataMCWeight=1.0; eventWeight=1.0;
@@ -1290,7 +1294,7 @@ jetCorrParameterSet.validKeys(keys);
     // ====================== Do Analysis ======================== //
 // if(iEvent.id().event() > 709310) 
 // 	std::cout<<"PIPPO\tdopo inizializzazione\n";
-		cout<<"aaa"<<endl;
+		//cout<<"aaa"<<endl;
     std::map<int, TLorentzVector> fsrmap;
     vector<reco::Candidate*> selectedLeptons;
     std::map<unsigned int, TLorentzVector> selectedFsrMap;
@@ -1409,7 +1413,12 @@ jetCorrParameterSet.validKeys(keys);
         if (strstr(triggerName.c_str(),"HLT_IsoTrack")) continue;
         if (strstr(triggerName.c_str(),"Hcal")) continue;
         if (strstr(triggerName.c_str(),"Ecal")) continue;
-        if (trigger->accept(i)) triggersPassed += triggerName; 
+        if (trigger->accept(i)) triggersPassed += triggerName;
+				
+				if(triggerName.find("HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65") != string::npos || triggerName.find("HLT_PFJet500") != string::npos ){
+					Trigger_hltname.push_back(triggerName);
+      		Trigger_hltdecision.push_back(trigger->accept(i));
+				}
     }
     if (firstEntry) cout<<"triggersPassed: "<<triggersPassed<<endl;
     firstEntry = false;
@@ -1421,7 +1430,7 @@ jetCorrParameterSet.validKeys(keys);
         if (strstr(triggersPassed.c_str(),triggerList.at(i).c_str())) {
             passedTrig=true;
             if (!isMC) {
-								cout<<"bbb"<<endl;
+								//cout<<"bbb"<<endl;
                 if (strstr(triggerList.at(i).c_str(),"_WP")) passedSingleEl=true;
                 if (strstr(triggerList.at(i).c_str(),"HLT_Iso")) passedSingleMu=true;
                 if (strstr(triggerList.at(i).c_str(),"CaloIdL")) passedAnyOther=true;
@@ -1777,6 +1786,9 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("finalState",&finalState,"finalState/I");
     tree->Branch("triggersPassed",&triggersPassed);
     tree->Branch("passedTrig",&passedTrig,"passedTrig/O");
+		tree->Branch("Trigger_hltname",&Trigger_hltname);
+    tree->Branch("Trigger_hltdecision",&Trigger_hltdecision);
+
     /*tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");
     tree->Branch("passedZ4lSelection",&passedZ4lSelection,"passedZ4lSelection/O");
     tree->Branch("passedQCDcut",&passedQCDcut,"passedQCDcut/O");
