@@ -256,7 +256,7 @@ private:
     // -------------------------
 
     // Event Variables
-    ULong64_t Run, Event, LumiSect;
+    ULong64_t Run, Event, LumiSect, puN;
     int nVtx, nInt;
     int finalState;
     std::string triggersPassed;
@@ -1047,6 +1047,7 @@ jetCorrParameterSet.validKeys(keys);
     nVtx = -1.0; nInt = -1.0;
     finalState = -1;
     triggersPassed="";
+		puN=-1;
     passedTrig=false; passedFullSelection=false; passedZ4lSelection=false; passedQCDcut=false; 
 		Trigger_hltname.clear();
     Trigger_hltdecision.clear();
@@ -1305,7 +1306,8 @@ jetCorrParameterSet.validKeys(keys);
     // PU information
     if(isMC && reweightForPU) {        
         edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
-        iEvent.getByToken(pileupSrc_, PupInfo);      
+        iEvent.getByToken(pileupSrc_, PupInfo);
+				puN = PupInfo->begin()->getTrueNumInteractions();      
 
         if (verbose) cout<<"got pileup info"<<endl;
 
@@ -1413,9 +1415,11 @@ jetCorrParameterSet.validKeys(keys);
         if (strstr(triggerName.c_str(),"HLT_IsoTrack")) continue;
         if (strstr(triggerName.c_str(),"Hcal")) continue;
         if (strstr(triggerName.c_str(),"Ecal")) continue;
-        if (trigger->accept(i)) triggersPassed += triggerName;
+        if (trigger->accept(i)) triggersPassed += triggerName+" ";
+			
 				
-				if(triggerName.find("HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65") != string::npos || triggerName.find("HLT_PFJet500") != string::npos ){
+				//if(triggerName.find("HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65") != string::npos || triggerName.find("HLT_PFJet500") != string::npos ){
+				if(triggerName.find("HLT_QuadPFJet") != string::npos || triggerName.find("HLT_PFJet") != string::npos || triggerName.find("HLT_DiPFJetAve") != string::npos || triggerName.find("HLT_AK8PFJet") != string::npos ) {
 					Trigger_hltname.push_back(triggerName);
 					Trigger_hltdecision.push_back(trigger->accept(i));
 				}
@@ -1572,7 +1576,8 @@ if(trigConditionData && verbose)
                           <<" jetid: "<<jetHelper.patjetID(jet,year)<<endl;
                     
          if( jetHelper.patjetID(jet,year)>=jetIDLevel ) {
-					if(fabs(jet.eta())<2.5 && jet.pt()>15.0){       
+					//if(fabs(jet.eta())<jeteta_cut && jet.pt()>15.0){       
+					if(fabs(jet.eta())<jeteta_cut){       
                         
          		goodJets.push_back(jet);
          		goodJetQGTagger.push_back(patJetQGTagger[i]);
@@ -1640,7 +1645,8 @@ if(trigConditionData && verbose)
 //   if(iEvent.id().event() > 709310)
 // 	std::cout<<"PIPPO\t before filling 11\n";				                                  
               
-        if (!isMC && passedFullSelection==true) passedEventsTree_All->Fill();        
+        //if (!isMC && passedFullSelection==true) passedEventsTree_All->Fill();        
+        if (!isMC) passedEventsTree_All->Fill();        
     }    //primary vertex,notDuplicate
     else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed primary vertex"<<endl;}
     
@@ -1649,7 +1655,8 @@ if(trigConditionData && verbose)
     GENjet_phi_float.clear(); GENjet_phi_float.assign(GENjet_phi.begin(),GENjet_phi.end());
     GENjet_mass_float.clear(); GENjet_mass_float.assign(GENjet_mass.begin(),GENjet_mass.end());
  
-    if (isMC && passedFullSelection==true) passedEventsTree_All->Fill();
+    //if (isMC && passedFullSelection==true) passedEventsTree_All->Fill();
+    if (isMC ) passedEventsTree_All->Fill();
     
     if (nEventsTotal==1000.0) passedEventsTree_All->OptimizeBaskets();
     
@@ -1770,6 +1777,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("LumiSect",&LumiSect,"LumiSect/l");
     tree->Branch("nVtx",&nVtx,"nVtx/I");
     tree->Branch("nInt",&nInt,"nInt/I");
+		tree->Branch("puN", &puN, "puN/I");
     tree->Branch("PV_x", &PV_x, "PV_x/F");
     tree->Branch("PV_y", &PV_y, "PV_y/F");
     tree->Branch("PV_z", &PV_z, "PV_z/F");
