@@ -59,5 +59,6 @@
 <use   name="JetMETCorrections/Modules"/>
 <use   name="CondFormats/BTauObjects"/>
 <use   name="CondTools/BTau"/>
+<use   name="L1Trigger/L1TGlobal"/>
 <flags EDM_PLUGIN="1"/>
 <flags CXXFLAGS="-g"/>
