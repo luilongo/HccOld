@@ -93,6 +93,16 @@
 #include "PhysicsTools/SelectorUtils/interface/JetIDSelectionFunctor.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 
+//L1trigger
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+#include "DataFormats/L1TGlobal/interface/GlobalAlgBlk.h"
+#include "DataFormats/L1TGlobal/interface/GlobalExtBlk.h"
+#include "L1Trigger/L1TGlobal/interface/L1TGlobalUtil.h"
+#include "CondFormats/DataRecord/interface/L1TUtmTriggerMenuRcd.h"
+#include "CondFormats/L1TObjects/interface/L1TUtmTriggerMenu.h"
+#include "CondFormats/L1TObjects/interface/L1GtTriggerMenu.h"
+#include "CondFormats/DataRecord/interface/L1GtTriggerMenuRcd.h"
+
 // Reco
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
@@ -262,7 +272,9 @@ private:
     std::string triggersPassed;
     bool passedTrig, passedFullSelection, passedZ4lSelection, passedQCDcut;
 
-		std::vector<string>  Trigger_hltname;
+    std::vector<string>  Trigger_l1name;
+    std::vector<int> Trigger_l1decision;
+    std::vector<string>  Trigger_hltname;
     std::vector<int> Trigger_hltdecision;
     
     float PV_x, PV_y, PV_z; 
@@ -575,6 +587,9 @@ private:
     edm::EDGetTokenT<HTXS::HiggsClassification> htxsSrc_;
     //edm::EDGetTokenT<HZZFid::FiducialSummary> fidRivetSrc_;
     edm::EDGetTokenT< double > prefweight_token_;
+    edm::EDGetToken algTok_;
+    edm::EDGetTokenT<GlobalAlgBlkBxCollection> algInputTag_;
+    l1t::L1TGlobalUtil* gtUtil_;
 
 
     // Configuration
@@ -672,6 +687,9 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     htxsSrc_(consumes<HTXS::HiggsClassification>(edm::InputTag("rivetProducerHTXS","HiggsClassification"))),
     //prefweight_token_(consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProb"))),
     //fidRivetSrc_(consumes<HZZFid::FiducialSummary>(edm::InputTag("rivetProducerHZZFid","FiducialSummary"))),
+    algTok_(consumes<BXVector<GlobalAlgBlk>>(iConfig.getParameter<edm::InputTag>("algInputTag"))),
+    algInputTag_(consumes<GlobalAlgBlkBxCollection>(iConfig.getParameter<edm::InputTag>("algInputTag"))),
+    gtUtil_(new l1t::L1TGlobalUtil(iConfig, consumesCollector(), *this, iConfig.getParameter<edm::InputTag>("algInputTag"), iConfig.getParameter<edm::InputTag>("algInputTag"), l1t::UseEventSetupIn::RunAndEvent)),
     Zmass(91.1876),
     mZ1Low(iConfig.getUntrackedParameter<double>("mZ1Low",40.0)),
     mZ2Low(iConfig.getUntrackedParameter<double>("mZ2Low",12.0)), // was 12
@@ -1030,6 +1048,12 @@ jetCorrParameterSet.validKeys(keys);
     edm::Handle<LHEEventProduct> lheInfo;
     iEvent.getByToken(lheInfoSrc_, lheInfo);
 
+    edm::Handle<BXVector<GlobalAlgBlk>> uGtAlgs;
+    iEvent.getByToken(algTok_, uGtAlgs);
+
+    if (!uGtAlgs.isValid()) {
+        cout << "Cannot find uGT readout record." << endl;
+    }
 
 
 //    if (isMC) {    
@@ -1049,7 +1073,9 @@ jetCorrParameterSet.validKeys(keys);
     triggersPassed="";
 		puN=-1;
     passedTrig=false; passedFullSelection=false; passedZ4lSelection=false; passedQCDcut=false; 
-		Trigger_hltname.clear();
+    Trigger_l1name.clear();
+    Trigger_l1decision.clear();
+    Trigger_hltname.clear();
     Trigger_hltdecision.clear();
 
     // Event Weights
@@ -1399,7 +1425,19 @@ jetCorrParameterSet.validKeys(keys);
     sumWeightsTotalPU += pileupWeight*genWeight;
 
     eventWeight = pileupWeight*genWeight;
-
+    
+    // Fill L1 seeds and decisions
+    gtUtil_->retrieveL1(iEvent, iSetup, algInputTag_);
+    const vector<pair<string, bool> > finalDecisions = gtUtil_->decisionsFinal();
+    for (size_t i_l1t = 0; i_l1t < finalDecisions.size(); i_l1t++){
+        string l1tName = (finalDecisions.at(i_l1t)).first;
+        if( l1tName.find("SingleJet") != string::npos || l1tName.find("DoubleJet") != string::npos || l1tName.find("TripleJet") != string::npos || l1tName.find("QuadJet") != string::npos ||  l1tName.find("HTT")!= string::npos ){
+            //cout << "L1: " << l1tName << " | decision: " << finalDecisions.at(i_l1t).second << endl;
+            Trigger_l1name.push_back( l1tName );
+            Trigger_l1decision.push_back( finalDecisions.at(i_l1t).second );
+        }
+      }
+    
     unsigned int _tSize = trigger->size();
     // create a string with all passing trigger names
     for (unsigned int i=0; i<_tSize; ++i) {
@@ -1794,7 +1832,9 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("finalState",&finalState,"finalState/I");
     tree->Branch("triggersPassed",&triggersPassed);
     tree->Branch("passedTrig",&passedTrig,"passedTrig/O");
-		tree->Branch("Trigger_hltname",&Trigger_hltname);
+    tree->Branch("Trigger_l1name",&Trigger_l1name);
+    tree->Branch("Trigger_l1decision",&Trigger_l1decision);
+	tree->Branch("Trigger_hltname",&Trigger_hltname);
     tree->Branch("Trigger_hltdecision",&Trigger_hltdecision);
 
     /*tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");

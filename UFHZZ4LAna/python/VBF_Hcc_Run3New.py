@@ -15,7 +15,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.Services_cff')
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v15'
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v18'
-process.GlobalTag.globaltag='112X_dataRun2_v7'
+process.GlobalTag.globaltag='124X_mcRun3_2022_realistic_v10' #MC2022
 
 process.Timing = cms.Service("Timing",
                              summaryOnly = cms.untracked.bool(True)
@@ -34,11 +34,11 @@ myfilelist = cms.untracked.vstring(
 #'/store/mc/RunIISummer20UL18MiniAODv2/VBFHToCC_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2430000/02D16E44-D08D-E74A-BB3B-E508BA138921.root',
 
 '/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_1.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_10.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_100.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_101.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_102.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_103.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_10.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_100.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_101.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_102.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_103.root',
 
 #'/store/mc/RunIISummer20UL18MiniAODv2/ZH_HToCC_ZToNuNu_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2430000/06191AD3-50FA-EB46-B813-AA5F087929E3.root',
 
@@ -391,6 +391,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
                               triggerObjects = cms.InputTag("selectedPatTrigger"),
                               doJER = cms.untracked.bool(True),
                               doJEC = cms.untracked.bool(True),
+                              algInputTag = cms.InputTag("gtStage2Digis"),
                               doTriggerMatching = cms.untracked.bool(False),
                               triggerList = cms.untracked.vstring(
 
