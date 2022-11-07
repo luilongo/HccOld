@@ -22,7 +22,7 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.options = cms.untracked.PSet(
         numberOfThreads = cms.untracked.uint32(2)
@@ -33,7 +33,8 @@ process.options.numberOfConcurrentLuminosityBlocks = 1
 myfilelist = cms.untracked.vstring(
 #'/store/mc/RunIISummer20UL18MiniAODv2/VBFHToCC_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2430000/02D16E44-D08D-E74A-BB3B-E508BA138921.root',
 
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_1.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM_V1/221103_110250/0000/Run3_VBF_Hcc_step2_1.root',
+#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_1.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_10.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_100.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_101.root',
@@ -273,7 +274,7 @@ qgDatabaseVersion = 'cmssw8020_v2'
 # for hpc
 QGdBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
-#QGdBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),
@@ -356,6 +357,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
 #                              muonSrc      = cms.untracked.InputTag("boostedMuons"),
                               tauSrc      = cms.untracked.InputTag("slimmedTaus"),
                               jetSrc       = cms.untracked.InputTag("slimmedJetsJEC"),
+                              hltPFJetForBtagSrc  = cms.untracked.InputTag("hltPFJetForBtag"),
 #                              jetSrc       = cms.untracked.InputTag("slimmedJets"),
 #                              mergedjetSrc = cms.untracked.InputTag("corrJets"),
 															bxvCaloJetSrc =  cms.InputTag("caloStage2Digis","Jet"),
