@@ -15,32 +15,103 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.Services_cff')
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v15'
 #process.GlobalTag.globaltag='102X_upgrade2018_realistic_v18'
-process.GlobalTag.globaltag='124X_mcRun3_2022_realistic_v10' #MC2022
+process.GlobalTag.globaltag='124X_mcRun3_2022_realistic_v12' #MC2022
 
 process.Timing = cms.Service("Timing",
                              summaryOnly = cms.untracked.bool(True)
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
 
 process.options = cms.untracked.PSet(
-        numberOfThreads = cms.untracked.uint32(2)
+        numberOfThreads = cms.untracked.uint32(2),
+				#SkipEvent = cms.untracked.vstring('ProductNotFound')
 )
 
 process.options.numberOfConcurrentLuminosityBlocks = 1
 
 myfilelist = cms.untracked.vstring(
 #'/store/mc/RunIISummer20UL18MiniAODv2/VBFHToCC_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2430000/02D16E44-D08D-E74A-BB3B-E508BA138921.root',
-
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM_V1/221103_110250/0000/Run3_VBF_Hcc_step2_1.root',
+#'/store/mc/Run3Winter22MiniAOD/WJetsToLNu_TuneCP5_13p6TeV-madgraphMLM-pythia8/MINIAODSIM/122X_mcRun3_2021_realistic_v9-v2/2820000/060c23a9-0fff-4f32-bbd5-129b748cdc6d.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_1.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_10.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_100.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_101.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_102.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_103.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_104.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_105.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_106.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_107.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_108.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_109.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_11.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_110.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_111.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_112.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_113.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_114.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_115.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_116.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_117.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_118.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_119.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_12.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_120.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_121.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_122.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_123.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_124.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_125.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_126.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_127.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_128.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_129.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_13.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_130.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_131.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_132.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_133.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_134.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_135.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_136.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_137.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_138.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_139.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_14.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_140.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_141.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_142.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_143.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_144.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_145.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_146.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_147.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_148.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_149.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_15.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_150.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_151.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_152.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_153.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_154.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_155.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_156.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_157.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_158.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_159.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_16.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_160.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_161.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_162.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_1.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_10.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_100.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_101.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_102.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_103.root',
-
+#'file:/afs/cern.ch/work/a/azaza/MC_production/CMSSW_12_4_8/src/Run3_VBF_Hcc_step2.root',
 #'/store/mc/RunIISummer20UL18MiniAODv2/ZH_HToCC_ZToNuNu_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2430000/06191AD3-50FA-EB46-B813-AA5F087929E3.root',
 
 
@@ -53,7 +124,7 @@ process.source = cms.Source("PoolSource",fileNames = myfilelist,
                             )
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("VBFHToCC_Run3New.root")
+                                   fileName = cms.string("VBFHToCC_Run3_hltParticleNet.root")
 )
 
 # clean muons by segments 
@@ -357,10 +428,13 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
 #                              muonSrc      = cms.untracked.InputTag("boostedMuons"),
                               tauSrc      = cms.untracked.InputTag("slimmedTaus"),
                               jetSrc       = cms.untracked.InputTag("slimmedJetsJEC"),
-                              hltPFJetForBtagSrc  = cms.untracked.InputTag("hltPFJetForBtag"),
+                              hltPFJetForBtagSrc  = cms.InputTag("hltPFJetForBtag", "", "HLT"),
+														  pfJetTagCollectionParticleNetprobcSrc = cms.InputTag("hltParticleNetONNXJetTags","probc","HLT"),
+														  pfJetTagCollectionParticleNetprobbSrc = cms.InputTag("hltParticleNetONNXJetTags","probb","HLT"),
+														  pfJetTagCollectionParticleNetprobudsSrc = cms.InputTag("hltParticleNetONNXJetTags","probuds","HLT"),
 #                              jetSrc       = cms.untracked.InputTag("slimmedJets"),
 #                              mergedjetSrc = cms.untracked.InputTag("corrJets"),
-															bxvCaloJetSrc =  cms.InputTag("caloStage2Digis","Jet"),
+                              bxvCaloJetSrc =  cms.InputTag("caloStage2Digis","Jet"),
                               bxvCaloMuonSrc =  cms.InputTag("gmtStage2Digis","Muon"),
                               bxvCaloHTSrc =  cms.InputTag("caloStage2Digis","EtSum"),
 
