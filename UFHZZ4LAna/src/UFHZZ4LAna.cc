@@ -252,7 +252,11 @@ private:
                            std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger,
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                            std::vector<pat::Jet> selectedMergedJets,
+													 //edm::Handle<std::vector<reco::PFJet>> hltjets,
 													 edm::Handle<edm::View<reco::PFJet>> hltjets,
+													 edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobc,
+													 edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobb,
+													 edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobuds,
                            edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
                            edm::Handle<BXVector<l1t::Muon> > bxvCaloMuons,
                            edm::Handle<BXVector<l1t::EtSum> > bxvCaloHT,
@@ -569,6 +573,9 @@ private:
     edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
 		edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
 		edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
+		edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobcSrc_;  //value map for Particle Net tagger at hlt
+		edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobbSrc_;  //value map for Particle Net tagger at hlt
+		edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobudsSrc_;  //value map for Particle Net tagger at hlt
     edm::EDGetTokenT<BXVector<l1t::Muon>> bxvCaloMuonSrc_;
     edm::EDGetTokenT<BXVector<l1t::EtSum>> bxvCaloHTSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > qgTagSrc_;
@@ -576,7 +583,7 @@ private:
     edm::EDGetTokenT<edm::ValueMap<int> > multSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > ptDSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > mergedjetSrc_;
-    //edm::EDGetTokenT<edm::View<pat::MET> > metSrc_;
+    edm::EDGetTokenT<edm::View<pat::MET> > metSrc_;
     //edm::InputTag triggerSrc_;
     edm::EDGetTokenT<edm::TriggerResults> triggerSrc_;
     edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
@@ -670,7 +677,10 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     //photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
     jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),
     bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
-    hltPFJetForBtagSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getUntrackedParameter<edm::InputTag>("hltPFJetForBtagSrc"))),
+    hltPFJetForBtagSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltPFJetForBtagSrc"))),
+		pfJetTagCollectionParticleNetprobcSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobcSrc"))),
+		pfJetTagCollectionParticleNetprobbSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobbSrc"))),
+		pfJetTagCollectionParticleNetprobudsSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobudsSrc"))),
     bxvCaloMuonSrc_(consumes<BXVector<l1t::Muon>>(iConfig.getParameter<edm::InputTag>("bxvCaloMuonSrc"))),
     bxvCaloHTSrc_(consumes<BXVector<l1t::EtSum>>(iConfig.getParameter<edm::InputTag>("bxvCaloHTSrc"))),
 		qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
@@ -678,7 +688,7 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     multSrc_(consumes<edm::ValueMap<int>>(edm::InputTag("QGTagger", "mult"))),
     ptDSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "ptD"))),
      mergedjetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("mergedjetSrc"))),
-    //metSrc_(consumes<edm::View<pat::MET> >(iConfig.getUntrackedParameter<edm::InputTag>("metSrc"))),
+    metSrc_(consumes<edm::View<pat::MET> >(iConfig.getUntrackedParameter<edm::InputTag>("metSrc"))),
     triggerSrc_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerSrc"))),
     triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
     vertexSrc_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<edm::InputTag>("vertexSrc"))),
@@ -928,8 +938,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (verbose) cout<<photons->size()<<" total photons in the collection"<<endl;*/
   
     // met collection 
-    //edm::Handle<edm::View<pat::MET> > mets;
-    //iEvent.getByToken(metSrc_,mets);
+    edm::Handle<edm::View<pat::MET> > mets;
+    iEvent.getByToken(metSrc_,mets);
     
     // Rho Correction
     /*edm::Handle<double> eventRhoMu;
@@ -980,7 +990,47 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		//HLT jet for B Tag
 		edm::Handle<edm::View<reco::PFJet>>  hltjets;
 		iEvent.getByToken(hltPFJetForBtagSrc_, hltjets);
+
+		if (!hltjets.isValid()) {
+    	edm::LogWarning("ParticleNetJetTagMonitor") << "Jet collection not valid, will skip the event \n";
+    	return;
+  	}
                                 
+		//edm::Handle<std::vector<reco::PFJet>>  hltjets;
+		//iEvent.getByToken(hltPFJetForBtagSrc_, hltjets);
+
+		edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobc;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobcSrc_, pfJetTagCollectionParticleNetprobc);
+
+		if (!pfJetTagCollectionParticleNetprobc.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+		edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobb;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobbSrc_, pfJetTagCollectionParticleNetprobb);
+
+		if (!pfJetTagCollectionParticleNetprobb.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+		edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobuds;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobudsSrc_, pfJetTagCollectionParticleNetprobuds);
+
+		if (!pfJetTagCollectionParticleNetprobuds.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		/*if (iEvent.getByToken(hltPFJetForBtagSrc_, hltjets)) {
+    	//get PF jet tags
+    	edm::Handle<reco::JetTagCollection> pfJetTagCollection;
+    	bool haveJetTags = false;
+    	if (iEvent.getByToken(pfJetTagCollectionSrc_, pfJetTagCollection)) {
+    		haveJetTags = true;
+    	}
+		}
+		cout<<"haveJetTags"<<haveJetTags<<endl;*/
 		
     if (!jecunc) {
 
@@ -1357,7 +1407,7 @@ jetCorrParameterSet.validKeys(keys);
     if (verbose) cout<<"start pileup reweighting"<<endl;
     // PU information
     if(isMC && reweightForPU) {        
-        edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+       edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
         iEvent.getByToken(pileupSrc_, PupInfo);
 				puN = PupInfo->begin()->getTrueNumInteractions();      
 
@@ -1560,7 +1610,7 @@ if(trigConditionData && verbose)
 // }
         //MET
         if (verbose) {cout<<"get met value"<<endl;}
-        /*if (!mets->empty()) {
+        if (!mets->empty()) {
             met = (*mets)[0].et();
             met_phi = (*mets)[0].phi();
             met_jesup = (*mets)[0].shiftedPt(pat::MET::JetEnUp);
@@ -1571,7 +1621,7 @@ if(trigConditionData && verbose)
             met_phi_uncenup = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnUp);
             met_uncendn = (*mets)[0].shiftedPt(pat::MET::UnclusteredEnDown);
             met_phi_uncendn = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnDown);        
-        }*/
+        }
 
         if (verbose) cout<<"start lepton analysis"<<endl;           
         vector<pat::Electron> AllElectrons; 
@@ -1660,7 +1710,8 @@ if(trigConditionData && verbose)
         vector<pat::Jet> selectedMergedJets;
        
         if (verbose) cout<<"before vector assign"<<std::endl;
-				setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjets, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
       	if (verbose) cout<<"finshed setting tree variables"<<endl;
 
         lep_pt_float.assign(lep_pt.begin(),lep_pt.end());
@@ -1868,6 +1919,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("Trigger_l1decision",&Trigger_l1decision);
 	tree->Branch("Trigger_hltname",&Trigger_hltname);
     tree->Branch("Trigger_hltdecision",&Trigger_hltdecision);
+		
 
     /*tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");
     tree->Branch("passedZ4lSelection",&passedZ4lSelection,"passedZ4lSelection/O");
@@ -2007,7 +2059,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("massZ1_Z1L",&massZ1_Z1L,"massZ1_Z1L/F");
     tree->Branch("massZ2",&massZ2,"massZ2/F");  
     tree->Branch("pTZ1",&pTZ1,"pTZ1/F");
-    tree->Branch("pTZ2",&pTZ2,"pTZ2/F");
+    tree->Branch("pTZ2",&pTZ2,"pTZ2/F");*/
 
     // MET
     tree->Branch("met",&met,"met/F");
@@ -2019,7 +2071,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("met_uncenup",&met_uncenup,"met_uncenup/F");
     tree->Branch("met_phi_uncenup",&met_phi_uncenup,"met_phi_uncenup/F");
     tree->Branch("met_uncendn",&met_uncendn,"met_uncendn/F");
-    tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");*/
+    tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");
 
     // Jets
     tree->Branch("n_jets", &n_jets);
@@ -2288,7 +2340,11 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
                                    std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger,
                                    std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                                    std::vector<pat::Jet> selectedMergedJets,
+																	 //edm::Handle<std::vector<reco::PFJet>> hltjets,
 																	 edm::Handle<edm::View<reco::PFJet>> hltjets,
+																	 edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobc,
+																	 edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobb,
+																	 edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobuds,
                                    edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
                                    edm::Handle<BXVector<l1t::Muon> > bxvCaloMuons,
                                    edm::Handle<BXVector<l1t::EtSum> > bxvCaloHT,
@@ -2374,17 +2430,84 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
     }
 
 		//hlt jets
-		
+		/*if(hltjets->size()==0){
+			cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<endl;
+		}*/
+		//std::cout<<"hltPFJetForBtag size: "<< hltjets->size()<<std::endl;
+		//std::cout<<"pfJetTagCollection: "<<pfJetTagCollection->size()<<std::endl;
 		for(unsigned int ijet=0; ijet<hltjets->size(); ijet++){
+			//std::cout<<"index jet: "<<ijet<<std::endl;
+			//std::cout<<"jet pt: "<<hltjets->at(ijet).pt()<<std::endl;
 			hltjet_pt.push_back(hltjets->at(ijet).pt());
 			hltjet_eta.push_back(hltjets->at(ijet).eta());
 			hltjet_phi.push_back(hltjets->at(ijet).phi());
 			hltjet_mass.push_back(hltjets->at(ijet).mass());
-			hltParticleNetONNXJetTags_probb.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probb"));
-			hltParticleNetONNXJetTags_probc.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probc"));
-			hltParticleNetONNXJetTags_probuds.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probuds"));
-			hltParticleNetONNXJetTags_probtauh.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probtauh"));
-		}
+			//hltParticleNetONNXJetTags_probb.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probb"));
+			//hltParticleNetONNXJetTags_probc.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probc"));
+			//hltParticleNetONNXJetTags_probuds.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probuds"));
+			//hltParticleNetONNXJetTags_probtauh.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probtauh"));
+		
+			float tagValue_b = -20;
+			float tagValue_c = -20;
+			float tagValue_uds = -20;
+      float minDR2_b = 0.01;
+      float minDR2_c = 0.01;
+      float minDR2_uds = 0.01;
+      
+			int index_tag=0;
+			//std::cout<<"pfJetTagCollection: "<<pfJetTagCollection->size()<<std::endl;
+	
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobc) {
+      	float dR2 = reco::deltaR2(hltjets->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_c) {
+            minDR2_c = dR2;
+            tagValue_c = tag.second;
+          }
+				index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobb) {
+      	float dR2 = reco::deltaR2(hltjets->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_b) {
+            minDR2_b = dR2;
+            tagValue_b = tag.second;
+          }
+				//index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobuds) {
+      	float dR2 = reco::deltaR2(hltjets->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_uds) {
+            minDR2_uds = dR2;
+            tagValue_uds = tag.second;
+          }
+				//index_tag++;
+      }
+			hltParticleNetONNXJetTags_probc.push_back(tagValue_c);	
+			hltParticleNetONNXJetTags_probb.push_back(tagValue_b);	
+			hltParticleNetONNXJetTags_probuds.push_back(tagValue_uds);	
+    }  
+
+		//std::cout<<"hltPFJetForBtag size: "<< hltjets->size()<<std::endl;
+
+		/*for (auto const &hltjet : *hltjets) {
+			std::cout<<"jet pt "<<hltjet.pt()<<std::endl;
+			hltjet_pt.push_back(hltjet.pt());
+			float tagValue = -20;
+      float minDR2 = 0.01;
+      
+      for (auto const &tag : *pfJetTagCollection) {
+      	float dR2 = reco::deltaR2(hltjet, *(tag.first));
+          if (dR2 < minDR2) {
+            minDR2 = dR2;
+            tagValue = tag.second;
+          }
+      }
+			hltParticleNetONNXJetTags_probc.push_back(tagValue);	
+      
+				
+		}*/
 }
 
 
