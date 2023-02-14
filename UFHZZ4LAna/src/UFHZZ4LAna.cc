@@ -253,14 +253,14 @@ private:
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                            std::vector<pat::Jet> selectedMergedJets,
                            edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
-                         //edm::Handle<std::vector<reco::PFJet>> hltjets,
-					     //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
-						 //  edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
-            			 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobc,
-						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobb,
-						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobuds,
-			    		 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobg,
-						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobtauh,
+                           edm::Handle<std::vector<reco::PFJet>> hltjets,
+                           //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
+                           //edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
+                           //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobc,
+                           //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobb,
+                           //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobuds,
+                           //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobg,
+                           //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobtauh,
                            edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
                            edm::Handle<BXVector<l1t::Muon> > bxvCaloMuons,
                            edm::Handle<BXVector<l1t::EtSum> > bxvCaloHT,
@@ -369,33 +369,33 @@ private:
     float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
     float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
 
-	//L1 HT
-	float L1ht;
+    //L1 HT
+    float L1ht;
 
-	//hlt jets for B Tag
-	vector<double> hltjetForBTag_pt;
-	vector<double> hltjetForBTag_eta;
-	vector<double> hltjetForBTag_phi;
-	vector<double> hltjetForBTag_mass;
-	vector<float> hltParticleNetONNXJetTags_probb, hltParticleNetONNXJetTags_probc,hltParticleNetONNXJetTags_probuds, hltParticleNetONNXJetTags_probg, hltParticleNetONNXJetTags_probtauh;    
+    //hlt jets for B Tag
+    vector<double> hltjetForBTag_pt;
+    vector<double> hltjetForBTag_eta;
+    vector<double> hltjetForBTag_phi;
+    vector<double> hltjetForBTag_mass;
+    vector<float> hltParticleNetONNXJetTags_probb, hltParticleNetONNXJetTags_probc,hltParticleNetONNXJetTags_probuds, hltParticleNetONNXJetTags_probg, hltParticleNetONNXJetTags_probtauh;    
 		
-	// HLT jets hltAK4PFJetsCorrected
+    // HLT jets hltAK4PFJetsCorrected
 		
-	vector<double> hltAK4PFJetsCorrected_pt;
-	vector<double> hltAK4PFJetsCorrected_eta;
-	vector<double> hltAK4PFJetsCorrected_phi;
-	vector<double> hltAK4PFJetsCorrected_mass;
+    vector<double> hltAK4PFJetsCorrected_pt;
+    vector<double> hltAK4PFJetsCorrected_eta;
+    vector<double> hltAK4PFJetsCorrected_phi;
+    vector<double> hltAK4PFJetsCorrected_mass;
     
     // Puppi AK4jets with ParticleNet taggers
 
-	vector<double> AK4PuppiJets_pt;
-	vector<double> AK4PuppiJets_eta;
-	vector<double> AK4PuppiJets_phi;
-	vector<double> AK4PuppiJets_mass;
+    vector<double> AK4PuppiJets_pt;
+    vector<double> AK4PuppiJets_eta;
+    vector<double> AK4PuppiJets_phi;
+    vector<double> AK4PuppiJets_mass;
 
-	vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
+    vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
 
-	// Jets
+    // Jets
     vector<int>    jet_iscleanH4l;
     int jet1index, jet2index;
     vector<double> jet_pt; vector<double> jet_eta; vector<double> jet_phi; vector<double> jet_mass; vector<double> jet_pt_raw;
@@ -541,10 +541,10 @@ private:
     vector<float> Z_pt_float, Z_eta_float, Z_phi_float, Z_mass_float;
     vector<float> Z_noFSR_pt_float, Z_noFSR_eta_float;
     vector<float> Z_noFSR_phi_float, Z_noFSR_mass_float;*/
-	vector<float> lep_pt_float, lep_eta_float, lep_phi_float, lep_mass_float;
+    vector<float> lep_pt_float, lep_eta_float, lep_phi_float, lep_mass_float;
     int n_jets=0;
-	vector<float> hltjetForBTag_pt_float, hltjetForBTag_eta_float, hltjetForBTag_phi_float, hltjetForBTag_mass_float;
-	vector<float> hltAK4PFJetsCorrected_pt_float, hltAK4PFJetsCorrected_eta_float, hltAK4PFJetsCorrected_phi_float, hltAK4PFJetsCorrected_mass_float;
+    vector<float> hltjetForBTag_pt_float, hltjetForBTag_eta_float, hltjetForBTag_phi_float, hltjetForBTag_mass_float;
+    vector<float> hltAK4PFJetsCorrected_pt_float, hltAK4PFJetsCorrected_eta_float, hltAK4PFJetsCorrected_phi_float, hltAK4PFJetsCorrected_mass_float;
     vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
     vector<float>  jet_csv_cTag_vsL_float, jet_csv_cTag_vsB_float;
     vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
@@ -563,7 +563,7 @@ private:
     vector<float> GENH_phi_float, GENH_mass_float;
     vector<float> GENZ_pt_float, GENZ_eta_float;
     vector<float> GENZ_phi_float, GENZ_mass_float;*/
-	int n_GENjets=0;
+    int n_GENjets=0;
     vector<float> GENjet_pt_float, GENjet_eta_float;
     vector<float> GENjet_phi_float, GENjet_mass_float;
 	vector<float> quark_pt_float, quark_eta_float, quark_phi_float;
@@ -598,14 +598,14 @@ private:
     //edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSrc_;
-	edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
-	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
-	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltAK4PFJetsCorrectedSrc_;
-	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobcSrc_;  //value map for Particle Net tagger at hlt
-	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobbSrc_;  //value map for Particle Net tagger at hlt
-	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobudsSrc_;  //value map for Particle Net tagger at hlt
-	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobgSrc_;  //value map for Particle Net tagger at hlt
-	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobtauhSrc_;  //value map for Particle Net tagger at hlt
+    edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
+    //edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
+    //edm::EDGetTokenT<edm::View<reco::PFJet>> hltAK4PFJetsCorrectedSrc_;
+    //edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobcSrc_;  //value map for Particle Net tagger at hlt
+    //edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobbSrc_;  //value map for Particle Net tagger at hlt
+    //edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobudsSrc_;  //value map for Particle Net tagger at hlt
+    //edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobgSrc_;  //value map for Particle Net tagger at hlt
+    //edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobtauhSrc_;  //value map for Particle Net tagger at hlt
     edm::EDGetTokenT<BXVector<l1t::Muon>> bxvCaloMuonSrc_;
     edm::EDGetTokenT<BXVector<l1t::EtSum>> bxvCaloHTSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > qgTagSrc_;
@@ -710,18 +710,18 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
     //hltPFJetForBtagSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltPFJetForBtagSrc"))),
     //hltAK4PFJetsCorrectedSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltAK4PFJetsCorrectedSrc"))),
-		//pfJetTagCollectionParticleNetprobcSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobcSrc"))),
-		//pfJetTagCollectionParticleNetprobbSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobbSrc"))),
-		//pfJetTagCollectionParticleNetprobudsSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobudsSrc"))),
-		//pfJetTagCollectionParticleNetprobgSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobgSrc"))),
-		//pfJetTagCollectionParticleNetprobtauhSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobtauhSrc"))),
+    //pfJetTagCollectionParticleNetprobcSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobcSrc"))),
+    //pfJetTagCollectionParticleNetprobbSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobbSrc"))),
+    //pfJetTagCollectionParticleNetprobudsSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobudsSrc"))),
+    //pfJetTagCollectionParticleNetprobgSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobgSrc"))),
+    //pfJetTagCollectionParticleNetprobtauhSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobtauhSrc"))),
     bxvCaloMuonSrc_(consumes<BXVector<l1t::Muon>>(iConfig.getParameter<edm::InputTag>("bxvCaloMuonSrc"))),
     bxvCaloHTSrc_(consumes<BXVector<l1t::EtSum>>(iConfig.getParameter<edm::InputTag>("bxvCaloHTSrc"))),
-		qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
+    qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
     axis2Src_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "axis2"))),
     multSrc_(consumes<edm::ValueMap<int>>(edm::InputTag("QGTagger", "mult"))),
     ptDSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "ptD"))),
-     mergedjetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("mergedjetSrc"))),
+    mergedjetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("mergedjetSrc"))),
     metSrc_(consumes<edm::View<pat::MET> >(iConfig.getUntrackedParameter<edm::InputTag>("metSrc"))),
     triggerSrc_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerSrc"))),
     triggerObjects_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
