@@ -22,7 +22,7 @@ process.Timing = cms.Service("Timing",
                              )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
 
 process.options = cms.untracked.PSet(
         numberOfThreads = cms.untracked.uint32(2),
@@ -42,24 +42,27 @@ myfilelist = cms.untracked.vstring(
 #'file:/afs/cern.ch/work/a/azaza/MC_signal/VBFHToCC/CMSSW_12_4_8/src/production/Run3_VBF_Hcc_step2_103.root',
 
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_customHLT_MINIAODSIM/221125_131404/0000/Run3_VBF_Hcc_step2_10_1.root',
-'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_1.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_1.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_10.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_100.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_101.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_102.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_103.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_104.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_105.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_106.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_107.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_108.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_109.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_11.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_110.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_111.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_112.root',
-#'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_113.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_1.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_10.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_100.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_101.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_102.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_103.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_104.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_105.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_106.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_107.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_108.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_109.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_11.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_110.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_111.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_112.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_113.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_114.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_115.root',
+'/store/user/azaza/VBFHToCC_M-125_TuneCP5_13p6TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v12_MINIAODSIM/221113_110430/0000/Run3_VBF_Hcc_step2_116.root'
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_1.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_10.root',
 #'/store/user/azaza/VBFHToCC_M-125_TuneCP5_14TeV-powheg-pythia8_Run3/124X_mcRun3_2022_realistic_v10_MINIAODSIM/220923_111616/0000/Run3_VBF_Hcc_step2_100.root',
@@ -301,7 +304,7 @@ qgDatabaseVersion = 'cmssw8020_v2'
 # for hpc
 QGdBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
-QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),
@@ -385,7 +388,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
                               tauSrc      = cms.untracked.InputTag("slimmedTaus"),
                               jetSrc       = cms.untracked.InputTag("slimmedJetsJEC"),
                               AK4PuppiJetSrc       = cms.untracked.InputTag("slimmedJetsPuppi"),
-			      AK8PuppiJetSrc       = cms.untracked.InputTag("slimmedJetsAK8"),
+				AK8PuppiJetSrc       = cms.untracked.InputTag("slimmedJetsAK8"),
 #                              hltPFJetForBtagSrc  = cms.InputTag("hltPFJetForBtag", "", "HLT"),
                               hltAK4PFJetsCorrectedSrc  = cms.InputTag("hltAK4PFJetsCorrected", "", "HLT"),
 #														  pfJetTagCollectionParticleNetprobcSrc = cms.InputTag("hltParticleNetONNXJetTags","probc","HLT"),

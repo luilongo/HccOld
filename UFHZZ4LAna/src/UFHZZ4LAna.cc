@@ -253,7 +253,7 @@ private:
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                            std::vector<pat::Jet> selectedMergedJets,
                            edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
-			   edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
+			edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
                          //edm::Handle<std::vector<reco::PFJet>> hltjets,
 					     //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
 						 //  edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
@@ -394,17 +394,18 @@ private:
 	vector<double> AK4PuppiJets_phi;
 	vector<double> AK4PuppiJets_mass;
 
-	vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds, jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh; 
-	
+	vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
+
 	// Puppi AK8jets with ParticleNet taggers
+	
+		vector<double> AK8PuppiJets_pt;
+		vector<double> AK8PuppiJets_eta;
+		vector<double> AK8PuppiJets_phi;
+		vector<double> AK8PuppiJets_mass;
+	
+		vector<float> jet_pfParticleNetJetTags_probZbb, jet_pfParticleNetJetTags_probZcc, jet_pfParticleNetJetTags_probZqq, jet_pfParticleNetJetTags_probQCDbb, jet_pfParticleNetJetTags_probQCDcc, jet_pfParticleNetJetTags_probQCDb, jet_pfParticleNetJetTags_probQCDc, jet_pfParticleNetJetTags_probQCDothers, jet_pfParticleNetJetTags_probHbb, jet_pfParticleNetJetTags_probHcc, jet_pfParticleNetJetTags_probHqqqq;  
 
-	vector<double> AK8PuppiJets_pt;
-	vector<double> AK8PuppiJets_eta;
-	vector<double> AK8PuppiJets_phi;
-	vector<double> AK8PuppiJets_mass;
-
-	vector<float> jet_pfParticleNetJetTags_probZbb, jet_pfParticleNetJetTags_probZcc, jet_pfParticleNetJetTags_probZqq, jet_pfParticleNetJetTags_probQCDbb, jet_pfParticleNetJetTags_probQCDcc, jet_pfParticleNetJetTags_probQCDb, jet_pfParticleNetJetTags_probQCDc, jet_pfParticleNetJetTags_probQCDothers;  
-
+	
 	// Jets
     vector<int>    jet_iscleanH4l;
     int jet1index, jet2index;
@@ -555,8 +556,8 @@ private:
     int n_jets=0;
 	vector<float> hltjetForBTag_pt_float, hltjetForBTag_eta_float, hltjetForBTag_phi_float, hltjetForBTag_mass_float;
 	vector<float> hltAK4PFJetsCorrected_pt_float, hltAK4PFJetsCorrected_eta_float, hltAK4PFJetsCorrected_phi_float, hltAK4PFJetsCorrected_mass_float;
-	vector<float> hltAK8PFJetsCorrected_pt_float, hltAK8PFJetsCorrected_eta_float, hltAK8PFJetsCorrected_phi_float, hltAK8PFJetsCorrected_mass_float;
-    vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
+    vector<float> hltAK8PFJetsCorrected_pt_float, hltAK8PFJetsCorrected_eta_float, hltAK8PFJetsCorrected_phi_float, hltAK8PFJetsCorrected_mass_float;
+	vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
     vector<float>  jet_csv_cTag_vsL_float, jet_csv_cTag_vsB_float;
     vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
     vector<float> jet_jesup_phi_float, jet_jesup_mass_float;
@@ -586,7 +587,7 @@ private:
     vector<float> AK4PuppiJets_phi_float;
     vector<float> AK4PuppiJets_mass_float;
 	
-    vector<float> AK8PuppiJets_pt_float;
+	vector<float> AK8PuppiJets_pt_float;
     vector<float> AK8PuppiJets_eta_float;
     vector<float> AK8PuppiJets_phi_float;
     vector<float> AK8PuppiJets_mass_float;
@@ -614,7 +615,7 @@ private:
     //edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSrc_;
-    edm::EDGetTokenT<edm::View<pat::Jet> > AK8PuppiJetSrc_;
+	edm::EDGetTokenT<edm::View<pat::Jet> > AK8PuppiJetSrc_;
 	edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
 	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
 	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltAK4PFJetsCorrectedSrc_;
@@ -724,7 +725,7 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     //photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
     jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),
     AK4PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK4PuppiJetSrc"))),
-    AK8PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK8PuppiJetSrc"))),
+	AK8PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK8PuppiJetSrc"))),
     bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
     //hltPFJetForBtagSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltPFJetForBtagSrc"))),
     //hltAK4PFJetsCorrectedSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltAK4PFJetsCorrectedSrc"))),
@@ -1030,10 +1031,10 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // Puppi AK4jets with ParticleNet taggers
     edm::Handle<edm::View<pat::Jet> > AK4PuppiJets;
     iEvent.getByToken(AK4PuppiJetSrc_ ,AK4PuppiJets);
-	
-   // Puppi AK8jets with ParticleNet taggers
-    edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
-    iEvent.getByToken(AK8PuppiJetSrc_ ,AK8PuppiJets);
+
+	// Puppi AK8jets with ParticleNet taggers
+	     edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
+	    iEvent.getByToken(AK8PuppiJetSrc_ ,AK8PuppiJets);
 	
     //L1 Jets                                       
 	edm::Handle<BXVector<l1t::Jet>> bxvCaloJets;
@@ -1308,13 +1309,13 @@ jetCorrParameterSet.validKeys(keys);
 
     jet_pfParticleNetAK4JetTags_probb.clear(); jet_pfParticleNetAK4JetTags_probc.clear(); jet_pfParticleNetAK4JetTags_probuds.clear(); jet_pfParticleNetAK4JetTags_probg.clear(); jet_pfParticleNetAK4JetTags_probtauh.clear();
     
-    // Puppi AK8jets with ParticleNet taggers
-    AK8PuppiJets_pt.clear();
+	// Puppi AK8jets with ParticleNet taggers
+	AK8PuppiJets_pt.clear();
     AK8PuppiJets_eta.clear();
     AK8PuppiJets_phi.clear();
     AK8PuppiJets_mass.clear();
 
-    jet_pfParticleNetJetTags_probZbb.clear(); jet_pfParticleNetJetTags_probZcc.clear(); jet_pfParticleNetJetTags_probZqq.clear(); jet_pfParticleNetJetTags_probQCDbb .clear();  jet_pfParticleNetJetTags_probQCDcc.clear(); jet_pfParticleNetJetTags_probQCDb.clear(); jet_pfParticleNetJetTags_probQCDc.clear(); jet_pfParticleNetJetTags_probQCDothers.clear();  
+    jet_pfParticleNetJetTags_probZbb.clear(); jet_pfParticleNetJetTags_probZcc.clear(); jet_pfParticleNetJetTags_probZqq.clear(); jet_pfParticleNetJetTags_probQCDbb .clear();  jet_pfParticleNetJetTags_probQCDcc.clear(); jet_pfParticleNetJetTags_probQCDb.clear(); jet_pfParticleNetJetTags_probQCDc.clear(); jet_pfParticleNetJetTags_probQCDothers.clear(); jet_pfParticleNetJetTags_probHbb.clear(); jet_pfParticleNetJetTags_probHcc.clear(); jet_pfParticleNetJetTags_probHqqqq.clear(); 
     
 	// MET
     met=-1.0; met_phi=9999.0;
@@ -1491,7 +1492,6 @@ jetCorrParameterSet.validKeys(keys);
 
 	hltjetForBTag_pt_float.clear(); hltjetForBTag_eta_float.clear(); hltjetForBTag_phi_float.clear(); hltjetForBTag_mass_float.clear();
 	hltAK4PFJetsCorrected_pt_float.clear(); hltAK4PFJetsCorrected_eta_float.clear(); hltAK4PFJetsCorrected_phi_float.clear(); hltAK4PFJetsCorrected_mass_float.clear();
-//	hltAK8PFJetsCorrected_pt_float.clear(); hltAK8PFJetsCorrected_eta_float.clear(); hltAK8PFJetsCorrected_phi_float.clear(); hltAK8PFJetsCorrected_mass_float.clear();
 
     jet_pt_float.clear(); jet_eta_float.clear(); jet_phi_float.clear(); jet_mass_float.clear(); jet_pt_raw_float.clear(); 
     jet_csv_cTag_vsL_float.clear(); jet_csv_cTag_vsB_float.clear();
@@ -1504,8 +1504,7 @@ jetCorrParameterSet.validKeys(keys);
     L1muon_pt_float.clear(); L1muon_eta_float.clear(); L1muon_phi_float.clear(); L1muon_mass_float.clear();
 
     AK4PuppiJets_pt_float.clear(); AK4PuppiJets_eta_float.clear(); AK4PuppiJets_phi_float.clear(); AK4PuppiJets_mass_float.clear();
-    AK8PuppiJets_pt_float.clear(); AK8PuppiJets_eta_float.clear(); AK8PuppiJets_phi_float.clear(); AK8PuppiJets_mass_float.clear();
-
+	AK8PuppiJets_pt_float.clear(); AK8PuppiJets_eta_float.clear(); AK8PuppiJets_phi_float.clear(); AK8PuppiJets_mass_float.clear();
 
 
     // ====================== Do Analysis ======================== //
@@ -1889,9 +1888,9 @@ if(trigConditionData && verbose)
         AK4PuppiJets_eta_float.assign(AK4PuppiJets_eta.begin(), AK4PuppiJets_eta.end()); 
         AK4PuppiJets_phi_float.assign(AK4PuppiJets_phi.begin(), AK4PuppiJets_phi.end()); 
         AK4PuppiJets_mass_float.assign(AK4PuppiJets_mass.begin(), AK4PuppiJets_mass.end());
-	    
+
 	AK8PuppiJets_pt_float.assign(AK8PuppiJets_pt.begin(), AK8PuppiJets_pt.end()); 
-        AK8PuppiJets_eta_float.assign(AK8PuppiJets_eta.begin(), AK8PuppiJets_eta.end()); 
+	AK8PuppiJets_eta_float.assign(AK8PuppiJets_eta.begin(), AK8PuppiJets_eta.end()); 
         AK8PuppiJets_phi_float.assign(AK8PuppiJets_phi.begin(), AK8PuppiJets_phi.end()); 
         AK8PuppiJets_mass_float.assign(AK8PuppiJets_mass.begin(), AK8PuppiJets_mass.end());
 
@@ -2299,15 +2298,15 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
 	tree->Branch("AK4PuppiJets_eta",&AK4PuppiJets_eta_float);
 	tree->Branch("AK4PuppiJets_phi",&AK4PuppiJets_phi_float);
 	tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);
-	
-	    tree->Branch("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb);	
+    
+    tree->Branch("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probc", &jet_pfParticleNetAK4JetTags_probc);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg);	
-    tree->Branch("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh);	
-	
+    tree->Branch("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh);
+
 	// Puppi AK8jets with ParticleNet taggers
-	tree->Branch("AK8PuppiJets_pt",&AK8PuppiJets_pt_float);
+	tree->Branch("AK8PuppiJets_pt",&AK8PuppiJets_pt_float);	
 	tree->Branch("AK8PuppiJets_eta",&AK8PuppiJets_eta_float);
 	tree->Branch("AK8PuppiJets_phi",&AK8PuppiJets_phi_float);
 	tree->Branch("AK8PuppiJets_mass",&AK8PuppiJets_mass_float);
@@ -2320,7 +2319,9 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
 	tree->Branch("jet_pfParticleNetJetTags_probQCDb", &jet_pfParticleNetJetTags_probQCDb);
 	tree->Branch("jet_pfParticleNetJetTags_probQCDc", &jet_pfParticleNetJetTags_probQCDc);
 	tree->Branch("jet_pfParticleNetJetTags_probQCDothers", &jet_pfParticleNetJetTags_probQCDothers);
-    
+	tree->Branch("jet_pfParticleNetJetTags_probHbb", &jet_pfParticleNetJetTags_probHbb);
+	tree->Branch("jet_pfParticleNetJetTags_probHcc", &jet_pfParticleNetJetTags_probHcc);
+	tree->Branch("jet_pfParticleNetJetTags_probHqqqq", &jet_pfParticleNetJetTags_probHqqqq);
 
     //hlt jets
 	tree->Branch("hltjetForBTag_pt",&hltjetForBTag_pt_float);
@@ -2508,7 +2509,7 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
                                    std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                                    std::vector<pat::Jet> selectedMergedJets,
                                    edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
-				   edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
+				edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
                                  //edm::Handle<std::vector<reco::PFJet>> hltjets,
                                  //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
                                  //edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
@@ -2625,23 +2626,25 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
       jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probg"));
       jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probtauh"));
 	}
-	
-	
-	//Puppi AK8jets with ParticleNet taggers
-	for(unsigned int ijet=0; ijet<AK8PuppiJets->size(); ijet++){
-	  AK8PuppiJets_pt.push_back(AK8PuppiJets->at(ijet).pt());
-	  AK8PuppiJets_eta.push_back(AK8PuppiJets->at(ijet).eta());
-	  AK8PuppiJets_phi.push_back(AK8PuppiJets->at(ijet).phi());
-	  AK8PuppiJets_mass.push_back(AK8PuppiJets->at(ijet).mass());
 
-      jet_pfParticleNetJetTags_probZbb.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probZbb"));
-      jet_pfParticleNetJetTags_probZcc.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probZcc"));
-      jet_pfParticleNetJetTags_probZqq.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probZqq"));
-	jet_pfParticleNetJetTags_probQCDbb.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probQCDbb"));
-	jet_pfParticleNetJetTags_probQCDcc.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probQCDcc"));
-	jet_pfParticleNetJetTags_probQCDb.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probQCDb"));
-	jet_pfParticleNetJetTags_probQCDc.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probQCDc"));
-	jet_pfParticleNetJetTags_probQCDothers.push_back(AK8PuppiJets->at(ijet).bDiscriminator("pfParticleNetJetTags:probQCDothers"));
+	//Puppi AK8jets with ParticleNet taggers      ricordati di cambiare ijet in jjet
+	for(unsigned int jjet=0; jjet<AK8PuppiJets->size(); jjet++){
+	  AK8PuppiJets_pt.push_back(AK8PuppiJets->at(jjet).pt());
+	AK8PuppiJets_eta.push_back(AK8PuppiJets->at(jjet).eta());
+	  AK8PuppiJets_phi.push_back(AK8PuppiJets->at(jjet).phi());
+	  AK8PuppiJets_mass.push_back(AK8PuppiJets->at(jjet).mass());
+
+      jet_pfParticleNetJetTags_probZbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZbb"));
+      jet_pfParticleNetJetTags_probZcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZcc"));
+      jet_pfParticleNetJetTags_probZqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZqq"));
+	jet_pfParticleNetJetTags_probQCDbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDbb"));
+	jet_pfParticleNetJetTags_probQCDcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDcc"));
+	jet_pfParticleNetJetTags_probQCDb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDb"));
+	jet_pfParticleNetJetTags_probQCDc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDc"));
+	jet_pfParticleNetJetTags_probQCDothers.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDothers"));
+	jet_pfParticleNetJetTags_probHbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHbb"));
+	jet_pfParticleNetJetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHcc"));
+	jet_pfParticleNetJetTags_probHqqqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHqqqq"));
 	}
 
 		//hlt jets
