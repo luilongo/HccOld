@@ -3,7 +3,7 @@
 // Package:    UFHZZ4LAna
 // Class:      UFHZZ4LAna
 // 
-//
+///
 
 // system include files
 #include <memory>
@@ -36,6 +36,7 @@
 #include "TCanvas.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
+//#include "FWCore/Framework/interface/limited/EDAnalyzerBase.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -92,6 +93,16 @@
 #include "PhysicsTools/SelectorUtils/interface/JetIDSelectionFunctor.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 
+//L1trigger
+#include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
+#include "DataFormats/L1TGlobal/interface/GlobalAlgBlk.h"
+#include "DataFormats/L1TGlobal/interface/GlobalExtBlk.h"
+#include "L1Trigger/L1TGlobal/interface/L1TGlobalUtil.h"
+#include "CondFormats/DataRecord/interface/L1TUtmTriggerMenuRcd.h"
+#include "CondFormats/L1TObjects/interface/L1TUtmTriggerMenu.h"
+#include "CondFormats/L1TObjects/interface/L1GtTriggerMenu.h"
+#include "CondFormats/DataRecord/interface/L1GtTriggerMenuRcd.h"
+
 // Reco
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
@@ -105,29 +116,29 @@
 #include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
 
 //Helper
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LHelper.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LHelper.h"
 //Muons
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LMuonAna.h"
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LMuonTree.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LMuonAna.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LMuonTree.h"
 //Electrons
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LElectronTree.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LElectronTree.h"
 //Photons
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LPhotonTree.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LPhotonTree.h"
 //Jets
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LJetTree.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LJetTree.h"
 //Final Leps
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LFinalLepTree.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LFinalLepTree.h"
 //Sip
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LSipAna.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LSipAna.h"
 //PU
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LPileUp.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LPileUp.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 //GEN
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LGENAna.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LGENAna.h"
 //VBF Jets
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LJets.h"
+#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LJets.h"
 
 // Jet energy correction
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
@@ -137,14 +148,13 @@
 #include <vector>
 
 // Kinematic Fit
-#include "KinZfitter/KinZfitter/interface/KinZfitter.h"
 #include "RecoParticleFlow/PFClusterTools/interface/PFEnergyResolution.h"
 
 // EWK corrections
-#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/EwkCorrections.h"
+#include "hcc_v2/UFHZZ4LAna/interface/EwkCorrections.h"
 
 // JEC related
-#include "PhysicsTools/PatAlgos/plugins/PATJetUpdater.h"
+//#include "PhysicsTools/PatAlgos/plugins/PATJetUpdater.h"
 #include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
  
 //JER related
@@ -166,7 +176,7 @@
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 // Rochester Corrections
-#include "UFHZZAnalysisRun2/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
+//#include "hcc_v2/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
 
 #include "RecoVertex/KalmanVertexFit/interface/SingleTrackVertexConstraint.h"
 
@@ -228,7 +238,7 @@ private:
     TTree *passedEventsTree_All;
 
     void bookPassedEventTree(TString treeName, TTree *tree);
-    void setTreeVariables( const edm::Event&, const edm::EventSetup&, 
+    /*void setTreeVariables( const edm::Event&, const edm::EventSetup&, 
                            std::vector<pat::Muon> selectedMuons, std::vector<pat::Electron> selectedElectrons, 
                            std::vector<pat::Muon> recoMuons, std::vector<pat::Electron> recoElectrons, 
                            std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger, 
@@ -237,18 +247,45 @@ private:
                            std::map<unsigned int, TLorentzVector> selectedFsrMap);
     void setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
                          edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
+                         edm::Handle<edm::View<reco::GenJet> > genJets);*/
+		void setTreeVariables( const edm::Event&, const edm::EventSetup&,
+                           std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger,
+                           std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
+                           std::vector<pat::Jet> selectedMergedJets,
+                           edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
+			edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
+                         //edm::Handle<std::vector<reco::PFJet>> hltjets,
+					     //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
+						 //  edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
+            			 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobc,
+						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobb,
+						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobuds,
+			    		 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobg,
+						 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobtauh,
+                           edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
+                           edm::Handle<BXVector<l1t::Muon> > bxvCaloMuons,
+                           edm::Handle<BXVector<l1t::EtSum> > bxvCaloHT,
+                           std::vector<pat::Muon> AllMuons, std::vector<pat::Electron> AllElectrons);
+    void setGENVariables(edm::Handle<reco::GenParticleCollection> prunedgenParticles,
+                         edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
                          edm::Handle<edm::View<reco::GenJet> > genJets);
+
 
     // -------------------------
     // RECO level information
     // -------------------------
 
     // Event Variables
-    ULong64_t Run, Event, LumiSect;
+    ULong64_t Run, Event, LumiSect, puN;
     int nVtx, nInt;
     int finalState;
     std::string triggersPassed;
     bool passedTrig, passedFullSelection, passedZ4lSelection, passedQCDcut;
+
+    std::vector<string>  Trigger_l1name;
+    std::vector<int> Trigger_l1decision;
+    std::vector<string>  Trigger_hltname;
+    std::vector<int> Trigger_hltdecision;
     
     float PV_x, PV_y, PV_z; 
     float BS_x, BS_y, BS_z; 
@@ -259,7 +296,7 @@ private:
 
     // Event Weights
     float genWeight, pileupWeight, pileupWeightUp, pileupWeightDn, dataMCWeight, eventWeight, prefiringWeight;
-    float k_ggZZ, k_qqZZ_qcd_dPhi, k_qqZZ_qcd_M, k_qqZZ_qcd_Pt, k_qqZZ_ewk;
+    float k_qqZZ_qcd_dPhi, k_qqZZ_qcd_M, k_qqZZ_qcd_Pt, k_qqZZ_ewk;
     // pdf weights                                                                   
     vector<float> qcdWeights;
     vector<float> nnloWeights;
@@ -267,7 +304,8 @@ private:
     int posNNPDF;
     float pdfRMSup, pdfRMSdown, pdfENVup, pdfENVdown;
     // lepton variables
-    vector<double> lep_pt_genFromReco;
+    vector<double> lep_pt; vector<double> lep_eta; vector<double> lep_phi; vector<double> lep_mass; vector<int> lep_ID;
+   /* vector<double> lep_pt_genFromReco;
     vector<double> lep_pt; vector<double> lep_pterr; vector<double> lep_pterrold; 
     vector<double> lep_p; vector<double> lep_ecalEnergy; vector<int> lep_isEB; vector<int> lep_isEE;
     vector<double> lep_eta; vector<double> lep_phi; vector<double> lep_mass;
@@ -325,19 +363,56 @@ private:
     vector<double> Z_noFSR_pt; vector<double> Z_noFSR_eta; vector<double> Z_noFSR_phi; vector<double> Z_noFSR_mass;
     int Z_Hindex[2]; // position of Z1 and Z2 in Z_p4
     float massZ1, massZ1_Z1L, massZ2, pTZ1, pTZ2;
-    float massErrH_vtx;
+    float massErrH_vtx;*/
 
     // MET
     float met; float met_phi;
     float met_jesup, met_phi_jesup, met_jesdn, met_phi_jesdn;
     float met_uncenup, met_phi_uncenup, met_uncendn, met_phi_uncendn;
 
-    // Jets
+	//L1 HT
+	float L1ht;
+
+	//hlt jets for B Tag
+	vector<double> hltjetForBTag_pt;
+	vector<double> hltjetForBTag_eta;
+	vector<double> hltjetForBTag_phi;
+	vector<double> hltjetForBTag_mass;
+	vector<float> hltParticleNetONNXJetTags_probb, hltParticleNetONNXJetTags_probc,hltParticleNetONNXJetTags_probuds, hltParticleNetONNXJetTags_probg, hltParticleNetONNXJetTags_probtauh;    
+		
+	// HLT jets hltAK4PFJetsCorrected
+		
+	vector<double> hltAK4PFJetsCorrected_pt;
+	vector<double> hltAK4PFJetsCorrected_eta;
+	vector<double> hltAK4PFJetsCorrected_phi;
+	vector<double> hltAK4PFJetsCorrected_mass;
+    
+    // Puppi AK4jets with ParticleNet taggers
+
+	vector<double> AK4PuppiJets_pt;
+	vector<double> AK4PuppiJets_eta;
+	vector<double> AK4PuppiJets_phi;
+	vector<double> AK4PuppiJets_mass;
+
+	vector<float> jet_pfParticleNetAK4JetTags_probb, jet_pfParticleNetAK4JetTags_probc, jet_pfParticleNetAK4JetTags_probuds,jet_pfParticleNetAK4JetTags_probg, jet_pfParticleNetAK4JetTags_probtauh;  
+
+	// Puppi AK8jets with ParticleNet taggers
+	
+		vector<double> AK8PuppiJets_pt;
+		vector<double> AK8PuppiJets_eta;
+		vector<double> AK8PuppiJets_phi;
+		vector<double> AK8PuppiJets_mass;
+	
+		vector<float> jet_pfParticleNetJetTags_probZbb, jet_pfParticleNetJetTags_probZcc, jet_pfParticleNetJetTags_probZqq, jet_pfParticleNetJetTags_probQCDbb, jet_pfParticleNetJetTags_probQCDcc, jet_pfParticleNetJetTags_probQCDb, jet_pfParticleNetJetTags_probQCDc, jet_pfParticleNetJetTags_probQCDothers, jet_pfParticleNetJetTags_probHbb, jet_pfParticleNetJetTags_probHcc, jet_pfParticleNetJetTags_probHqqqq;  
+
+	
+	// Jets
     vector<int>    jet_iscleanH4l;
     int jet1index, jet2index;
     vector<double> jet_pt; vector<double> jet_eta; vector<double> jet_phi; vector<double> jet_mass; vector<double> jet_pt_raw;
     vector<float>  jet_csv_cTag_vsL, jet_csv_cTag_vsB;
     vector<float>  jet_pumva, jet_csvv2,  jet_csvv2_; vector<int> jet_isbtag;
+	vector<float>  jet_pfDeepCSVJetTags_probb, jet_pfDeepFlavourJetTags_probbb, jet_pfDeepFlavourJetTags_probc, jet_pfDeepFlavourJetTags_probuds;
     vector<int>    jet_hadronFlavour, jet_partonFlavour;
     vector<float>  jet_QGTagger, jet_QGTagger_jesup, jet_QGTagger_jesdn; 
     vector<float> jet_axis2, jet_ptD; vector<int> jet_mult;
@@ -356,6 +431,9 @@ private:
     vector<double> jet_jerup_phi; vector<double> jet_jerup_mass;
     vector<int>    jet_jerdn_iscleanH4l;
     vector<double> jet_jerdn_pt; vector<double> jet_jerdn_eta; 
+	vector<double> L1jet_pt; vector<double> L1jet_eta; vector<double> L1jet_phi; vector<double> L1jet_mass;
+    vector<double> L1muon_pt; vector<double> L1muon_eta; vector<double> L1muon_phi; vector<double> L1muon_mass;
+	vector<int> L1muon_qual;	
     vector<double> jet_jerdn_phi; vector<double> jet_jerdn_mass;    
     int njets_pt30_eta4p7; int njets_pt30_eta4p7_jesup; int njets_pt30_eta4p7_jesdn; 
     int njets_pt30_eta4p7_jerup; int njets_pt30_eta4p7_jerdn;
@@ -393,7 +471,7 @@ private:
     vector<vector<int> > mergedjet_subjet_partonFlavour, mergedjet_subjet_hadronFlavour;
 
     // FSR Photons
-    int nFSRPhotons;
+    /*int nFSRPhotons;
     vector<int> fsrPhotons_lepindex; 
     vector<double> fsrPhotons_pt; vector<double> fsrPhotons_pterr;
     vector<double> fsrPhotons_eta; vector<double> fsrPhotons_phi;
@@ -405,7 +483,7 @@ private:
     float theta12, theta13, theta14;  
     float minM3l, Z4lmaxP, minDeltR, m3l_soft;
     float minMass2Lep, maxMass2Lep;
-    float thetaPhoton, thetaPhotonZ;
+    float thetaPhoton, thetaPhotonZ;*/
 
     // Event Category
     int EventCat;
@@ -418,7 +496,7 @@ private:
     int GENfinalState;
 
     // lepton variables
-    vector<double> GENlep_pt; vector<double> GENlep_eta; vector<double> GENlep_phi; vector<double> GENlep_mass; 
+    /*vector<double> GENlep_pt; vector<double> GENlep_eta; vector<double> GENlep_phi; vector<double> GENlep_mass; 
     vector<int> GENlep_id; vector<int> GENlep_status; 
     vector<int> GENlep_MomId; vector<int> GENlep_MomMomId;
     int GENlep_Hindex[4];//position of Higgs candidate leptons in lep_p4: 0 = Z1 lead, 1 = Z1 sub, 2 = Z2 lead, 3 = Z3 sub
@@ -436,17 +514,18 @@ private:
     float  GENmassZ1, GENmassZ2, GENpTZ1, GENpTZ2, GENdPhiZZ, GENmassZZ, GENpTZZ;
 
     // Higgs variables directly from GEN particle
-    float GENHmass;
+    float GENHmass;*/
 
     // Jets
     vector<double> GENjet_pt; vector<double> GENjet_eta; vector<double> GENjet_phi; vector<double> GENjet_mass; 
-    int GENnjets_pt30_eta4p7; float GENpt_leadingjet_pt30_eta4p7; 
+    vector<double> quark_pt; vector<double> quark_eta; vector<double> quark_phi; vector<int> quark_flavour; vector<bool> quark_VBF;
+		int GENnjets_pt30_eta4p7; float GENpt_leadingjet_pt30_eta4p7; 
     int GENnjets_pt30_eta2p5; float GENpt_leadingjet_pt30_eta2p5; 
     float GENabsrapidity_leadingjet_pt30_eta4p7; float GENabsdeltarapidity_hleadingjet_pt30_eta4p7;
     int lheNb, lheNj, nGenStatus2bHad;
 
     // a vector<float> for each vector<double>
-    vector<float> lep_d0BS_float;
+    /*vector<float> lep_d0BS_float;
     vector<float> lep_d0PV_float;
 
 	vector<float> lep_numberOfValidPixelHits_float;
@@ -472,8 +551,13 @@ private:
     vector<float> H_noFSR_phi_float, H_noFSR_mass_float;
     vector<float> Z_pt_float, Z_eta_float, Z_phi_float, Z_mass_float;
     vector<float> Z_noFSR_pt_float, Z_noFSR_eta_float;
-    vector<float> Z_noFSR_phi_float, Z_noFSR_mass_float;
-    vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
+    vector<float> Z_noFSR_phi_float, Z_noFSR_mass_float;*/
+	vector<float> lep_pt_float, lep_eta_float, lep_phi_float, lep_mass_float;
+    int n_jets=0;
+	vector<float> hltjetForBTag_pt_float, hltjetForBTag_eta_float, hltjetForBTag_phi_float, hltjetForBTag_mass_float;
+	vector<float> hltAK4PFJetsCorrected_pt_float, hltAK4PFJetsCorrected_eta_float, hltAK4PFJetsCorrected_phi_float, hltAK4PFJetsCorrected_mass_float;
+    vector<float> hltAK8PFJetsCorrected_pt_float, hltAK8PFJetsCorrected_eta_float, hltAK8PFJetsCorrected_phi_float, hltAK8PFJetsCorrected_mass_float;
+	vector<float> jet_pt_float, jet_eta_float, jet_phi_float, jet_mass_float, jet_pt_raw_float;
     vector<float>  jet_csv_cTag_vsL_float, jet_csv_cTag_vsB_float;
     vector<float> jet_jesup_pt_float, jet_jesup_eta_float; 
     vector<float> jet_jesup_phi_float, jet_jesup_mass_float;
@@ -485,25 +569,40 @@ private:
     vector<float> jet_jerdn_phi_float, jet_jerdn_mass_float;
     vector<float> fsrPhotons_pt_float, fsrPhotons_pterr_float;
     vector<float> fsrPhotons_eta_float, fsrPhotons_phi_float, fsrPhotons_mass_float;
-    vector<float> GENlep_pt_float, GENlep_eta_float;
+    /*vector<float> GENlep_pt_float, GENlep_eta_float;
     vector<float> GENlep_phi_float, GENlep_mass_float;
     vector<float> GENH_pt_float, GENH_eta_float;
     vector<float> GENH_phi_float, GENH_mass_float;
     vector<float> GENZ_pt_float, GENZ_eta_float;
-    vector<float> GENZ_phi_float, GENZ_mass_float;
+    vector<float> GENZ_phi_float, GENZ_mass_float;*/
+	int n_GENjets=0;
     vector<float> GENjet_pt_float, GENjet_eta_float;
     vector<float> GENjet_phi_float, GENjet_mass_float;
+	vector<float> quark_pt_float, quark_eta_float, quark_phi_float;
+    vector<float> L1jet_pt_float, L1jet_eta_float, L1jet_phi_float, L1jet_mass_float;
+    vector<float> L1muon_pt_float, L1muon_eta_float, L1muon_phi_float, L1muon_mass_float;
+
+    vector<float> AK4PuppiJets_pt_float;
+    vector<float> AK4PuppiJets_eta_float;
+    vector<float> AK4PuppiJets_phi_float;
+    vector<float> AK4PuppiJets_mass_float;
+	
+	vector<float> AK8PuppiJets_pt_float;
+    vector<float> AK8PuppiJets_eta_float;
+    vector<float> AK8PuppiJets_phi_float;
+    vector<float> AK8PuppiJets_mass_float;
 
     // Global Variables but not stored in the tree
-    vector<double> lep_ptreco;
-    vector<int> lep_ptid; vector<int> lep_ptindex;
+    //vector<double> lep_ptreco;
+    //vector<int> lep_ptid; vector<int> lep_ptindex;
     vector<pat::Muon> recoMuons; vector<pat::Electron> recoElectrons; vector<pat::Electron> recoElectronsUnS; 
-    vector<pat::Tau> recoTaus; vector<pat::Photon> recoPhotons;
+    /*vector<pat::Tau> recoTaus; vector<pat::Photon> recoPhotons;
     vector<pat::PFParticle> fsrPhotons; 
     TLorentzVector HVec, HVecNoFSR, Z1Vec, Z2Vec;
     TLorentzVector GENZ1Vec, GENZ2Vec;
-    bool foundHiggsCandidate; bool firstEntry;
+    bool foundHiggsCandidate; bool firstEntry;*/
     float jet1pt, jet2pt;
+		bool firstEntry;
 
     // hist container
     std::map<std::string,TH1F*> histContainer_;
@@ -512,9 +611,21 @@ private:
     edm::EDGetTokenT<edm::View<pat::Electron> > elecSrc_;
     edm::EDGetTokenT<edm::View<pat::Electron> > elecUnSSrc_;
     edm::EDGetTokenT<edm::View<pat::Muon> > muonSrc_;
-    edm::EDGetTokenT<edm::View<pat::Tau> > tauSrc_;
-    edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
+    //edm::EDGetTokenT<edm::View<pat::Tau> > tauSrc_;
+    //edm::EDGetTokenT<edm::View<pat::Photon> > photonSrc_;
     edm::EDGetTokenT<edm::View<pat::Jet> > jetSrc_;
+    edm::EDGetTokenT<edm::View<pat::Jet> > AK4PuppiJetSrc_;
+	edm::EDGetTokenT<edm::View<pat::Jet> > AK8PuppiJetSrc_;
+	edm::EDGetTokenT<BXVector<l1t::Jet>> bxvCaloJetSrc_;
+	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltPFJetForBtagSrc_;
+	//edm::EDGetTokenT<edm::View<reco::PFJet>> hltAK4PFJetsCorrectedSrc_;
+	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobcSrc_;  //value map for Particle Net tagger at hlt
+	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobbSrc_;  //value map for Particle Net tagger at hlt
+	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobudsSrc_;  //value map for Particle Net tagger at hlt
+	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobgSrc_;  //value map for Particle Net tagger at hlt
+	//edm::EDGetTokenT<reco::JetTagCollection> pfJetTagCollectionParticleNetprobtauhSrc_;  //value map for Particle Net tagger at hlt
+    edm::EDGetTokenT<BXVector<l1t::Muon>> bxvCaloMuonSrc_;
+    edm::EDGetTokenT<BXVector<l1t::EtSum>> bxvCaloHTSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > qgTagSrc_;
     edm::EDGetTokenT<edm::ValueMap<float> > axis2Src_;
     edm::EDGetTokenT<edm::ValueMap<int> > multSrc_;
@@ -542,6 +653,10 @@ private:
     edm::EDGetTokenT<HTXS::HiggsClassification> htxsSrc_;
     //edm::EDGetTokenT<HZZFid::FiducialSummary> fidRivetSrc_;
     edm::EDGetTokenT< double > prefweight_token_;
+    edm::EDGetToken algTok_;
+    edm::EDGetTokenT<GlobalAlgBlkBxCollection> algInputTag_;
+    l1t::L1TGlobalUtil* gtUtil_;
+
 
     // Configuration
     const float Zmass;
@@ -576,6 +691,12 @@ private:
     int year;///use to choose Muon BDT
     bool isCode4l;
 
+edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
+
+std::string res_pt_config;
+std::string res_phi_config;
+std::string res_sf_config;
+
     // register to the TFileService
     edm::Service<TFileService> fs;
 
@@ -600,10 +721,22 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     elecSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
     elecUnSSrc_(consumes<edm::View<pat::Electron> >(iConfig.getUntrackedParameter<edm::InputTag>("electronUnSSrc"))),
     muonSrc_(consumes<edm::View<pat::Muon> >(iConfig.getUntrackedParameter<edm::InputTag>("muonSrc"))),
-    tauSrc_(consumes<edm::View<pat::Tau> >(iConfig.getUntrackedParameter<edm::InputTag>("tauSrc"))),
-    photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
+    //tauSrc_(consumes<edm::View<pat::Tau> >(iConfig.getUntrackedParameter<edm::InputTag>("tauSrc"))),
+    //photonSrc_(consumes<edm::View<pat::Photon> >(iConfig.getUntrackedParameter<edm::InputTag>("photonSrc"))),
     jetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("jetSrc"))),
-    qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
+    AK4PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK4PuppiJetSrc"))),
+	AK8PuppiJetSrc_(consumes<edm::View<pat::Jet> >(iConfig.getUntrackedParameter<edm::InputTag>("AK8PuppiJetSrc"))),
+    bxvCaloJetSrc_(consumes<BXVector<l1t::Jet>>(iConfig.getParameter<edm::InputTag>("bxvCaloJetSrc"))),
+    //hltPFJetForBtagSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltPFJetForBtagSrc"))),
+    //hltAK4PFJetsCorrectedSrc_(consumes<edm::View<reco::PFJet>>(iConfig.getParameter<edm::InputTag>("hltAK4PFJetsCorrectedSrc"))),
+		//pfJetTagCollectionParticleNetprobcSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobcSrc"))),
+		//pfJetTagCollectionParticleNetprobbSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobbSrc"))),
+		//pfJetTagCollectionParticleNetprobudsSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobudsSrc"))),
+		//pfJetTagCollectionParticleNetprobgSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobgSrc"))),
+		//pfJetTagCollectionParticleNetprobtauhSrc_(consumes(iConfig.getParameter<edm::InputTag>("pfJetTagCollectionParticleNetprobtauhSrc"))),
+    bxvCaloMuonSrc_(consumes<BXVector<l1t::Muon>>(iConfig.getParameter<edm::InputTag>("bxvCaloMuonSrc"))),
+    bxvCaloHTSrc_(consumes<BXVector<l1t::EtSum>>(iConfig.getParameter<edm::InputTag>("bxvCaloHTSrc"))),
+		qgTagSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"))),
     axis2Src_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "axis2"))),
     multSrc_(consumes<edm::ValueMap<int>>(edm::InputTag("QGTagger", "mult"))),
     ptDSrc_(consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "ptD"))),
@@ -627,8 +760,11 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     lheInfoSrc_(consumes<LHEEventProduct>(iConfig.getUntrackedParameter<edm::InputTag>("lheInfoSrc"))),
     lheRunInfoToken_(consumes<LHERunInfoProduct,edm::InRun>(edm::InputTag("externalLHEProducer",""))),
     htxsSrc_(consumes<HTXS::HiggsClassification>(edm::InputTag("rivetProducerHTXS","HiggsClassification"))),
-    prefweight_token_(consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProb"))),
+    //prefweight_token_(consumes< double >(edm::InputTag("prefiringweight:nonPrefiringProb"))),
     //fidRivetSrc_(consumes<HZZFid::FiducialSummary>(edm::InputTag("rivetProducerHZZFid","FiducialSummary"))),
+    algTok_(consumes<BXVector<GlobalAlgBlk>>(iConfig.getParameter<edm::InputTag>("algInputTag"))),
+    algInputTag_(consumes<GlobalAlgBlkBxCollection>(iConfig.getParameter<edm::InputTag>("algInputTag"))),
+    gtUtil_(new l1t::L1TGlobalUtil(iConfig, consumesCollector(), *this, iConfig.getParameter<edm::InputTag>("algInputTag"), iConfig.getParameter<edm::InputTag>("algInputTag"), l1t::UseEventSetupIn::RunAndEvent)),
     Zmass(91.1876),
     mZ1Low(iConfig.getUntrackedParameter<double>("mZ1Low",40.0)),
     mZ2Low(iConfig.getUntrackedParameter<double>("mZ2Low",12.0)), // was 12
@@ -659,7 +795,7 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     _muPtCut(iConfig.getUntrackedParameter<double>("_muPtCut",10.0)),
     _tauPtCut(iConfig.getUntrackedParameter<double>("_tauPtCut",20.0)),
     _phoPtCut(iConfig.getUntrackedParameter<double>("_phoPtCut",10.0)),
-    //BTagCut(iConfig.getUntrackedParameter<double>("BTagCut",0.4184)),/////2016: 0.6321; 2017: 0.4941; 2018: 0.4184
+    BTagCut(iConfig.getUntrackedParameter<double>("BTagCut",0.4184)),/////2016: 0.6321; 2017: 0.4941; 2018: 0.4184
     reweightForPU(iConfig.getUntrackedParameter<bool>("reweightForPU",true)),
     PUVersion(iConfig.getUntrackedParameter<std::string>("PUVersion","Summer16_80X")),
     doFsrRecovery(iConfig.getUntrackedParameter<bool>("doFsrRecovery",true)),
@@ -682,8 +818,8 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     // 2017
     // 2018
     // to select correct training
-    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true))    
-
+    isCode4l(iConfig.getUntrackedParameter<bool>("isCode4l",true)),
+mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))}
 {
   
     if(!isMC){reweightForPU = false;}
@@ -704,12 +840,6 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
 
     passedEventsTree_All = new TTree("passedEvents","passedEvents");
 
-    edm::FileInPath kfacfileInPath("UFHZZAnalysisRun2/UFHZZ4LAna/data/Kfactor_ggHZZ_2l2l_NNLO_NNPDF_NarrowWidth_13TeV.root");
-    TFile *fKFactor = TFile::Open(kfacfileInPath.fullPath().c_str());
-    kFactor_ggzz = (TSpline3*) fKFactor->Get("sp_Kfactor");
-    fKFactor->Close();
-    delete fKFactor;
-
     tableEwk = readFile_and_loadEwkTable("ZZBG");   
 
 	int YEAR = year - 2016 + 1;
@@ -718,24 +848,24 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
    
     //string elec_scalefac_Cracks_name_161718[3] = {"egammaEffi.txt_EGM2D_cracks.root", "egammaEffi.txt_EGM2D_Moriond2018v1_gap.root", "egammaEffi.txt_EGM2D_Moriond2019_v1_gap.root"};
     string elec_scalefac_Cracks_name_161718[4] = {"ElectronSF_UL2016preVFP_gap.root", "ElectronSF_UL2016postVFP_gap.root", "ElectronSF_UL2017_gap.root", "ElectronSF_UL2018_gap.root"};
-    edm::FileInPath elec_scalefacFileInPathCracks(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+elec_scalefac_Cracks_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_scalefacFileInPathCracks(("hcc_v2/UFHZZ4LAna/data/"+elec_scalefac_Cracks_name_161718[YEAR]).c_str());
     TFile *fElecScalFacCracks = TFile::Open(elec_scalefacFileInPathCracks.fullPath().c_str());
     hElecScaleFac_Cracks = (TH2F*)fElecScalFacCracks->Get("EGamma_SF2D");    
     //string elec_scalefac_name_161718[3] = {"egammaEffi.txt_EGM2D.root", "egammaEffi.txt_EGM2D_Moriond2018v1.root", "egammaEffi.txt_EGM2D_Moriond2019_v1.root"};
     string elec_scalefac_name_161718[4] = {"ElectronSF_UL2016preVFP_nogap.root", "ElectronSF_UL2016postVFP_nogap.root", "ElectronSF_UL2017_nogap.root", "ElectronSF_UL2018_nogap.root"};
-    edm::FileInPath elec_scalefacFileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+elec_scalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_scalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_scalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFac = TFile::Open(elec_scalefacFileInPath.fullPath().c_str());
     hElecScaleFac = (TH2F*)fElecScalFac->Get("EGamma_SF2D");    
 
     //string elec_Gsfscalefac_name_161718[3] = {"egammaEffi.txt_EGM2D_GSF.root", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO.root", "Ele_Reco_2018.root"};//was previous;
     string elec_Gsfscalefac_name_161718[4] = {"egammaEffi_ptAbove20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2017.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2018.root"};
-    edm::FileInPath elec_GsfscalefacFileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+elec_Gsfscalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_GsfscalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_Gsfscalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFacGsf = TFile::Open(elec_GsfscalefacFileInPath.fullPath().c_str());
     hElecScaleFacGsf = (TH2F*)fElecScalFacGsf->Get("EGamma_SF2D");
 
     //string elec_GsfLowETscalefac_name_161718[3]= {"", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO_lowEt.root", "Ele_Reco_LowEt_2018.root"};//was previous
     string elec_GsfLowETscalefac_name_161718[4]= {"egammaEffi_ptBelow20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2017.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2018.root"};
-    edm::FileInPath elec_GsfLowETscalefacFileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+elec_GsfLowETscalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_GsfLowETscalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_GsfLowETscalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFacGsfLowET = TFile::Open(elec_GsfLowETscalefacFileInPath.fullPath().c_str());
     hElecScaleFacGsfLowET = (TH2F*)fElecScalFacGsfLowET->Get("EGamma_SF2D");
 
@@ -743,7 +873,7 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
 //         string mu_scalefac_name_161718[3] = {"final_HZZ_SF_2016_legacy_mupogsysts.root", "final_HZZ_SF_2017_rereco_mupogsysts_3010.root", "final_HZZ_SF_2018_rereco_mupogsysts_3010.root"};
 //         string mu_scalefac_name_161718[4] = {"final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2017_newLooseIso_mupogSysts_paper.root", "final_HZZ_muon_SF_2018RunA2D_ER_newLoose_newIso_paper.root"};
         string mu_scalefac_name_161718[4] = {"final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2017UL_mupogsysts_newLoose.root","final_HZZ_SF_2018UL_mupogsysts_newLoose.root"};
-    edm::FileInPath mu_scalefacFileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+mu_scalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath mu_scalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+mu_scalefac_name_161718[YEAR]).c_str());
     TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.fullPath().c_str());
     hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
     hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");
@@ -751,14 +881,14 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     //string pileup_name_161718[3] = {"puWeightsMoriond17_v2.root", "puWeightsMoriond18.root", "pu_weights_2018.root"};///was previous
 //    string pileup_name_161718[3] = {"pu_weights_2016.root", "pu_weights_2017.root", "pu_weights_2018.root"};
     string pileup_name_161718[4] = {"pileup_UL_2016_1plusShift.root", "pileup_UL_2016_1plusShift.root", "pileup_UL_2017_1plusShift.root", "pileup_UL_2018_1plusShift.root"};
-    edm::FileInPath pileup_FileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+pileup_name_161718[YEAR]).c_str());
+    edm::FileInPath pileup_FileInPath(("hcc_v2/UFHZZ4LAna/data/"+pileup_name_161718[YEAR]).c_str());
     TFile *f_pileup = TFile::Open(pileup_FileInPath.fullPath().c_str());
     h_pileup = (TH1D*)f_pileup->Get("weights");
     h_pileupUp = (TH1D*)f_pileup->Get("weights_varUp");
     h_pileupDn = (TH1D*)f_pileup->Get("weights_varDn");
 
     string bTagEffi_name_161718[4] = {"bTagEfficiencies_2016.root", "bTagEfficiencies_2016.root", "bTagEfficiencies_2017.root", "bTagEfficiencies_2018.root"};
-    edm::FileInPath BTagEffiInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
+    edm::FileInPath BTagEffiInPath(("hcc_v2/UFHZZ4LAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
     TFile *fbTagEffi = TFile::Open(BTagEffiInPath.fullPath().c_str());
     hbTagEffi = (TH2F*)fbTagEffi->Get("eff_b_M_ALL");
     hcTagEffi = (TH2F*)fbTagEffi->Get("eff_c_M_ALL");
@@ -767,9 +897,11 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
     //BTag calibration
 //     string csv_name_161718[4] = {"DeepCSV_2016LegacySF_V1.csv", "DeepCSV_2016LegacySF_V1.csv", "DeepCSV_106XUL17SF_V2p1.csv", "DeepCSV_106XUL18SF.csv"};
     string csv_name_161718[4] = {"DeepCSV_106XUL16preVFPSF_v1_hzz.csv", "DeepCSV_106XUL16postVFPSF_v2_hzz.csv", "wp_deepCSV_106XUL17_v3_hzz.csv", "wp_deepCSV_106XUL18_v2_hzz.csv"};
-    edm::FileInPath btagfileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+csv_name_161718[YEAR]).c_str());
+    edm::FileInPath btagfileInPath(("hcc_v2/UFHZZ4LAna/data/"+csv_name_161718[YEAR]).c_str());
 
-    BTagCalibration calib("DeepCSV", btagfileInPath.fullPath().c_str());
+
+bool validate = true; // HARDCODED --> IT COULD BE FALSE!!!
+    BTagCalibration calib("DeepCSV", btagfileInPath.fullPath().c_str(), validate);
     reader = new BTagCalibrationReader(BTagEntry::OP_MEDIUM,  // operating point
                                        "central",             // central sys type
                                        {"up", "down"});      // other sys types
@@ -779,7 +911,7 @@ UFHZZ4LAna::UFHZZ4LAna(const edm::ParameterSet& iConfig) :
                 BTagEntry::FLAV_B,    // btag flavour
                 "comb");               // measurement type
 
-    if(year==2018)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Summer18ULIdIsoValues"; BTagCut=0.4184; heepID_name_161718 = "heepElectronID-HEEPV70";}
+    if(year==2018)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Fall17IsoV1Values"; BTagCut=0.4184; heepID_name_161718 = "heepElectronID-HEEPV70";}
     if(year==2017)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Summer17ULIdIsoValues"; BTagCut=0.4941; heepID_name_161718 = "heepElectronID-HEEPV70";}
     if(year==20165 || year==20160)    {EleBDT_name_161718 = "ElectronMVAEstimatorRun2Summer16ULIdIsoValues"; BTagCut=0.6321; heepID_name_161718 = "heepElectronID-HEEPV70";}
 
@@ -849,21 +981,21 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (verbose) cout<<muons->size()<<" total muons in the collection"<<endl;
 
     // tau collection
-    edm::Handle<edm::View<pat::Tau> > taus;
+    /*edm::Handle<edm::View<pat::Tau> > taus;
     iEvent.getByToken(tauSrc_,taus);
     if (verbose) cout<<taus->size()<<" total taus in the collection"<<endl;
 
     // photon collection 
     edm::Handle<edm::View<pat::Photon> > photons;
     iEvent.getByToken(photonSrc_,photons);
-    if (verbose) cout<<photons->size()<<" total photons in the collection"<<endl;
+    if (verbose) cout<<photons->size()<<" total photons in the collection"<<endl;*/
   
     // met collection 
     edm::Handle<edm::View<pat::MET> > mets;
     iEvent.getByToken(metSrc_,mets);
     
     // Rho Correction
-    edm::Handle<double> eventRhoMu;
+    /*edm::Handle<double> eventRhoMu;
     iEvent.getByToken(muRhoSrc_,eventRhoMu);
     muRho = *eventRhoMu;
 
@@ -873,7 +1005,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     edm::Handle<double> eventRhoSUS;
     iEvent.getByToken(rhoSrcSUS_,eventRhoSUS);
-    rhoSUS = *eventRhoSUS;
+    rhoSUS = *eventRhoSUS;*/
 
     // Conversions
     edm::Handle< std::vector<reco::Conversion> > theConversions;
@@ -895,17 +1027,144 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // Jets
     edm::Handle<edm::View<pat::Jet> > jets;
     iEvent.getByToken(jetSrc_,jets);
+		
+    // Puppi AK4jets with ParticleNet taggers
+    edm::Handle<edm::View<pat::Jet> > AK4PuppiJets;
+    iEvent.getByToken(AK4PuppiJetSrc_ ,AK4PuppiJets);
 
+	// Puppi AK8jets with ParticleNet taggers
+	     edm::Handle<edm::View<pat::Jet> > AK8PuppiJets;
+	    iEvent.getByToken(AK8PuppiJetSrc_ ,AK8PuppiJets);
+	
+    //L1 Jets                                       
+	edm::Handle<BXVector<l1t::Jet>> bxvCaloJets;
+	iEvent.getByToken(bxvCaloJetSrc_,bxvCaloJets);
+		 
+	//L1 Muons
+	edm::Handle<BXVector<l1t::Muon>> bxvCaloMuons;
+	iEvent.getByToken(bxvCaloMuonSrc_,bxvCaloMuons);
+		 
+	//L1 HT Sum                                       
+	edm::Handle<BXVector<l1t::EtSum>> bxvCaloHT;
+	iEvent.getByToken(bxvCaloHTSrc_,bxvCaloHT);
+
+	//HLT hltAK4PFJetsCorrectedSrc
+	/*edm::Handle<edm::View<reco::PFJet>>  hltAK4PFJetsCorrected;
+	iEvent.getByToken(hltAK4PFJetsCorrectedSrc_, hltAK4PFJetsCorrected);*/
+
+		/*if (!hltAK4PFJetsCorrected.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "Jet collection not valid, will skip the event \n";
+      return;
+    }*/
+		
+		//HLT jet for B Tag
+		/*edm::Handle<edm::View<reco::PFJet>>  hltjetsForBTag;
+		iEvent.getByToken(hltPFJetForBtagSrc_, hltjetsForBTag);
+
+		if (!hltjetsForBTag.isValid()) {
+    	edm::LogWarning("ParticleNetJetTagMonitor") << "Jet collection not valid, will skip the event \n";
+    	return;
+  	}*/
+                                
+		//edm::Handle<std::vector<reco::PFJet>>  hltjets;
+		//iEvent.getByToken(hltPFJetForBtagSrc_, hltjets);
+
+		/*edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobc;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobcSrc_, pfJetTagCollectionParticleNetprobc);
+
+		if (!pfJetTagCollectionParticleNetprobc.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+		edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobb;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobbSrc_, pfJetTagCollectionParticleNetprobb);
+
+		if (!pfJetTagCollectionParticleNetprobb.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+		edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobuds;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobudsSrc_, pfJetTagCollectionParticleNetprobuds);
+
+		if (!pfJetTagCollectionParticleNetprobuds.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+    edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobg;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobgSrc_, pfJetTagCollectionParticleNetprobg);
+
+		if (!pfJetTagCollectionParticleNetprobg.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }
+		
+    edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobtauh;
+		iEvent.getByToken(pfJetTagCollectionParticleNetprobtauhSrc_, pfJetTagCollectionParticleNetprobtauh);
+
+		if (!pfJetTagCollectionParticleNetprobtauh.isValid()) {
+      edm::LogWarning("ParticleNetJetTagMonitor") << "HLT Jet tags collection not valid, will skip event \n";
+      return;
+    }*/
+		/*if (iEvent.getByToken(hltPFJetForBtagSrc_, hltjets)) {
+    	//get PF jet tags
+    	edm::Handle<reco::JetTagCollection> pfJetTagCollection;
+    	bool haveJetTags = false;
+    	if (iEvent.getByToken(pfJetTagCollectionSrc_, pfJetTagCollection)) {
+    		haveJetTags = true;
+    	}
+		}
+		cout<<"haveJetTags"<<haveJetTags<<endl;*/
+		
     if (!jecunc) {
-        edm::ESHandle<JetCorrectorParametersCollection> jetCorrParameterSet;
-        iSetup.get<JetCorrectionsRecord>().get("AK4PFchs", jetCorrParameterSet);
-        const JetCorrectorParameters& jetCorrParameters = (*jetCorrParameterSet)["Uncertainty"];
+
+
+
+//        edm::ESHandle<JetCorrectorParametersCollection> jetCorrParameterSet;
+//        iSetup.get<JetCorrectionsRecord>().get("AK4PFchs", jetCorrParameterSet);
+
+
+auto const& jetCorrParameterSet = iSetup.getData(mPayloadToken);//"AK4PFchs");
+std::vector<JetCorrectorParametersCollection::key_type> keys;
+jetCorrParameterSet.validKeys(keys);
+
+
+//        const JetCorrectorParameters& jetCorrParameters = (*jetCorrParameterSet)["Uncertainty"]; 
+        JetCorrectorParameters jetCorrParameters = (jetCorrParameterSet)["Uncertainty"];
+
+
+
+
+
+
+
+
+
+
+
+
         jecunc.reset(new JetCorrectionUncertainty(jetCorrParameters));
     }
 
-    resolution_pt = JME::JetResolution::get(iSetup, "AK4PFchs_pt");
-    resolution_phi = JME::JetResolution::get(iSetup, "AK4PFchs_phi");
-    resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs");
+
+//JME::JetResolution::Token resolution_pt_token;
+//res_pt_config = "AK4PFchs_pt";
+//resolution_pt_token = esConsumes(edm::ESInputTag("", res_pt_config));
+//resolution_pt = JME::JetResolution::get(iSetup, resolution_pt_token);
+
+//JME::JetResolution::Token resolution_phi_token;
+//res_phi_config = "AK4PFchs_phi";
+//resolution_phi_token = esConsumes(edm::ESInputTag("", res_phi_config));
+//resolution_phi = JME::JetResolution::get(iSetup, resolution_phi_token);
+
+//JME::JetResolutionScaleFactor::Token resolution_sf_token;
+//res_sf_config = "AK4PFchs_sf";
+//resolution_sf_token = esConsumes(edm::ESInputTag("", res_sf_config));
+//resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, resolution_sf_token);
+
+
 
     edm::Handle<edm::ValueMap<float> > qgHandle;
     iEvent.getByToken(qgTagSrc_, qgHandle);
@@ -941,14 +1200,20 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<LHEEventProduct> lheInfo;
     iEvent.getByToken(lheInfoSrc_, lheInfo);
 
+    edm::Handle<BXVector<GlobalAlgBlk>> uGtAlgs;
+    iEvent.getByToken(algTok_, uGtAlgs);
 
-
-    if (isMC) {    
-        edm::Handle< double > theprefweight;
-            iEvent.getByToken(prefweight_token_, theprefweight ) ;
-                prefiringWeight =(*theprefweight);
+    if (!uGtAlgs.isValid()) {
+        cout << "Cannot find uGT readout record." << endl;
     }
-    else
+
+
+//    if (isMC) {    
+//        edm::Handle< double > theprefweight;
+//            iEvent.getByToken(prefweight_token_, theprefweight ) ;
+ //               prefiringWeight =(*theprefweight);
+//    }
+//    else
         prefiringWeight =1.0;
     
     // ============ Initialize Variables ============= //
@@ -958,18 +1223,24 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     nVtx = -1.0; nInt = -1.0;
     finalState = -1;
     triggersPassed="";
+		puN=-1;
     passedTrig=false; passedFullSelection=false; passedZ4lSelection=false; passedQCDcut=false; 
-
+    Trigger_l1name.clear();
+    Trigger_l1decision.clear();
+    Trigger_hltname.clear();
+    Trigger_hltdecision.clear();
 
     // Event Weights
     genWeight=1.0; pileupWeight=1.0; pileupWeightUp=1.0; pileupWeightDn=1.0; dataMCWeight=1.0; eventWeight=1.0;
-    k_ggZZ=1.0; k_qqZZ_qcd_dPhi = 1.0; k_qqZZ_qcd_M = 1.0; k_qqZZ_qcd_Pt = 1.0; k_qqZZ_ewk = 1.0;
+    k_qqZZ_qcd_dPhi = 1.0; k_qqZZ_qcd_M = 1.0; k_qqZZ_qcd_Pt = 1.0; k_qqZZ_ewk = 1.0;
 
     qcdWeights.clear(); nnloWeights.clear(); pdfWeights.clear();
     pdfRMSup=1.0; pdfRMSdown=1.0; pdfENVup=1.0; pdfENVdown=1.0;
 
     //lepton variables
-    lep_d0BS.clear();
+		lep_pt.clear(); lep_eta.clear(); lep_phi.clear(); lep_mass.clear(); lep_ID.clear();    
+
+    /*lep_d0BS.clear();
     lep_d0PV.clear();
 	lep_numberOfValidPixelHits.clear();
 	lep_trackerLayersWithMeasurement.clear();
@@ -998,7 +1269,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     nisoleptons=0;
     
 
-    //tau variables
+    //tau variables //L1 Jets                                       
     tau_id.clear(); tau_pt.clear(); tau_eta.clear(); tau_phi.clear(); tau_mass.clear(); 
 
     // photon variables
@@ -1014,10 +1285,39 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Z_pt.clear(); Z_eta.clear(); Z_phi.clear(); Z_mass.clear(); 
     Z_noFSR_pt.clear(); Z_noFSR_eta.clear(); Z_noFSR_phi.clear(); Z_noFSR_mass.clear(); 
     for (int i=0; i<2; ++i) {Z_Hindex[i]=-1;}
-    massZ1=-1.0; massZ1_Z1L=-1.0; massZ2=-1.0; pTZ1=-1.0; pTZ2=-1.0;
+    massZ1=-1.0; massZ1_Z1L=-1.0; massZ2=-1.0; pTZ1=-1.0; pTZ2=-1.0;*/
+		
+	//hlt Jets for b tag
+	hltjetForBTag_pt.clear();
+    hltjetForBTag_eta.clear();
+    hltjetForBTag_phi.clear();
+    hltjetForBTag_mass.clear();
+    hltParticleNetONNXJetTags_probb.clear(); hltParticleNetONNXJetTags_probc.clear(); hltParticleNetONNXJetTags_probuds.clear(); hltParticleNetONNXJetTags_probg.clear(); hltParticleNetONNXJetTags_probtauh.clear();
 	
+	//hltAK4PFJetsCorrected    
+		
+	hltAK4PFJetsCorrected_pt.clear();
+    hltAK4PFJetsCorrected_eta.clear();
+    hltAK4PFJetsCorrected_phi.clear();
+    hltAK4PFJetsCorrected_mass.clear();
 
-    // MET
+    // Puppi AK4jets with ParticleNet taggers
+    AK4PuppiJets_pt.clear();
+    AK4PuppiJets_eta.clear();
+    AK4PuppiJets_phi.clear();
+    AK4PuppiJets_mass.clear();
+
+    jet_pfParticleNetAK4JetTags_probb.clear(); jet_pfParticleNetAK4JetTags_probc.clear(); jet_pfParticleNetAK4JetTags_probuds.clear(); jet_pfParticleNetAK4JetTags_probg.clear(); jet_pfParticleNetAK4JetTags_probtauh.clear();
+    
+	// Puppi AK8jets with ParticleNet taggers
+	AK8PuppiJets_pt.clear();
+    AK8PuppiJets_eta.clear();
+    AK8PuppiJets_phi.clear();
+    AK8PuppiJets_mass.clear();
+
+    jet_pfParticleNetJetTags_probZbb.clear(); jet_pfParticleNetJetTags_probZcc.clear(); jet_pfParticleNetJetTags_probZqq.clear(); jet_pfParticleNetJetTags_probQCDbb .clear();  jet_pfParticleNetJetTags_probQCDcc.clear(); jet_pfParticleNetJetTags_probQCDb.clear(); jet_pfParticleNetJetTags_probQCDc.clear(); jet_pfParticleNetJetTags_probQCDothers.clear(); jet_pfParticleNetJetTags_probHbb.clear(); jet_pfParticleNetJetTags_probHcc.clear(); jet_pfParticleNetJetTags_probHqqqq.clear(); 
+    
+	// MET
     met=-1.0; met_phi=9999.0;
     met_jesup=-1.0; met_phi_jesup=9999.0; met_jesdn=-1.0; met_phi_jesdn=9999.0; 
     met_uncenup=-1.0; met_phi_uncenup=9999.0; met_uncendn=-1.0; met_phi_uncendn=9999.0; 
@@ -1032,6 +1332,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     jet_csv_cTag_vsL.clear();
     jet_csv_cTag_vsB.clear();
     jet_pumva.clear(); jet_csvv2.clear(); jet_isbtag.clear();
+		jet_pfDeepCSVJetTags_probb.clear(); jet_pfDeepFlavourJetTags_probbb.clear(); jet_pfDeepFlavourJetTags_probc.clear(); jet_pfDeepFlavourJetTags_probuds.clear();
     jet_hadronFlavour.clear(); jet_partonFlavour.clear();
     jet_QGTagger.clear(); jet_QGTagger_jesup.clear(); jet_QGTagger_jesdn.clear(); 
     jet_relpterr.clear(); jet_phierr.clear();
@@ -1085,9 +1386,13 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     mergedjet_subjet_phi.clear(); mergedjet_subjet_mass.clear();
     mergedjet_subjet_btag.clear();
     mergedjet_subjet_partonFlavour.clear(); mergedjet_subjet_hadronFlavour.clear();
+
+		L1jet_pt.clear(); L1jet_eta.clear(); L1jet_phi.clear(); L1jet_mass.clear();
+    L1muon_pt.clear(); L1muon_eta.clear(); L1muon_phi.clear(); L1muon_mass.clear(); L1muon_qual.clear();
+
     
     // FSR Photons
-    nFSRPhotons=0;
+    /*nFSRPhotons=0;
     fsrPhotons_lepindex.clear(); fsrPhotons_pt.clear(); fsrPhotons_pterr.clear(); 
     fsrPhotons_eta.clear(); fsrPhotons_phi.clear();
     fsrPhotons_dR.clear(); fsrPhotons_iso.clear();
@@ -1097,7 +1402,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     theta12=9999.0; theta13=9999.0; theta14=9999.0;
     minM3l=-1.0; Z4lmaxP=-1.0; minDeltR=9999.0; m3l_soft=-1.0;
     minMass2Lep=-1.0; maxMass2Lep=-1.0;
-    thetaPhoton=9999.0; thetaPhotonZ=9999.0;
+    thetaPhoton=9999.0; thetaPhotonZ=9999.0;*/
 
     // -------------------------
     // GEN level information
@@ -1107,7 +1412,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     GENfinalState=-1;
 
     // lepton variables
-    GENlep_pt.clear(); GENlep_eta.clear(); GENlep_phi.clear(); GENlep_mass.clear();
+    /*GENlep_pt.clear(); GENlep_eta.clear(); GENlep_phi.clear(); GENlep_mass.clear();
     GENlep_id.clear(); GENlep_status.clear(); GENlep_MomId.clear(); GENlep_MomMomId.clear();
     for (int i=0; i<4; ++i) {GENlep_Hindex[i]=-1;};//position of Higgs candidate leptons in lep_p4: 0 = Z1 lead, 1 = Z1 sub, 2 = Z2 lead, 3 = Z3 sub
     GENlep_isoCH.clear(); GENlep_isoNH.clear(); GENlep_isoPhot.clear(); GENlep_RelIso.clear();
@@ -1123,7 +1428,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     GENmassZ1=-1.0; GENmassZ2=-1.0; GENpTZ1=-1.0; GENpTZ2=-1.0, GENdPhiZZ=9999.0, GENmassZZ=-1.0, GENpTZZ=-1.0;
 
     // Higgs variables directly from GEN particle
-    GENHmass=-1.0;
+    GENHmass=-1.0;*/
 
     // Jets
     GENjet_pt.clear(); GENjet_eta.clear(); GENjet_phi.clear(); GENjet_mass.clear(); 
@@ -1133,6 +1438,11 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     GENpt_leadingjet_pt30_eta2p5=-1.0; 
     lheNb=0; lheNj=0; nGenStatus2bHad=0;
 
+		//quarks
+		quark_pt.clear(); quark_eta.clear(); quark_phi.clear(); quark_flavour.clear(); quark_VBF.clear();
+		quark_pt_float.clear(); quark_eta_float.clear(); quark_phi_float.clear();
+		//
+
     if (verbose) {cout<<"clear other variables"<<endl; }
     // Resolution
     //massErrorUCSD=-1.0; massErrorUCSDCorr=-1.0; massErrorUF=-1.0; massErrorUFCorr=-1.0; massErrorUFADCorr=-1.0;
@@ -1141,7 +1451,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     EventCat=-1;
 
     // Global variables not stored in tree
-    lep_ptreco.clear(); lep_ptid.clear(); lep_ptindex.clear();
+    /*lep_ptreco.clear(); lep_ptid.clear(); lep_ptindex.clear();
     recoMuons.clear(); recoElectrons.clear(); fsrPhotons.clear(); recoElectronsUnS.clear();
     HVec.SetPtEtaPhiM(0.0,0.0,0.0,0.0);
     HVecNoFSR.SetPtEtaPhiM(0.0,0.0,0.0,0.0);
@@ -1176,7 +1486,13 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     H_pt_float.clear(); H_eta_float.clear(); H_phi_float.clear(); H_mass_float.clear();
     H_noFSR_pt_float.clear(); H_noFSR_eta_float.clear(); H_noFSR_phi_float.clear(); H_noFSR_mass_float.clear();
     Z_pt_float.clear(); Z_eta_float.clear(); Z_phi_float.clear(); Z_mass_float.clear();
-    Z_noFSR_pt_float.clear(); Z_noFSR_eta_float.clear(); Z_noFSR_phi_float.clear(); Z_noFSR_mass_float.clear();
+    Z_noFSR_pt_float.clear(); Z_noFSR_eta_float.clear(); Z_noFSR_phi_float.clear(); Z_noFSR_mass_float.clear();*/
+		
+	lep_pt_float.clear(); lep_eta_float.clear(); lep_phi_float.clear(); lep_mass_float.clear();
+
+	hltjetForBTag_pt_float.clear(); hltjetForBTag_eta_float.clear(); hltjetForBTag_phi_float.clear(); hltjetForBTag_mass_float.clear();
+	hltAK4PFJetsCorrected_pt_float.clear(); hltAK4PFJetsCorrected_eta_float.clear(); hltAK4PFJetsCorrected_phi_float.clear(); hltAK4PFJetsCorrected_mass_float.clear();
+
     jet_pt_float.clear(); jet_eta_float.clear(); jet_phi_float.clear(); jet_mass_float.clear(); jet_pt_raw_float.clear(); 
     jet_csv_cTag_vsL_float.clear(); jet_csv_cTag_vsB_float.clear();
     jet_jesup_pt_float.clear(); jet_jesup_eta_float.clear(); jet_jesup_phi_float.clear(); jet_jesup_mass_float.clear();
@@ -1184,11 +1500,17 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     jet_jerup_pt_float.clear(); jet_jerup_eta_float.clear(); jet_jerup_phi_float.clear(); jet_jerup_mass_float.clear();
     jet_jerdn_pt_float.clear(); jet_jerdn_eta_float.clear(); jet_jerdn_phi_float.clear();  jet_jerdn_mass_float.clear();
     fsrPhotons_pt_float.clear(); fsrPhotons_pterr_float.clear(); fsrPhotons_eta_float.clear(); fsrPhotons_phi_float.clear(); fsrPhotons_mass_float.clear();
+	L1jet_pt_float.clear(); L1jet_eta_float.clear(); L1jet_phi_float.clear(); L1jet_mass_float.clear();
+    L1muon_pt_float.clear(); L1muon_eta_float.clear(); L1muon_phi_float.clear(); L1muon_mass_float.clear();
+
+    AK4PuppiJets_pt_float.clear(); AK4PuppiJets_eta_float.clear(); AK4PuppiJets_phi_float.clear(); AK4PuppiJets_mass_float.clear();
+	AK8PuppiJets_pt_float.clear(); AK8PuppiJets_eta_float.clear(); AK8PuppiJets_phi_float.clear(); AK8PuppiJets_mass_float.clear();
+
 
     // ====================== Do Analysis ======================== //
 // if(iEvent.id().event() > 709310) 
 // 	std::cout<<"PIPPO\tdopo inizializzazione\n";
-
+		//cout<<"aaa"<<endl;
     std::map<int, TLorentzVector> fsrmap;
     vector<reco::Candidate*> selectedLeptons;
     std::map<unsigned int, TLorentzVector> selectedFsrMap;
@@ -1198,8 +1520,9 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (verbose) cout<<"start pileup reweighting"<<endl;
     // PU information
     if(isMC && reweightForPU) {        
-        edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
-        iEvent.getByToken(pileupSrc_, PupInfo);      
+       edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+        iEvent.getByToken(pileupSrc_, PupInfo);
+				puN = PupInfo->begin()->getTrueNumInteractions();      
 
         if (verbose) cout<<"got pileup info"<<endl;
 
@@ -1279,21 +1602,31 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         setGENVariables(prunedgenParticles,packedgenParticles,genJets); 
         if (verbose) { cout<<"finshed setting gen variables"<<endl;  }
 
-        if (int(GENZ_pt.size()) == 2) {        
+        /*if (int(GENZ_pt.size()) == 2) {        
             GENZ1Vec.SetPtEtaPhiM(GENZ_pt[0], GENZ_eta[0], GENZ_phi[0], GENZ_mass[0]);
             GENZ2Vec.SetPtEtaPhiM(GENZ_pt[1], GENZ_eta[1], GENZ_phi[1], GENZ_mass[1]);
             k_qqZZ_ewk = getEwkCorrections(prunedgenParticles, tableEwk, genEventInfo, GENZ1Vec, GENZ2Vec);
-            k_ggZZ = kFactor_ggzz->Eval((GENZ1Vec+GENZ2Vec).M());
-            if (verbose) cout<<"ZZmass: "<< (GENZ1Vec+GENZ2Vec).M() <<"k factor qqZZ ewk: "<<k_qqZZ_ewk<<" ggZZ qcd"<<k_ggZZ << endl;
 
-        }
+        }*/
 
     }
     sumWeightsTotal += genWeight;
     sumWeightsTotalPU += pileupWeight*genWeight;
 
     eventWeight = pileupWeight*genWeight;
-
+    
+    // Fill L1 seeds and decisions
+    gtUtil_->retrieveL1(iEvent, iSetup, algInputTag_);
+    const vector<pair<string, bool> > finalDecisions = gtUtil_->decisionsFinal();
+    for (size_t i_l1t = 0; i_l1t < finalDecisions.size(); i_l1t++){
+        string l1tName = (finalDecisions.at(i_l1t)).first;
+        if( l1tName.find("SingleJet") != string::npos || l1tName.find("DoubleJet") != string::npos || l1tName.find("TripleJet") != string::npos || l1tName.find("QuadJet") != string::npos ||  l1tName.find("HTT")!= string::npos ){
+            //cout << "L1: " << l1tName << " | decision: " << finalDecisions.at(i_l1t).second << endl;
+            Trigger_l1name.push_back( l1tName );
+            Trigger_l1decision.push_back( finalDecisions.at(i_l1t).second );
+        }
+      }
+    
     unsigned int _tSize = trigger->size();
     // create a string with all passing trigger names
     for (unsigned int i=0; i<_tSize; ++i) {
@@ -1309,7 +1642,14 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if (strstr(triggerName.c_str(),"HLT_IsoTrack")) continue;
         if (strstr(triggerName.c_str(),"Hcal")) continue;
         if (strstr(triggerName.c_str(),"Ecal")) continue;
-        if (trigger->accept(i)) triggersPassed += triggerName; 
+        if (trigger->accept(i)) triggersPassed += triggerName+" ";
+			
+				
+				//if(triggerName.find("HLT_QuadPFJet70_50_45_35_PFBTagParticleNet_2BTagSum0p65") != string::npos || triggerName.find("HLT_PFJet500") != string::npos ){
+				//if(triggerName.find("HLT_QuadPFJet") != string::npos || triggerName.find("HLT_PFJet") != string::npos || triggerName.find("HLT_DiPFJetAve") != string::npos || triggerName.find("HLT_AK8PFJet") != string::npos ) {
+				Trigger_hltname.push_back(triggerName);
+				Trigger_hltdecision.push_back(trigger->accept(i));
+				//}
     }
     if (firstEntry) cout<<"triggersPassed: "<<triggersPassed<<endl;
     firstEntry = false;
@@ -1321,6 +1661,7 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if (strstr(triggersPassed.c_str(),triggerList.at(i).c_str())) {
             passedTrig=true;
             if (!isMC) {
+								//cout<<"bbb"<<endl;
                 if (strstr(triggerList.at(i).c_str(),"_WP")) passedSingleEl=true;
                 if (strstr(triggerList.at(i).c_str(),"HLT_Iso")) passedSingleMu=true;
                 if (strstr(triggerList.at(i).c_str(),"CaloIdL")) passedAnyOther=true;
@@ -1331,8 +1672,11 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     
     bool passedOnlySingle=((passedSingleEl && !passedAnyOther) || (passedSingleMu && !passedSingleEl && !passedAnyOther));
-//     bool trigConditionData = ( passedTrig && (!checkOnlySingle || (checkOnlySingle && passedOnlySingle)) );
-    bool trigConditionData = true;
+    bool trigConditionData = ( passedTrig && (!checkOnlySingle || (checkOnlySingle && passedOnlySingle)) );
+if(trigConditionData && verbose)
+	std::cout<<""<<std::endl;
+
+//    bool trigConditionData = true;
         
     if (verbose) cout<<"checking PV"<<endl;       
     const reco::Vertex *PV = 0;
@@ -1348,7 +1692,8 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     if (verbose) std::cout<<"vtx: "<<theVertex<<" trigConditionData "<<trigConditionData<<" passedTrig "<<passedTrig<<std::endl;
  
-    if(theVertex >= 0 && (isMC || (!isMC && trigConditionData)) )  {
+    //if(theVertex >= 0 && (isMC || (!isMC && trigConditionData)) )  {
+    if(theVertex >= 0 && (isMC || (!isMC )) )  {
 
         if (verbose) cout<<"good PV "<<theVertex<<endl; 
         
@@ -1395,898 +1740,175 @@ UFHZZ4LAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         vector<pat::Electron> AllElectrons; 
         vector<pat::Electron> AllElectronsUnS;////uncorrected electron 
         vector<pat::Muon> AllMuons; 
-        vector<pat::Tau> AllTaus; 
-        vector<pat::Photon> AllPhotons;
+       // vector<pat::Tau> AllTaus; 
+       // vector<pat::Photon> AllPhotons;
         AllElectrons = helper.goodLooseElectrons2012(electrons,_elecPtCut);
-        AllElectronsUnS = helper.goodLooseElectrons2012(electrons,electronsUnS,_elecPtCut);
+       // AllElectronsUnS = helper.goodLooseElectrons2012(electrons,electronsUnS,_elecPtCut);
         AllMuons = helper.goodLooseMuons2012(muons,_muPtCut);
-        AllTaus = helper.goodLooseTaus2015(taus,_tauPtCut);
-        AllPhotons = helper.goodLoosePhotons2015(photons,_phoPtCut);
+       // AllTaus = helper.goodLooseTaus2015(taus,_tauPtCut);
+       // AllPhotons = helper.goodLoosePhotons2015(photons,_phoPtCut);
 
-        helper.cleanOverlappingLeptons(AllMuons,AllElectrons,PV);
+        /*helper.cleanOverlappingLeptons(AllMuons,AllElectrons,PV);
         helper.cleanOverlappingLeptons(AllMuons,AllElectronsUnS,PV);
         recoMuons = helper.goodMuons2015_noIso_noPf(AllMuons,_muPtCut,PV);
         recoElectrons = helper.goodElectrons2015_noIso_noBdt(AllElectrons,_elecPtCut,elecID,PV,iEvent,sip3dCut, true);
         recoElectronsUnS = helper.goodElectrons2015_noIso_noBdt(AllElectronsUnS,_elecPtCut,elecID,PV,iEvent,sip3dCut, false);
         helper.cleanOverlappingTaus(recoMuons,recoElectrons,AllTaus,isoCutMu,isoCutEl,muRho,elRho);
         recoTaus = helper.goodTaus2015(AllTaus,_tauPtCut);
-        recoPhotons = helper.goodPhotons2015(AllPhotons,_phoPtCut,year);
+        recoPhotons = helper.goodPhotons2015(AllPhotons,_phoPtCut,year);*/
 
-        if (verbose) cout<<AllMuons.size()<<" loose muons "<<AllElectrons.size()<<" loose electrons"<<endl;
-
-        //sort electrons and muons by pt
-        if (verbose) cout<<recoMuons.size()<<" good muons and "<<recoElectrons.size()<<" good electrons to be sorted"<<endl;
-        if (verbose) cout<<"start pt-sorting leptons"<<endl;
-        if (verbose) cout<<"adding muons to sorted list"<<endl;
-
-	    edm::ESHandle<TransientTrackBuilder> ttkb_recoLepton; 
-		iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", ttkb_recoLepton);
-
-        if( (recoMuons.size() + recoElectrons.size()) >= (uint)skimLooseLeptons ) {
-
-            if (verbose) cout<<"found two leptons"<<endl;
-            
-            for(unsigned int i = 0; i < recoMuons.size(); i++) {
-                if (lep_ptreco.size()==0 || recoMuons[i].pt()<lep_ptreco[lep_ptreco.size()-1]) {
-                    lep_ptreco.push_back(recoMuons[i].pt());
-                    lep_ptid.push_back(recoMuons[i].pdgId());
-                    lep_ptindex.push_back(i);
-                    continue;
-                }
-                for (unsigned int j=0; j<lep_ptreco.size(); j++) {
-                    if (recoMuons[i].pt()>lep_ptreco[j]) {
-                        lep_ptreco.insert(lep_ptreco.begin()+j,recoMuons[i].pt());
-                        lep_ptid.insert(lep_ptid.begin()+j,recoMuons[i].pdgId());
-                        lep_ptindex.insert(lep_ptindex.begin()+j,i);
-                        break;
-                    }
-                }
-            }
-          
-            if (verbose) cout<<"adding electrons to sorted list"<<endl;           
-            for(unsigned int i = 0; i < recoElectrons.size(); i++) {
-                if (lep_ptreco.size()==0 || recoElectrons[i].pt()<lep_ptreco[lep_ptreco.size()-1]) {
-                    lep_ptreco.push_back(recoElectrons[i].pt());
-                    lep_ptid.push_back(recoElectrons[i].pdgId());
-                    lep_ptindex.push_back(i);
-                    continue;
-                }
-                for (unsigned int j=0; j<lep_ptreco.size(); j++) {
-                    if (recoElectrons[i].pt()>lep_ptreco[j]) {
-                        lep_ptreco.insert(lep_ptreco.begin()+j,recoElectrons[i].pt());
-                        lep_ptid.insert(lep_ptid.begin()+j,recoElectrons[i].pdgId());
-                        lep_ptindex.insert(lep_ptindex.begin()+j,i);
-                        break;
-                    }
-                }
-            }
-        
-            for(unsigned int i = 0; i < lep_ptreco.size(); i++) {
-                
-                if (verbose) cout<<"sorted lepton "<<i<<" pt "<<lep_ptreco[i]<<" id "<<lep_ptid[i]<<" index "<<lep_ptindex[i]<<endl;
-                
-                if (abs(lep_ptid[i])==11) {
-
-
-                    lep_d0BS.push_back(recoElectrons[lep_ptindex[i]].gsfTrack()->dxy(beamSpot->position()));
-                    lep_d0PV.push_back(recoElectrons[lep_ptindex[i]].gsfTrack()->dxy(PV->position()));
-					lep_numberOfValidPixelHits.push_back(recoElectrons[lep_ptindex[i]].gsfTrack()->hitPattern().numberOfValidPixelHits());
-					lep_trackerLayersWithMeasurement.push_back(recoElectrons[lep_ptindex[i]].gsfTrack()->hitPattern().trackerLayersWithMeasurement());
-					lep_isEB.push_back(recoElectrons[lep_ptindex[i]].isEB());
-					lep_isEE.push_back(recoElectrons[lep_ptindex[i]].isEE());
-					lep_p.push_back(recoElectrons[lep_ptindex[i]].p());
-					lep_ecalEnergy.push_back(recoElectrons[lep_ptindex[i]].correctedEcalEnergy());
-                    lep_id.push_back(recoElectrons[lep_ptindex[i]].pdgId());
-                    lep_pt.push_back(recoElectrons[lep_ptindex[i]].pt());
-                    lep_pterrold.push_back(recoElectrons[lep_ptindex[i]].p4Error(reco::GsfElectron::P4_COMBINATION));
-					lep_pt_genFromReco.push_back(-999);
-                     lep_errPre_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
-                     lep_errPost_Scale.push_back(recoElectrons[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
-                     lep_errPre_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPreCorr"));
-                     lep_errPost_noScale.push_back(recoElectronsUnS[lep_ptindex[i]].userFloat("ecalTrkEnergyPostCorr"));
-
-                    double perr = 0.0;
-                    if (recoElectrons[lep_ptindex[i]].ecalDriven()) {
-                        perr = recoElectrons[lep_ptindex[i]].p4Error(reco::GsfElectron::P4_COMBINATION);
-                    }
-                    else {
-                        double ecalEnergy = recoElectrons[lep_ptindex[i]].correctedEcalEnergy();
-                        double err2 = 0.0;
-                        if (recoElectrons[lep_ptindex[i]].isEB()) {
-                            err2 += (5.24e-02*5.24e-02)/ecalEnergy;
-                            err2 += (2.01e-01*2.01e-01)/(ecalEnergy*ecalEnergy);
-                            err2 += 1.00e-02*1.00e-02;
-                        } else if (recoElectrons[lep_ptindex[i]].isEE()) {
-                            err2 += (1.46e-01*1.46e-01)/ecalEnergy;
-                            err2 += (9.21e-01*9.21e-01)/(ecalEnergy*ecalEnergy);
-                            err2 += 1.94e-03*1.94e-03;
-                        }
-                        perr = ecalEnergy * sqrt(err2);
-                    }
-                    double pterr = perr*recoElectrons[lep_ptindex[i]].pt()/recoElectrons[lep_ptindex[i]].p();
-                    lep_pterr.push_back(pterr);
-                    lep_eta.push_back(recoElectrons[lep_ptindex[i]].eta());
-                    lep_phi.push_back(recoElectrons[lep_ptindex[i]].phi());
-
-				    lep_mass.push_back(recoElectrons[lep_ptindex[i]].mass());
-                    lepFSR_pt.push_back(recoElectrons[lep_ptindex[i]].pt());
-                    lepFSR_eta.push_back(recoElectrons[lep_ptindex[i]].eta());
-                    lepFSR_phi.push_back(recoElectrons[lep_ptindex[i]].phi());
-
-				    lepFSR_mass.push_back(recoElectrons[lep_ptindex[i]].mass());                    
-				    lepFSR_ID.push_back(11);
-                    if (isoConeSizeEl==0.4) {
-                        lep_RelIso.push_back(helper.pfIso(recoElectrons[lep_ptindex[i]],elRho));
-                        lep_RelIsoNoFSR.push_back(helper.pfIso(recoElectrons[lep_ptindex[i]],elRho));
-                        lep_isoCH.push_back(recoElectrons[lep_ptindex[i]].chargedHadronIso());
-                        lep_isoNH.push_back(recoElectrons[lep_ptindex[i]].neutralHadronIso());
-                        lep_isoPhot.push_back(recoElectrons[lep_ptindex[i]].photonIso());
-                        lep_isoPU.push_back(recoElectrons[lep_ptindex[i]].puChargedHadronIso());
-                        lep_isoPUcorr.push_back(helper.getPUIso(recoElectrons[lep_ptindex[i]],elRho));
-                    } else if (isoConeSizeEl==0.3) {
-                        lep_RelIso.push_back(helper.pfIso03(recoElectrons[lep_ptindex[i]],elRho));
-                        lep_RelIsoNoFSR.push_back(helper.pfIso03(recoElectrons[lep_ptindex[i]],elRho));
-                        lep_isoCH.push_back(recoElectrons[lep_ptindex[i]].pfIsolationVariables().sumChargedHadronPt);
-                        lep_isoNH.push_back(recoElectrons[lep_ptindex[i]].pfIsolationVariables().sumNeutralHadronEt);
-                        lep_isoPhot.push_back(recoElectrons[lep_ptindex[i]].pfIsolationVariables().sumPhotonEt);
-                        lep_isoPU.push_back(recoElectrons[lep_ptindex[i]].pfIsolationVariables().sumPUPt);
-                        lep_isoPUcorr.push_back(helper.getPUIso03(recoElectrons[lep_ptindex[i]],elRho));
-                    }
-                    lep_MiniIso.push_back(helper.miniIsolation(pfCands, dynamic_cast<const reco::Candidate *>(&recoElectrons[lep_ptindex[i]]), 0.05, 0.2, 10., rhoSUS, false));
-                    lep_Sip.push_back(helper.getSIP3D(recoElectrons[lep_ptindex[i]]));           
-                    lep_mva.push_back(recoElectrons[lep_ptindex[i]].userFloat(EleBDT_name_161718.c_str())); 
-                    lep_ecalDriven.push_back(recoElectrons[lep_ptindex[i]].ecalDriven()); 
-                    lep_tightId.push_back(helper.passTight_BDT_Id(recoElectronsUnS[lep_ptindex[i]],year));
-                    lep_tightIdSUS.push_back(helper.passTight_Id_SUS(recoElectrons[lep_ptindex[i]],elecID,PV,BS,*theConversions, year));           
-                    lep_tightIdHiPt.push_back(recoElectrons[lep_ptindex[i]].electronID(heepID_name_161718.c_str()));
-                    lep_ptRatio.push_back(helper.ptRatio(recoElectrons[lep_ptindex[i]],jets,true)); // no L2L3 yet           
-                    lep_ptRel.push_back(helper.ptRel(recoElectrons[lep_ptindex[i]],jets,true)); // no L2L3 yet           
-                    lep_dataMC.push_back(helper.dataMC(recoElectrons[lep_ptindex[i]],hElecScaleFac,hElecScaleFac_Cracks,hElecScaleFacGsf,hElecScaleFacGsfLowET));
-                    lep_dataMCErr.push_back(helper.dataMCErr(recoElectrons[lep_ptindex[i]],hElecScaleFac,hElecScaleFac_Cracks));
-                    lep_genindex.push_back(-1.0);
-                }
-                
-                
-                if (abs(lep_ptid[i])==13) {  
-					
-					auto gen_lep = recoMuons[lep_ptindex[i]].genParticle();
-                    
-                    lep_d0BS.push_back(recoMuons[lep_ptindex[i]].muonBestTrack()->dxy(beamSpot->position()));
-                    lep_d0PV.push_back(recoMuons[lep_ptindex[i]].muonBestTrack()->dxy(PV->position()));
-					lep_numberOfValidPixelHits.push_back(recoMuons[lep_ptindex[i]].innerTrack()->hitPattern().numberOfValidPixelHits());
-					lep_trackerLayersWithMeasurement.push_back(recoMuons[lep_ptindex[i]].innerTrack()->hitPattern().trackerLayersWithMeasurement());
-                    lep_isEB.push_back(0);
-					lep_isEE.push_back(0);
-					lep_p.push_back(recoMuons[lep_ptindex[i]].p());
-					lep_ecalEnergy.push_back(0);
-                    lep_id.push_back(recoMuons[lep_ptindex[i]].pdgId());
-                    lep_pt.push_back(recoMuons[lep_ptindex[i]].pt());
-                    lep_pterrold.push_back(recoMuons[lep_ptindex[i]].muonBestTrack()->ptError());
-                    
-                    if(gen_lep != 0)
-                    	lep_pt_genFromReco.push_back(gen_lep->pt());
-                    else
-                    	lep_pt_genFromReco.push_back(-999);
-                    	
-                    if (recoMuons[lep_ptindex[i]].hasUserFloat("correctedPtError")) {
-                        lep_pterr.push_back(recoMuons[lep_ptindex[i]].userFloat("correctedPtError"));
-                    } else {
-                        lep_pterr.push_back(recoMuons[lep_ptindex[i]].muonBestTrack()->ptError());
-                    }
-                    lep_eta.push_back(recoMuons[lep_ptindex[i]].eta());
-                    lep_phi.push_back(recoMuons[lep_ptindex[i]].phi());
-                    if (recoMuons[lep_ptindex[i]].mass()<0.105) cout<<"muon mass: "<<recoMuons[lep_ptindex[i]].mass()<<endl;
-                    lep_mass.push_back(recoMuons[lep_ptindex[i]].mass());
-                    lepFSR_pt.push_back(recoMuons[lep_ptindex[i]].pt());
-                    lepFSR_eta.push_back(recoMuons[lep_ptindex[i]].eta());
-                    lepFSR_phi.push_back(recoMuons[lep_ptindex[i]].phi());
-                    lepFSR_mass.push_back(recoMuons[lep_ptindex[i]].mass());
-                    lepFSR_ID.push_back(13);
-                    if (isoConeSizeMu==0.4) {
-                        lep_RelIso.push_back(helper.pfIso(recoMuons[lep_ptindex[i]],muRho));
-                        lep_RelIsoNoFSR.push_back(helper.pfIso(recoMuons[lep_ptindex[i]],muRho));
-                        lep_isoCH.push_back(recoMuons[lep_ptindex[i]].chargedHadronIso());
-                        lep_isoNH.push_back(recoMuons[lep_ptindex[i]].neutralHadronIso());
-                        lep_isoPhot.push_back(recoMuons[lep_ptindex[i]].photonIso());
-                        lep_isoPU.push_back(recoMuons[lep_ptindex[i]].puChargedHadronIso());
-                        lep_isoPUcorr.push_back(helper.getPUIso(recoMuons[lep_ptindex[i]],muRho));
-                    } else if (isoConeSizeMu==0.3) {
-                        lep_RelIso.push_back(helper.pfIso03(recoMuons[lep_ptindex[i]],muRho));
-                        lep_RelIsoNoFSR.push_back(helper.pfIso03(recoMuons[lep_ptindex[i]],muRho));
-                        lep_isoCH.push_back(recoMuons[lep_ptindex[i]].pfIsolationR03().sumChargedHadronPt);
-                        lep_isoNH.push_back(recoMuons[lep_ptindex[i]].pfIsolationR03().sumNeutralHadronEt);
-                        lep_isoPhot.push_back(recoMuons[lep_ptindex[i]].pfIsolationR03().sumPhotonEt);
-                        lep_isoPU.push_back(recoMuons[lep_ptindex[i]].pfIsolationR03().sumPUPt);
-                        lep_isoPUcorr.push_back(helper.getPUIso03(recoMuons[lep_ptindex[i]],muRho));
-                    }
-                    lep_MiniIso.push_back(helper.miniIsolation(pfCands, dynamic_cast<const reco::Candidate *>(&recoMuons[lep_ptindex[i]]), 0.05, 0.2, 10., rhoSUS, false));
-                    lep_Sip.push_back(helper.getSIP3D(recoMuons[lep_ptindex[i]]));            
-                    lep_mva.push_back(recoMuons[lep_ptindex[i]].isPFMuon()); 
-                    lep_ecalDriven.push_back(0);  
-                    lep_tightId.push_back(helper.passTight_Id(recoMuons[lep_ptindex[i]],PV));         
-                    lep_tightIdSUS.push_back(helper.passTight_Id_SUS(recoMuons[lep_ptindex[i]],PV));
-                    lep_tightIdHiPt.push_back(recoMuons[lep_ptindex[i]].isHighPtMuon(*PV));
-                    lep_ptRatio.push_back(helper.ptRatio(recoMuons[lep_ptindex[i]],jets,true)); // no L2L3 yet           
-                    lep_ptRel.push_back(helper.ptRel(recoMuons[lep_ptindex[i]],jets,true)); // no L2L3 yet       
-                    lep_dataMC.push_back(helper.dataMC(recoMuons[lep_ptindex[i]],hMuScaleFac));
-                    lep_dataMCErr.push_back(helper.dataMCErr(recoMuons[lep_ptindex[i]],hMuScaleFacUnc));
-                    lep_genindex.push_back(-1.0);
-                    
-                    lep_errPre_Scale.push_back(-999);
-                    lep_errPost_Scale.push_back(-999);
-                    lep_errPre_noScale.push_back(-999);
-                    lep_errPost_noScale.push_back(-999);
-
-                }
-
-//                 std::cout<<"OK muoni"<<std::endl;
-
-                if (verbose) {cout<<" eta: "<<lep_eta[i]<<" phi: "<<lep_phi[i];
-                              if(abs(lep_ptid[i])==11)  cout<<" eSuperClusterOverP: "<<recoElectrons[lep_ptindex[i]].eSuperClusterOverP()<<" ecalEnergy: "<<recoElectrons[lep_ptindex[i]].ecalEnergy()<<" p: "<<recoElectrons[lep_ptindex[i]].p();
-                              cout<<" RelIso: "<<lep_RelIso[i]<<" isoCH: "<<lep_isoCH[i]<<" isoNH: "<<lep_isoNH[i]
-                                  <<" isoPhot: "<<lep_isoPhot[i]<<" lep_isoPU: "<<lep_isoPU[i]<<" isoPUcorr: "<<lep_isoPUcorr[i]<<" Sip: "<<lep_Sip[i]
-                                  <<" MiniIso: "<<lep_MiniIso[i]<<" ptRatio: "<<lep_ptRatio[i]<<" ptRel: "<<lep_ptRel[i]<<" lep_mva: "<<lep_mva[i];
-                              if(abs(lep_ptid[i])==11)    cout<<" SCeta: "<<recoElectrons[lep_ptindex[i]].superCluster()->eta()<<" dxy: "<<recoElectrons[lep_ptindex[i]].gsfTrack()->dxy(PV->position())<<" dz: "<<recoElectrons[lep_ptindex[i]].gsfTrack()->dz(PV->position());
-                              if(abs(lep_ptid[i])==11)    cout<<" Rho: "<<elRho<<" EleBDT_name: "<<EleBDT_name_161718<<" Uncorrected electron pt: "<<recoElectronsUnS[lep_ptindex[i]].pt();
-                              if(abs(lep_ptid[i])==13)    cout<<" Rho: "<<muRho;
-                              cout<<" dataMC: "<<lep_dataMC[i]<<" dataMCErr: "<<lep_dataMCErr[i];
-                              cout<<" lep_pterr: "<<lep_pterr[i]<<" lep_pterrold: "<<lep_pterrold[i]<<" lep_tightIdHiPt: "<<lep_tightIdHiPt[i]<<endl;
-                              if((abs(lep_ptid[i])==13)&&lep_pt[i]>200)    cout<<"Muon pt over 200 isTrackerHighPtID? "<<helper.isTrackerHighPt(recoMuons[lep_ptindex[i]],PV)<<endl;}
-            }
-
-            if (verbose) cout<<"adding taus to sorted list"<<endl;           
-            for(int i = 0; i < (int)recoTaus.size(); i++) {
-                tau_id.push_back(recoTaus[i].pdgId());
-                tau_pt.push_back(recoTaus[i].pt());
-                tau_eta.push_back(recoTaus[i].eta());
-                tau_phi.push_back(recoTaus[i].phi());            
-                tau_mass.push_back(recoTaus[i].mass());
-            }
-
-            if (verbose) cout<<"adding photons to sorted list"<<endl;           
-            for(int i = 0; i < (int)recoPhotons.size(); i++) {
-                pho_pt.push_back(recoPhotons[i].pt());
-                pho_eta.push_back(recoPhotons[i].eta());
-                pho_phi.push_back(recoPhotons[i].phi());            
-                photonCutBasedIDLoose.push_back(recoPhotons[i].photonID("cutBasedPhotonID-Fall17-94X-V2-loose"));
-            }
-
-            if (doTriggerMatching) {
-                if (verbose) cout<<"start trigger matching"<<endl;        
-                // trigger Matching
-                for(unsigned int i = 0; i < lep_pt.size(); i++) {
-                    
-                    TLorentzVector reco;
-                    reco.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-                    
-                    double reco_eta = reco.Eta();
-                    double reco_phi = reco.Phi();
-                    
-                    std::string filtersMatched = "";
-                    
-                    for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
-                        double hlt_eta = obj.eta();
-                        double hlt_phi = obj.phi();
-                        double dR =  deltaR(reco_eta,reco_phi,hlt_eta,hlt_phi); 
-                        if (dR<0.5) {
-                            obj.unpackFilterLabels(iEvent, *trigger); 
-                            for (unsigned h = 0; h < obj.filterLabels().size(); ++h) filtersMatched += obj.filterLabels()[h];
-                        }
-                    }
-                    
-                    if (verbose) cout<<"Trigger matching lep id: "<<lep_id[i]<<" pt: "<<reco.Pt()<<" filters: "<<filtersMatched<<endl;
-                    lep_filtersMatched.push_back(filtersMatched);
-                    
-                }
-            }
-
-            if(isMC) {
-                if (verbose) cout<<"begin gen matching"<<endl;
-                // for each reco lepton find the nearest gen lepton with same ID
-                for(unsigned int i = 0; i < lep_pt.size(); i++) {
-                    
-                    double minDr=9999.0;
-                    
-                    TLorentzVector reco, gen;
-                    reco.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-                    
-                    for (unsigned int j = 0; j < GENlep_id.size(); j++) {
-                        
-                        if (GENlep_id[j]!=lep_id[i]) continue;
-                        
-                        gen.SetPtEtaPhiM(GENlep_pt[j],GENlep_eta[j],GENlep_phi[j],GENlep_mass[j]);
-                        double thisDr = deltaR(reco.Eta(),reco.Phi(),gen.Eta(),gen.Phi());
-                        
-                        if (thisDr<minDr && thisDr<0.5) {
-                            lep_genindex[i]=j;
-                            minDr=thisDr;
-                        }
-                        
-                    } // all gen leptons
-                    
-                } // all reco leptons
-                
-                for(unsigned int i = 0; i < lep_pt.size(); i++) {
-                    
-                    double minDr=9999.0;
-                    
-                    TLorentzVector reco;
-                    reco.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-                    
-                    reco::GenParticleCollection::const_iterator genPart;
-                    int j = -1;
-                    int tmpPdgId = 0;
-                    int tmpMomId = 0;
-                    int tmpMomMomId = 0;
-                    for(genPart = prunedgenParticles->begin(); genPart != prunedgenParticles->end(); genPart++) {
-                        j++;
-                        double thisDr = deltaR(reco.Eta(),reco.Phi(),genPart->eta(),genPart->phi());
-                        
-                        if (thisDr<minDr && thisDr<0.3) {
-                            tmpPdgId=genPart->pdgId();
-                            tmpMomId=genAna.MotherID(&prunedgenParticles->at(j));
-                            tmpMomMomId=genAna.MotherMotherID(&prunedgenParticles->at(j));
-                            
-                            minDr=thisDr;
-                        }
-                        
-                    } // all gen particles
-                    // storing the matches                                                                                                            
-                    lep_matchedR03_PdgId.push_back(tmpPdgId);
-                    lep_matchedR03_MomId.push_back(tmpMomId);
-                    lep_matchedR03_MomMomId.push_back(tmpMomMomId);
-                    
-                } // all reco leptons
-                
-                if (verbose) {cout<<"finished gen matching"<<endl;}
-            } //isMC
-
-            
-            unsigned int Nleptons = lep_pt.size();
-
-            if(doFsrRecovery) {
-                
-                if (verbose) cout<<"checking "<<photonsForFsr->size()<<" fsr photon candidates"<<endl;
-                
-                // try to find an fsr photon for each lepton
-                for (unsigned int i=0; i<Nleptons; i++) {
-                        
-                    TLorentzVector thisLep;
-                    thisLep.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-
-                    double minDrOEt2 = 999.0; double selectedPhotonIso=9999.0; double selectedPhotonDr=9999.0;
-                    bool selected=false; pat::PFParticle selectedPhoton; 
-                    for(edm::View<pat::PFParticle>::const_iterator phot=photonsForFsr->begin(); phot!=photonsForFsr->end(); ++phot) {
-
-                        // preselection
-                        if (fabs(phot->eta()) > 2.4) continue;
-                        if (phot->pt()<2.0) continue;
-                        double fsrDr = deltaR(thisLep.Eta(), thisLep.Phi(), phot->eta(), phot->phi());
-                        if (fsrDr>0.5) continue;
-
-                        // check super cluster veto against all electrons for each photon
-                        // at the same time check that this is the closest lepton for this photon
-                        bool matched=false;
-                        bool closest=true;                    
-
-                        for (unsigned int j=0; j<Nleptons; j++) {                                            
-
-                            TLorentzVector otherLep;
-                            otherLep.SetPtEtaPhiM(lep_pt[j],lep_eta[j],lep_phi[j],lep_mass[j]);
-
-                            double fsrDrOther = deltaR(otherLep.Eta(), otherLep.Phi(), phot->eta(), phot->phi());
-                            if (j!=i && fsrDrOther<fsrDr) {closest=false;}
-
-                            if ( abs(lep_id[(int)j])==11) {                                                               
- 
-                                for(size_t ecand = 0; ecand < recoElectrons[lep_ptindex[j]].associatedPackedPFCandidates().size(); ecand++){
-
-
-                                    double ecandpt = recoElectrons[lep_ptindex[j]].associatedPackedPFCandidates()[ecand]->pt();
-                                    double ecandeta = recoElectrons[lep_ptindex[j]].associatedPackedPFCandidates()[ecand]->eta();
-                                    double ecandphi = recoElectrons[lep_ptindex[j]].associatedPackedPFCandidates()[ecand]->phi();
-                                    if (abs(ecandpt-phot->pt())<1e-10 && abs(ecandeta-phot->eta())<1e-10 && abs(ecandphi-phot->phi())<1e-10) matched=true;
-
-                                }                                
-                            }
-                        }
-                        if (matched) continue;
-                        if (!closest) continue;
-
-                        // comput iso, dR/ET^2
-                        double photoniso = helper.photonPfIso03(*phot,pfCands)/phot->pt();
-                        double fsrDrOEt2 = fsrDr/(phot->pt()*phot->pt());
-
-                        // fill all fsr photons before iso, dR/Et^2 cuts
-                        allfsrPhotons_dR.push_back(fsrDr);
-                        allfsrPhotons_iso.push_back(photoniso);
-                        allfsrPhotons_pt.push_back(phot->pt());
-
-                        // require photon iso, dR/Et^2
-                        if (photoniso>1.8) continue;
-                        if (fsrDrOEt2>0.012) continue;
-
-                        // this photon is now a good one, check if it is the best one
-                        
-                        if ( verbose) cout<<"fsr photon cand, pt: "<<phot->pt()<<" eta: "<<phot->eta()<<" phi: "<<phot->phi()
-                                          //<<" isoCHPUNoPU: "<<phot->userFloat("fsrPhotonPFIsoChHadPUNoPU03pt02")
-                                          //<<" isoNHPhoton: "<<phot->userFloat("fsrPhotonPFIsoNHadPhoton03")
-                                          <<" photoniso: "<<photoniso<<" DrOEt2: "<< fsrDrOEt2 <<endl;                                       
-
-                        if( fsrDrOEt2 < minDrOEt2 ) {
-                            selected = true;
-                            selectedPhoton=(*phot);
-                            selectedPhotonIso=photoniso;
-                            selectedPhotonDr=fsrDr;
-                            minDrOEt2 = fsrDrOEt2;
-                            if (verbose) cout<<"****selected fsr: "<<i<<endl;
-                            if (verbose) cout<<"photoniso: "<<photoniso<<" fsr dR over Et^2: "<<fsrDrOEt2<<" fsr dR: "<<fsrDr<<endl;
-                        }
-                        
-                    } // all photons
-
-                    if (selected) {
-                        nFSRPhotons++;
-                        fsrPhotons.push_back(selectedPhoton); 
-                        fsrPhotons_pt.push_back(selectedPhoton.pt());
-                        double perr = PFEnergyResolution().getEnergyResolutionEm(selectedPhoton.energy(), selectedPhoton.eta());
-                        double pterr = perr*selectedPhoton.pt()/selectedPhoton.p();
-                        fsrPhotons_pterr.push_back(pterr);
-                        fsrPhotons_eta.push_back(selectedPhoton.eta());
-                        fsrPhotons_phi.push_back(selectedPhoton.phi());
-                        fsrPhotons_lepindex.push_back((int)i);
-                        fsrPhotons_dR.push_back(selectedPhotonDr);
-                        fsrPhotons_iso.push_back(selectedPhotonIso);
-                        TLorentzVector phofsr;
-                        phofsr.SetPtEtaPhiM(selectedPhoton.pt(),selectedPhoton.eta(),selectedPhoton.phi(),0.0);
-                        TLorentzVector lepfsr;
-                        lepfsr = thisLep+phofsr;
-                        lepFSR_pt[i] = lepfsr.Pt();
-                        lepFSR_eta[i] = lepfsr.Eta();
-                        lepFSR_phi[i] = lepfsr.Phi();
-                        lepFSR_mass[i] = lepfsr.M();
-                        
-                        fsrmap[i] = phofsr;
-                        if (verbose) cout<<"****selected fsr: "<<i<<endl;
-                        if (verbose) cout<<"phofsr pt: "<<phofsr.Pt()<<" eta: "<<phofsr.Eta()<<" phi: "<<phofsr.Phi()<<" mass: "<<phofsr.M()<<endl;
-                        if (verbose) cout<<"lep pt: "<<thisLep.Pt()<<" eta: "<<thisLep.Eta()<<" phi: "<<thisLep.Phi()<<" mass: "<<thisLep.M()<<endl;
-                        if (verbose) cout<<"lep+fsr pt: "<<lepFSR_pt[i]<<" eta: "<<lepFSR_eta[i]<<" phi: "<<lepFSR_phi[i]<<" mass: "<<lepfsr.M()<<endl;
-                        
- 
-                    }
-
-                } // all leptons
-                
-				//std::cout<<"Number = "<<fsrPhotons_eta.size()<<std::endl;
-                
-                // subtract selected photons from all leptons isolations
-                for (unsigned int i=0; i<Nleptons; i++) {
-                        
-                    TLorentzVector lep_nofsr;
-                    lep_nofsr.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-
-                    double isoFSR=0.0;
-                    for (unsigned int j=0; j<fsrPhotons.size(); j++) {
-                        double fsrDr = deltaR(lep_nofsr.Eta(),lep_nofsr.Phi(),fsrPhotons[j].eta(),fsrPhotons[j].phi());
-                        bool isoVeto=true;
-                        if (abs(lep_id[i])==13 && fsrDr>0.01) isoVeto=false;
-                        if (abs(lep_id[i])==11 && (abs(recoElectrons[lep_ptindex[i]].superCluster()->eta())<1.479 || fsrDr>0.08)) isoVeto=false;
-                        if (fsrDr<((abs(lep_id[i])==11)?isoConeSizeEl:isoConeSizeMu) && !isoVeto) isoFSR += fsrPhotons[j].pt();
-                    }
-
-                    double RelIsoNoFSR = (lep_isoCH[i]+std::max(lep_isoNH[i]+lep_isoPhot[i]-lep_isoPUcorr[i]-isoFSR,0.0))/lep_nofsr.Pt();
-                    lep_RelIsoNoFSR[i] = RelIsoNoFSR;               
-                    if (verbose) cout<<"lep id = "<<lep_id[i]<<"\tlep pt: "<<lep_nofsr.Pt()<<" eta: "<<lep_nofsr.Eta()<<" phi: "<<lep_nofsr.Phi()<<" RelIsoNoFSR: "<<RelIsoNoFSR<<" lep mva: "<<lep_mva[i]<<" tightId? "<<lep_tightId[i]<<endl;
-                }
-                if (verbose) {cout<<"finished filling fsr photon candidates"<<endl;}
-            } // doFsrRecovery
-
-            // count tight ID iso leptons
-            uint ntight=0;
-            for (unsigned int i=0; i<Nleptons; i++) {
-                if (abs(lep_id[i])==11 && lep_RelIsoNoFSR[i]<isoCutEl && lep_tightId[i]==1) ntight+=1;
-                if (abs(lep_id[i])==13 && lep_RelIsoNoFSR[i]<isoCutMu && lep_tightId[i]==1) ntight+=1;
-            }
-             
-            if ( ntight >= (uint)skimTightLeptons ) {
-
-                // Fake Rate Study (Z+1L Control Region)
-                if (verbose) cout<<"begin Z+1L fake rate study"<<endl;
-                // Z+1L selection
-                if (verbose) {cout<<"finished Z+1L fake rate study"<<endl;}
-
-                // creat vectors for selected objects
-                vector<pat::Muon> selectedMuons;
-                vector<pat::Electron> selectedElectrons;
                  
-                // Jets
-                if (verbose) cout<<"begin filling jet candidates"<<endl;
+        // Jets
+        if (verbose) cout<<"begin filling jet candidates"<<endl;
                 
-                vector<pat::Jet> goodJets;
-                vector<float> patJetQGTagger, patJetaxis2, patJetptD;
-                vector<float> goodJetQGTagger, goodJetaxis2, goodJetptD; 
-                vector<int> patJetmult, goodJetmult;
+        vector<pat::Jet> goodJets;
+        vector<float> patJetQGTagger, patJetaxis2, patJetptD;
+        vector<float> goodJetQGTagger, goodJetaxis2, goodJetptD; 
+        vector<int> patJetmult, goodJetmult;
                 
-                for(auto jet = jets->begin();  jet != jets->end(); ++jet){
-                    edm::RefToBase<pat::Jet> jetRef(edm::Ref<edm::View<pat::Jet> >(jets, jet - jets->begin()));
-                    float qgLikelihood = (*qgHandle)[jetRef];
-                    float axis2 = (*axis2Handle)[jetRef];
-                    float ptD = (*ptDHandle)[jetRef];
-                    int mult = (*multHandle)[jetRef];
-                    patJetQGTagger.push_back(qgLikelihood);  
-                    patJetaxis2.push_back(axis2);  
-                    patJetmult.push_back(mult);  
-                    patJetptD.push_back(ptD);  
-                }
+        for(auto jet = jets->begin();  jet != jets->end(); ++jet){
+        	 edm::RefToBase<pat::Jet> jetRef(edm::Ref<edm::View<pat::Jet> >(jets, jet - jets->begin()));
+           float qgLikelihood = (*qgHandle)[jetRef];
+           float axis2 = (*axis2Handle)[jetRef];
+           float ptD = (*ptDHandle)[jetRef];
+           int mult = (*multHandle)[jetRef];
+           patJetQGTagger.push_back(qgLikelihood);  
+           patJetaxis2.push_back(axis2);  
+           patJetmult.push_back(mult);  
+           patJetptD.push_back(ptD);  
+        }
                            
-                for(unsigned int i = 0; i < jets->size(); ++i) {
+        for(unsigned int i = 0; i < jets->size(); ++i) {
+                   
+        	const pat::Jet & jet = jets->at(i);
                     
-                    const pat::Jet & jet = jets->at(i);
-                    
-                    //JetID ID
-                    if (verbose) cout<<"checking jetid..."<<endl;
-                    float jpumva=0.;
-                    bool passPU;
-                    if (doJEC && (year==2017 || year==2018)) {
-                        passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 0));
-                        jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
-                    } else if (doJEC && (year==20160 || year==20165)) { 
-                        passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 2));
-                        jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
-                    } else {
-                        passPU = bool(jet.userInt("pileupJetId:fullId") & (1 << 2));
-                        jpumva=jet.userFloat("pileupJetId:fullDiscriminant");
+          //JetID ID
+          if (verbose) cout<<"checking jetid..."<<endl;
+          float jpumva=0.;
+          bool passPU;
+          if (doJEC && (year==2017 || year==2018)) {
+          	passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 0));
+            jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
+          } else if (doJEC && (year==20160 || year==20165)) { 
+            passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 2));
+            jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
+          } else {
+            passPU = bool(jet.userInt("pileupJetId:fullId") & (1 << 2));
+            jpumva=jet.userFloat("pileupJetId:fullDiscriminant");
 		     }
-                    if (verbose) cout<< " jet pu mva  "<<jpumva <<endl;
+         if (verbose) cout<< " jet pu mva  "<<jpumva <<endl;
               
                         
-                    if (verbose) cout<<"pt: "<<jet.pt()<<" eta: "<<jet.eta()<<" phi: "<<jet.phi()<<" passPU: "<<passPU
-                                     <<" jetid: "<<jetHelper.patjetID(jet,year)<<endl;
+         if (verbose) cout<<"pt: "<<jet.pt()<<" eta: "<<jet.eta()<<" phi: "<<jet.phi()<<" passPU: "<<passPU
+                          <<" jetid: "<<jetHelper.patjetID(jet,year)<<endl;
                     
-                    if( jetHelper.patjetID(jet,year)>=jetIDLevel ) {       
-                        if (verbose) cout<<"passed pf jet id and pu jet id"<<endl;
+         if( jetHelper.patjetID(jet,year)>=jetIDLevel ) {
+					//if(fabs(jet.eta())<jeteta_cut && jet.pt()>15.0){       
+					if(fabs(jet.eta())<jeteta_cut){       
                         
-                        // apply loose pt cut here (10 GeV cut is already applied in MINIAOD) since we are before JES/JER corrections
-                        if(fabs(jet.eta()) < jeteta_cut) { ///move all pt cut after JES/JER corrections    
-                            
-                            // apply scale factor for PU Jets by demoting 1-data/MC % of jets jets in certain pt/eta range 
-                            // Configured now that SF is 1.0
-//                             if (verbose) cout<<"adding pu jet scale factors..."<<endl;       
-//                             bool dropit=false;
-//                             if (abs(jet.eta())>3.0 && isMC) {
-//                                 TRandom3 rand;
-//                                 rand.SetSeed(abs(static_cast<int>(sin(jet.phi())*100000)));
-//                                 float coin = rand.Uniform(1.); 
-//                                 if (jet.pt()>=20.0 && jet.pt()<36.0 && coin>1.0) dropit=true;
-//                                 if (jet.pt()>=36.0 && jet.pt()<50.0 && coin>1.0) dropit=true;
-//                                 if (jet.pt()>=50.0 && coin>1.0) dropit=true;
-//                             }                                        
-//                             
-//                             if (!dropit) {
-//                                 if (verbose) cout<<"adding jet candidate, pt: "<<jet.pt()<<" eta: "<<jet.eta()<<endl;
-                                goodJets.push_back(jet);
-                                goodJetQGTagger.push_back(patJetQGTagger[i]);
-                                goodJetaxis2.push_back(patJetaxis2[i]);
-                                goodJetptD.push_back(patJetptD[i]);
-                                goodJetmult.push_back(patJetmult[i]);
-//                             } // pu jet scale factor
-                            
-                        } // pass loose pt cut 
-                    } // pass loose pf jet id and pu jet id
-                } // all jets
+         		goodJets.push_back(jet);
+         		goodJetQGTagger.push_back(patJetQGTagger[i]);
+          	goodJetaxis2.push_back(patJetaxis2[i]);
+          	goodJetptD.push_back(patJetptD[i]);
+          	goodJetmult.push_back(patJetmult[i]);
+					}
+
+					}
+        } // all jets
+
+				if(goodJets.size()>=4){
+					passedFullSelection=true;
+				}
                 
-                vector<pat::Jet> selectedMergedJets;
-                /*
-                for(unsigned int i = 0; i < mergedjets->size(); ++i) { // all merged jets
-                    
-                    const pat::Jet & mergedjet = mergedjets->at(i);
-                    double pt = double(mergedjet.pt());
-                    double eta = double(mergedjet.eta());
-                    
-                    if(pt>60 && abs(eta)<2.5) selectedMergedJets.push_back(mergedjet);
-                    
-                } // all merged jets
+        vector<pat::Jet> selectedMergedJets;
+       
+        if (verbose) cout<<"before vector assign"<<std::endl;
+				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets,  hltAK4PFJetsCorrected, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets, AK8PuppiJets,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjetsForBTag,  hltAK4PFJetsCorrected, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , pfJetTagCollectionParticleNetprobg ,pfJetTagCollectionParticleNetprobtauh ,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+      	if (verbose) cout<<"finshed setting tree variables"<<endl;
 
-                */
+        lep_pt_float.assign(lep_pt.begin(),lep_pt.end());
+      	lep_eta_float.assign(lep_eta.begin(),lep_eta.end());
+      	lep_phi_float.assign(lep_phi.begin(),lep_phi.end());
+      	lep_mass_float.assign(lep_mass.begin(),lep_mass.end());
+   
+        jet_pt_float.assign(jet_pt.begin(),jet_pt.end());
+        jet_pt_raw_float.assign(jet_pt_raw.begin(),jet_pt_raw.end());
+        jet_eta_float.assign(jet_eta.begin(),jet_eta.end());
+        jet_phi_float.assign(jet_phi.begin(),jet_phi.end());
+        jet_mass_float.assign(jet_mass.begin(),jet_mass.end());
+        jet_csv_cTag_vsL_float.assign(jet_csv_cTag_vsL.begin(),jet_csv_cTag_vsL.end());
+     
+   jet_csv_cTag_vsB_float.assign(jet_csv_cTag_vsB.begin(),jet_csv_cTag_vsB.end());                
+        jet_jesup_pt_float.assign(jet_jesup_pt.begin(),jet_jesup_pt.end());
+        jet_jesup_eta_float.assign(jet_jesup_eta.begin(),jet_jesup_eta.end());
+        jet_jesup_phi_float.assign(jet_jesup_phi.begin(),jet_jesup_phi.end());
+        jet_jesup_mass_float.assign(jet_jesup_mass.begin(),jet_jesup_mass.end());
+        jet_jesdn_pt_float.assign(jet_jesdn_pt.begin(),jet_jesdn_pt.end());
+        jet_jesdn_eta_float.assign(jet_jesdn_eta.begin(),jet_jesdn_eta.end());
+        jet_jesdn_phi_float.assign(jet_jesdn_phi.begin(),jet_jesdn_phi.end());
+        jet_jesdn_mass_float.assign(jet_jesdn_mass.begin(),jet_jesdn_mass.end());
+        jet_jerup_pt_float.assign(jet_jerup_pt.begin(),jet_jerup_pt.end());
+        jet_jerup_eta_float.assign(jet_jerup_eta.begin(),jet_jerup_eta.end());
+        jet_jerup_phi_float.assign(jet_jerup_phi.begin(),jet_jerup_phi.end());
+        jet_jerup_mass_float.assign(jet_jerup_mass.begin(),jet_jerup_mass.end());
+        jet_jerdn_pt_float.assign(jet_jerdn_pt.begin(),jet_jerdn_pt.end());
+        jet_jerdn_eta_float.assign(jet_jerdn_eta.begin(),jet_jerdn_eta.end());
+        jet_jerdn_phi_float.assign(jet_jerdn_phi.begin(),jet_jerdn_phi.end());
+        jet_jerdn_mass_float.assign(jet_jerdn_mass.begin(),jet_jerdn_mass.end());
 
-//                 if(isCode4l && foundHiggsCandidate ){              
-                if(1==1){
-//                 if(foundHiggsCandidate ){
-                
-                    
-                    for(unsigned int i = 0; i<4;i++){
-                        
-                        int index = lep_Hindex[i];
-                        if(fsrmap[index].Pt()!=0){
-                            if (verbose) cout<<"find a fsr photon for "<<i<<" th Higgs lepton"<<endl;
-                            selectedFsrMap[i] = fsrmap[index];
-                        }
-                    }
-                    
-//                     for(uint i = 0; i < selectedFsrMap.size(); i++)
-//                     	std::cout<<"GOOD PHOTON = "<<selectedFsrMap[i].Pt()<<std::endl;
-                    
-                    if (verbose) cout<<"storing H_p4_noFSR"<<endl; 
-                    math::XYZTLorentzVector tmpHVec;
-                    if (verbose) cout<<"selectedMuons "<<selectedMuons.size()<<" selectedElectrons "<<selectedElectrons.size()<<endl;
+        quark_pt_float.assign(quark_pt.begin(),quark_pt.end());
+        quark_eta_float.assign(quark_eta.begin(),quark_eta.end());
+  	    quark_phi_float.assign(quark_phi.begin(),quark_phi.end());
+	
+  	    L1jet_pt_float.assign(L1jet_pt.begin(),L1jet_pt.end());
+    	L1jet_eta_float.assign(L1jet_eta.begin(),L1jet_eta.end());
+    	L1jet_phi_float.assign(L1jet_phi.begin(),L1jet_phi.end());
+        L1jet_mass_float.assign(L1jet_mass.begin(),L1jet_mass.end());
 
-                    H_noFSR_pt.push_back(HVecNoFSR.Pt());
-                    H_noFSR_eta.push_back(HVecNoFSR.Eta());
-                    H_noFSR_phi.push_back(HVecNoFSR.Phi());
-                    H_noFSR_mass.push_back(HVecNoFSR.M());
-                    
-                    // check number of failing leptons
-                    if (1==1) { // at least one lepton has failed 
-                    } else { //  signal region candidate                    
-                        passedZ4lSelection = true;
-                        if(Z2Vec.M() > mZ2Low && passedTrig) passedFullSelection = true;
-                    }
-                    
-                } // found higgs candidate 
-                else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed higgs candidate"<<endl;}
-                 
-                if (verbose) cout<<"begin setting tree variables"<<endl;
-                setTreeVariables(iEvent, iSetup, selectedMuons, selectedElectrons, recoMuons, recoElectrons, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, selectedFsrMap);
-                if (verbose) cout<<"finshed setting tree variables"<<endl;
-            
-                
-                // Comput Matrix Elelements After filling jets, Do Kinematic fit, add scale factors
-                //if (foundHiggsCandidate || lep_pt.size()>=4) {
-                if(isCode4l) {
-//                 if(foundHiggsCandidate) {
-                    
-                    if (foundHiggsCandidate) {
-                        dataMCWeight = lep_dataMC[lep_Hindex[0]]*lep_dataMC[lep_Hindex[1]]*lep_dataMC[lep_Hindex[2]]*lep_dataMC[lep_Hindex[3]];
-                    } else {
-                        dataMCWeight = 1.0;
-                    }
-                    eventWeight = crossSection*pileupWeight*dataMCWeight*prefiringWeight;
-                    
-                        
-//                     dataMCWeight = lep_dataMC[lep_Hindex[0]]*lep_dataMC[lep_Hindex[1]]*lep_dataMC[lep_Hindex[2]]*lep_dataMC[lep_Hindex[3]];
-//                     eventWeight = genWeight*crossSection*pileupWeight*dataMCWeight*prefiringWeight;
-                                        
-                }
-                
-                if (verbose) cout<<"finshed setting weight with also lepton scale factor"<<endl;
+      	L1muon_pt_float.assign(L1muon_pt.begin(),L1muon_pt.end());
+      	L1muon_eta_float.assign(L1muon_eta.begin(),L1muon_eta.end());
+      	L1muon_phi_float.assign(L1muon_phi.begin(),L1muon_phi.end());
+      	L1muon_mass_float.assign(L1muon_mass.begin(),L1muon_mass.end());
 
-                if(isCode4l && foundHiggsCandidate) {
-                    
-                    TLorentzVector Lep1, Lep2, Lep3, Lep4,  Jet1, Jet2;
-                    if (foundHiggsCandidate) {
-                        Lep1.SetPtEtaPhiM(lepFSR_pt[lep_Hindex[0]],lepFSR_eta[lep_Hindex[0]],lepFSR_phi[lep_Hindex[0]],lepFSR_mass[lep_Hindex[0]]);
-                        Lep2.SetPtEtaPhiM(lepFSR_pt[lep_Hindex[1]],lepFSR_eta[lep_Hindex[1]],lepFSR_phi[lep_Hindex[1]],lepFSR_mass[lep_Hindex[1]]);
-                        Lep3.SetPtEtaPhiM(lepFSR_pt[lep_Hindex[2]],lepFSR_eta[lep_Hindex[2]],lepFSR_phi[lep_Hindex[2]],lepFSR_mass[lep_Hindex[2]]);
-                        Lep4.SetPtEtaPhiM(lepFSR_pt[lep_Hindex[3]],lepFSR_eta[lep_Hindex[3]],lepFSR_phi[lep_Hindex[3]],lepFSR_mass[lep_Hindex[3]]);
-                    } else {
-                        Lep1.SetPtEtaPhiM(lepFSR_pt[0],lepFSR_eta[0],lepFSR_phi[0],lepFSR_mass[0]);
-                        Lep2.SetPtEtaPhiM(lepFSR_pt[1],lepFSR_eta[1],lepFSR_phi[1],lepFSR_mass[1]);
-                        Lep3.SetPtEtaPhiM(lepFSR_pt[2],lepFSR_eta[2],lepFSR_phi[2],lepFSR_mass[2]);
-                        Lep4.SetPtEtaPhiM(lepFSR_pt[3],lepFSR_eta[3],lepFSR_phi[3],lepFSR_mass[3]);
-                    }
-                    
+		hltjetForBTag_pt_float.assign(hltjetForBTag_pt.begin(), hltjetForBTag_pt.end());
+		hltjetForBTag_eta_float.assign(hltjetForBTag_eta.begin(), hltjetForBTag_eta.end());
+		hltjetForBTag_phi_float.assign(hltjetForBTag_phi.begin(), hltjetForBTag_phi.end());
+		hltjetForBTag_mass_float.assign(hltjetForBTag_mass.begin(), hltjetForBTag_mass.end());
 
-                                    
-                    if (njets_pt30_eta4p7>=2) {                    
-                        float jetqgl0 =jet_QGTagger[jet1index]; 
-                        float jetqgl1 =jet_QGTagger[jet2index]; 
-                        if(jetqgl0<0.){ // if the q/g tagger has the error value (-1.), take a random one instead
-                            TRandom3 rand;
-                            rand.SetSeed(abs(static_cast<int>(sin(jet_phi[jet1index])*100000)));
-                            jetqgl0 = rand.Uniform();
-                        }
-                        if(jetqgl1<0.){ // if the q/g tagger has the error value (-1.), take a random one instead
-                            TRandom3 rand;
-                            rand.SetSeed(abs(static_cast<int>(sin(jet_phi[jet2index])*100000)));
-                            jetqgl1 = rand.Uniform();
-                        }
-                        
-                    }
-                    
-                    if (njets_pt30_eta4p7==1) {
-                        float jetqgl0 =jet_QGTagger[jet1index]; 
-                        if(jetqgl0<0.){ // if the q/g tagger has the error value (-1.), take a random one instead
-                            TRandom3 rand;
-                            rand.SetSeed(abs(static_cast<int>(sin(jet_phi[jet1index])*100000)));
-                            jetqgl0 = rand.Uniform();
-                        }
-//                         float jetPgOverPq0 = 1./jetqgl0- 1.;
-                    }
-                   
-                    if(njets_pt30_eta4p7>1){
-                        TLorentzVector jet1, jet2;
-                        jet1.SetPtEtaPhiM(jet_pt[jet1index],jet_eta[jet1index],jet_phi[jet1index],jet_mass[jet1index]);
-                        jet2.SetPtEtaPhiM(jet_pt[jet2index],jet_eta[jet2index],jet_phi[jet2index],jet_mass[jet2index]);
-                        TLorentzVector Dijet;
-                        Dijet = jet1+jet2; 
-                        DijetMass = Dijet.M();
-                        DijetDEta = fabs(jet1.Eta()-jet2.Eta());
-                        // OLD MORIOND --- FisherDiscrim = 0.09407*fabs(VBFDeltaEta) + 4.1581e-4*VBFDiJetMass;
-                        DijetFisher = 0.18*fabs(DijetDEta) + 1.92e-4*DijetMass;
-                    }
-                    
-                    // Double loop over jets, for V-jet tagging
-                    for (int i=0; i<njets_pt30_eta4p7; i++) {
-                        for (int j=i+1; j<njets_pt30_eta4p7; j++) {
-                            if (i==j) continue;
-                            TLorentzVector ijet, jjet;
-                            ijet.SetPtEtaPhiM(jet_pt[jet_iscleanH4l[i]],jet_eta[jet_iscleanH4l[i]],jet_phi[jet_iscleanH4l[i]],jet_mass[jet_iscleanH4l[i]]);
-                            jjet.SetPtEtaPhiM(jet_pt[jet_iscleanH4l[j]],jet_eta[jet_iscleanH4l[j]],jet_phi[jet_iscleanH4l[j]],jet_mass[jet_iscleanH4l[j]]);
-                            if (ijet.Pt()<40.0 || abs(ijet.Eta())>2.4) continue;
-                            if (jjet.Pt()<40.0 || abs(jjet.Eta())>2.4) continue;
-                            TLorentzVector Dijet;
-                            Dijet = ijet+jjet;
-                            double mass = Dijet.M();
-                            if (mass > 60 && mass < 120) nvjets_pt40_eta2p4++;            
-                        }
-                    }
-                  
-                    int sumplus=0; int summinus=0;
-                    int sumflavor=0;
-                    int noverlapping=0;
-                    for(unsigned int i = 0; i < lep_pt.size(); i++) {
-
-                        bool goodi=false;
-                        if ((int)i==lep_Hindex[0] || (int)i==lep_Hindex[1] || (int)i==lep_Hindex[2] || (int)i==lep_Hindex[3]) {
-                            goodi=true;
-                        } else {
-                            if ( (abs(lep_id[i])==11 && lep_tightId[i]==1 && lep_RelIsoNoFSR[i]<isoCutEl) || 
-                                 (abs(lep_id[i])==13 && lep_tightId[i]==1 && lep_RelIsoNoFSR[i]<isoCutMu) ) {
-                                goodi=true;
-                            }
-                        }
-                        if (!goodi) continue;
-                                                
-                        nisoleptons++;  
-
-                        if (lep_id[i]>0) sumplus++;
-                        if (lep_id[i]<0) summinus++;
-                        sumflavor+=lep_id[i];
-
-                        TLorentzVector lepi;
-                        lepi.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-
-                        float minDr=9999.0;
-                        for(unsigned int j = 0; j < lep_pt.size(); j++) {
-                        
-                            if (i==j) continue;
-
-                            bool goodj=false;
-                            if ((int)j==lep_Hindex[0] || (int)j==lep_Hindex[1] || (int)j==lep_Hindex[2] || (int)j==lep_Hindex[3]) {
-                                goodj=true;
-                            } else {
-                                if ( (abs(lep_id[j])==11 && lep_tightId[j]==1 && lep_RelIsoNoFSR[j]<isoCutEl) || 
-                                     (abs(lep_id[j])==13 && lep_tightId[j]==1 && lep_RelIsoNoFSR[j]<isoCutMu) ) {
-                                    goodj=true;
-                                }
-                            }
-                            if (!goodj) continue;
-                           
-                            TLorentzVector lepj;
-                            lepj.SetPtEtaPhiM(lep_pt[j],lep_eta[j],lep_phi[j],lep_mass[j]);
-                            float thisdR = lepi.DeltaR(lepj);
-                            if (thisdR<minDr) minDr=thisdR;
-                        }
-                        if (minDr<0.02) noverlapping+=1;
-                    }
-                    nisoleptons-=(noverlapping/2);
-                    
-                }
-
-                if (verbose) cout<<"before vector assign"<<std::endl;
-           
-                lep_d0BS_float.assign(lep_d0BS.begin(),lep_d0BS.end());
-                lep_d0PV_float.assign(lep_d0PV.begin(),lep_d0PV.end());
 				
-				lep_numberOfValidPixelHits_float.assign(lep_numberOfValidPixelHits.begin(),lep_numberOfValidPixelHits.end());
-				lep_trackerLayersWithMeasurement_float.assign(lep_trackerLayersWithMeasurement.begin(),lep_trackerLayersWithMeasurement.end());
+		hltAK4PFJetsCorrected_pt_float.assign(hltAK4PFJetsCorrected_pt.begin(), hltAK4PFJetsCorrected_pt.end());
+		hltAK4PFJetsCorrected_eta_float.assign(hltAK4PFJetsCorrected_eta.begin(), hltAK4PFJetsCorrected_eta.end());
+		hltAK4PFJetsCorrected_phi_float.assign(hltAK4PFJetsCorrected_phi.begin(), hltAK4PFJetsCorrected_phi.end());
+		hltAK4PFJetsCorrected_mass_float.assign(hltAK4PFJetsCorrected_mass.begin(), hltAK4PFJetsCorrected_mass.end());
 
-                lep_pt_UnS_float.assign(lep_pt_UnS.begin(),lep_pt_UnS.end());
-                lep_pterrold_UnS_float.assign(lep_pterrold_UnS.begin(),lep_pterrold_UnS.end());
-                lep_errPre_Scale_float.assign(lep_errPre_Scale.begin(),lep_errPre_Scale.end());
-                lep_errPost_Scale_float.assign(lep_errPost_Scale.begin(),lep_errPost_Scale.end());
-                lep_errPre_noScale_float.assign(lep_errPre_noScale.begin(),lep_errPre_noScale.end());
-                lep_errPost_noScale_float.assign(lep_errPost_noScale.begin(),lep_errPost_noScale.end());
+        AK4PuppiJets_pt_float.assign(AK4PuppiJets_pt.begin(), AK4PuppiJets_pt.end()); 
+        AK4PuppiJets_eta_float.assign(AK4PuppiJets_eta.begin(), AK4PuppiJets_eta.end()); 
+        AK4PuppiJets_phi_float.assign(AK4PuppiJets_phi.begin(), AK4PuppiJets_phi.end()); 
+        AK4PuppiJets_mass_float.assign(AK4PuppiJets_mass.begin(), AK4PuppiJets_mass.end());
 
+	AK8PuppiJets_pt_float.assign(AK8PuppiJets_pt.begin(), AK8PuppiJets_pt.end()); 
+	AK8PuppiJets_eta_float.assign(AK8PuppiJets_eta.begin(), AK8PuppiJets_eta.end()); 
+        AK8PuppiJets_phi_float.assign(AK8PuppiJets_phi.begin(), AK8PuppiJets_phi.end()); 
+        AK8PuppiJets_mass_float.assign(AK8PuppiJets_mass.begin(), AK8PuppiJets_mass.end());
 
-                lep_pt_genFromReco_float.assign(lep_pt_genFromReco.begin(),lep_pt_genFromReco.end());
-                lep_pt_float.assign(lep_pt.begin(),lep_pt.end());
-                lep_p_float.assign(lep_p.begin(),lep_p.end());
-                lep_ecalEnergy_float.assign(lep_ecalEnergy.begin(),lep_ecalEnergy.end());                
-                lep_pterr_float.assign(lep_pterr.begin(),lep_pterr.end());
-                lep_pterrold_float.assign(lep_pterrold.begin(),lep_pterrold.end());
-                lep_eta_float.assign(lep_eta.begin(),lep_eta.end());
-                lep_phi_float.assign(lep_phi.begin(),lep_phi.end());
-                lep_mass_float.assign(lep_mass.begin(),lep_mass.end());
-                lepFSR_pt_float.assign(lepFSR_pt.begin(),lepFSR_pt.end());
-                lepFSR_eta_float.assign(lepFSR_eta.begin(),lepFSR_eta.end());
-                lepFSR_phi_float.assign(lepFSR_phi.begin(),lepFSR_phi.end());
-                lepFSR_mass_float.assign(lepFSR_mass.begin(),lepFSR_mass.end());
-                tau_pt_float.assign(tau_pt.begin(),tau_pt.end());
-                tau_eta_float.assign(tau_eta.begin(),tau_eta.end());
-                tau_phi_float.assign(tau_phi.begin(),tau_phi.end());
-                tau_mass_float.assign(tau_mass.begin(),tau_mass.end());
-                pho_pt_float.assign(pho_pt.begin(),pho_pt.end());
-                pho_eta_float.assign(pho_eta.begin(),pho_eta.end());
-                pho_phi_float.assign(pho_phi.begin(),pho_phi.end());
-                photonCutBasedIDLoose_float.assign(photonCutBasedIDLoose.begin(),photonCutBasedIDLoose.end());
-                H_pt_float.assign(H_pt.begin(),H_pt.end());
-                H_eta_float.assign(H_eta.begin(),H_eta.end());
-                H_phi_float.assign(H_phi.begin(),H_phi.end());
-                H_mass_float.assign(H_mass.begin(),H_mass.end());
-                H_noFSR_pt_float.assign(H_noFSR_pt.begin(),H_noFSR_pt.end());
-                H_noFSR_eta_float.assign(H_noFSR_eta.begin(),H_noFSR_eta.end());
-                H_noFSR_phi_float.assign(H_noFSR_phi.begin(),H_noFSR_phi.end());
-                H_noFSR_mass_float.assign(H_noFSR_mass.begin(),H_noFSR_mass.end());
-                Z_pt_float.assign(Z_pt.begin(),Z_pt.end());
-                Z_eta_float.assign(Z_eta.begin(),Z_eta.end());
-                Z_phi_float.assign(Z_phi.begin(),Z_phi.end());
-                Z_mass_float.assign(Z_mass.begin(),Z_mass.end());
-                Z_noFSR_pt_float.assign(Z_noFSR_pt.begin(),Z_noFSR_pt.end());
-                Z_noFSR_eta_float.assign(Z_noFSR_eta.begin(),Z_noFSR_eta.end());
-                Z_noFSR_phi_float.assign(Z_noFSR_phi.begin(),Z_noFSR_phi.end());
-                Z_noFSR_mass_float.assign(Z_noFSR_mass.begin(),Z_noFSR_mass.end());
-                jet_pt_float.assign(jet_pt.begin(),jet_pt.end());
-                jet_pt_raw_float.assign(jet_pt_raw.begin(),jet_pt_raw.end());
-                jet_eta_float.assign(jet_eta.begin(),jet_eta.end());
-                jet_phi_float.assign(jet_phi.begin(),jet_phi.end());
-                jet_mass_float.assign(jet_mass.begin(),jet_mass.end());
-                jet_csv_cTag_vsL_float.assign(jet_csv_cTag_vsL.begin(),jet_csv_cTag_vsL.end());
-                jet_csv_cTag_vsB_float.assign(jet_csv_cTag_vsB.begin(),jet_csv_cTag_vsB.end());                
-                jet_jesup_pt_float.assign(jet_jesup_pt.begin(),jet_jesup_pt.end());
-                jet_jesup_eta_float.assign(jet_jesup_eta.begin(),jet_jesup_eta.end());
-                jet_jesup_phi_float.assign(jet_jesup_phi.begin(),jet_jesup_phi.end());
-                jet_jesup_mass_float.assign(jet_jesup_mass.begin(),jet_jesup_mass.end());
-                jet_jesdn_pt_float.assign(jet_jesdn_pt.begin(),jet_jesdn_pt.end());
-                jet_jesdn_eta_float.assign(jet_jesdn_eta.begin(),jet_jesdn_eta.end());
-                jet_jesdn_phi_float.assign(jet_jesdn_phi.begin(),jet_jesdn_phi.end());
-                jet_jesdn_mass_float.assign(jet_jesdn_mass.begin(),jet_jesdn_mass.end());
-                jet_jerup_pt_float.assign(jet_jerup_pt.begin(),jet_jerup_pt.end());
-                jet_jerup_eta_float.assign(jet_jerup_eta.begin(),jet_jerup_eta.end());
-                jet_jerup_phi_float.assign(jet_jerup_phi.begin(),jet_jerup_phi.end());
-                jet_jerup_mass_float.assign(jet_jerup_mass.begin(),jet_jerup_mass.end());
-                jet_jerdn_pt_float.assign(jet_jerdn_pt.begin(),jet_jerdn_pt.end());
-                jet_jerdn_eta_float.assign(jet_jerdn_eta.begin(),jet_jerdn_eta.end());
-                jet_jerdn_phi_float.assign(jet_jerdn_phi.begin(),jet_jerdn_phi.end());
-                jet_jerdn_mass_float.assign(jet_jerdn_mass.begin(),jet_jerdn_mass.end());
-                fsrPhotons_pt_float.assign(fsrPhotons_pt.begin(),fsrPhotons_pt.end());
-                fsrPhotons_pterr_float.assign(fsrPhotons_pterr.begin(),fsrPhotons_pterr.end());
-                fsrPhotons_eta_float.assign(fsrPhotons_eta.begin(),fsrPhotons_eta.end());
-                fsrPhotons_phi_float.assign(fsrPhotons_phi.begin(),fsrPhotons_phi.end());
-                fsrPhotons_mass_float.assign(fsrPhotons_mass.begin(),fsrPhotons_mass.end());
 //   if(iEvent.id().event() > 709310)
 // 	std::cout<<"PIPPO\t before filling 11\n";				                                  
               
-                if (!isMC) passedEventsTree_All->Fill();        
-                                
-            } // 2 tight ID
-            else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed  ntight ID"<<endl;}
-            
-            
-        } //if 2 lepID
-        else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed  nloose ID"<<endl;}  
-  
+        //if (!isMC && passedFullSelection==true) passedEventsTree_All->Fill();        
+        if (!isMC) passedEventsTree_All->Fill();        
     }    //primary vertex,notDuplicate
     else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed primary vertex"<<endl;}
     
-    GENlep_pt_float.clear(); GENlep_pt_float.assign(GENlep_pt.begin(),GENlep_pt.end());
-    GENlep_eta_float.clear(); GENlep_eta_float.assign(GENlep_eta.begin(),GENlep_eta.end());
-    GENlep_phi_float.clear(); GENlep_phi_float.assign(GENlep_phi.begin(),GENlep_phi.end());
-    GENlep_mass_float.clear(); GENlep_mass_float.assign(GENlep_mass.begin(),GENlep_mass.end());
-    GENH_pt_float.clear(); GENH_pt_float.assign(GENH_pt.begin(),GENH_pt.end());
-    GENH_eta_float.clear(); GENH_eta_float.assign(GENH_eta.begin(),GENH_eta.end());
-    GENH_phi_float.clear(); GENH_phi_float.assign(GENH_phi.begin(),GENH_phi.end());
-    GENH_mass_float.clear(); GENH_mass_float.assign(GENH_mass.begin(),GENH_mass.end());
-    GENZ_pt_float.clear(); GENZ_pt_float.assign(GENZ_pt.begin(),GENZ_pt.end());
-    GENZ_eta_float.clear(); GENZ_eta_float.assign(GENZ_eta.begin(),GENZ_eta.end());
-    GENZ_phi_float.clear(); GENZ_phi_float.assign(GENZ_phi.begin(),GENZ_phi.end());
-    GENZ_mass_float.clear(); GENZ_mass_float.assign(GENZ_mass.begin(),GENZ_mass.end());
     GENjet_pt_float.clear(); GENjet_pt_float.assign(GENjet_pt.begin(),GENjet_pt.end());
     GENjet_eta_float.clear(); GENjet_eta_float.assign(GENjet_eta.begin(),GENjet_eta.end());
     GENjet_phi_float.clear(); GENjet_phi_float.assign(GENjet_phi.begin(),GENjet_phi.end());
     GENjet_mass_float.clear(); GENjet_mass_float.assign(GENjet_mass.begin(),GENjet_mass.end());
  
-    if (isMC) passedEventsTree_All->Fill();
+    //if (isMC && passedFullSelection==true) passedEventsTree_All->Fill();
+    if (isMC ) passedEventsTree_All->Fill();
     
     if (nEventsTotal==1000.0) passedEventsTree_All->OptimizeBaskets();
     
@@ -2301,9 +1923,10 @@ UFHZZ4LAna::beginJob()
     using namespace edm;
     using namespace std;
     using namespace pat;
-
+		
+		
     bookPassedEventTree("passedEvents", passedEventsTree_All);
-
+		
     firstEntry = true;
 
 }
@@ -2406,6 +2029,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("LumiSect",&LumiSect,"LumiSect/l");
     tree->Branch("nVtx",&nVtx,"nVtx/I");
     tree->Branch("nInt",&nInt,"nInt/I");
+	tree->Branch("puN", &puN, "puN/I");
     tree->Branch("PV_x", &PV_x, "PV_x/F");
     tree->Branch("PV_y", &PV_y, "PV_y/F");
     tree->Branch("PV_z", &PV_z, "PV_z/F");
@@ -2422,11 +2046,16 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("finalState",&finalState,"finalState/I");
     tree->Branch("triggersPassed",&triggersPassed);
     tree->Branch("passedTrig",&passedTrig,"passedTrig/O");
-    tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");
+    tree->Branch("Trigger_l1name",&Trigger_l1name);
+    tree->Branch("Trigger_l1decision",&Trigger_l1decision);
+	tree->Branch("Trigger_hltname",&Trigger_hltname);
+    tree->Branch("Trigger_hltdecision",&Trigger_hltdecision);
+		
+
+    /*tree->Branch("passedFullSelection",&passedFullSelection,"passedFullSelection/O");
     tree->Branch("passedZ4lSelection",&passedZ4lSelection,"passedZ4lSelection/O");
     tree->Branch("passedQCDcut",&passedQCDcut,"passedQCDcut/O");
     tree->Branch("genWeight",&genWeight,"genWeight/F");
-    tree->Branch("k_ggZZ",&k_ggZZ,"k_ggZZ/F");
     tree->Branch("k_qqZZ_qcd_dPhi",&k_qqZZ_qcd_dPhi,"k_qqZZ_qcd_dPhi/F");
     tree->Branch("k_qqZZ_qcd_M",&k_qqZZ_qcd_M,"k_qqZZ_qcd_M/F");
     tree->Branch("k_qqZZ_qcd_Pt",&k_qqZZ_qcd_Pt,"k_qqZZ_qcd_Pt/F");
@@ -2466,16 +2095,16 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("lep_errPost_noScale",&lep_errPost_noScale_float);
 
 
-    tree->Branch("lep_pt_genFromReco",&lep_pt_genFromReco_float);
+    tree->Branch("lep_pt_genFromReco",&lep_pt_genFromReco_float);*/
 
-    tree->Branch("lep_id",&lep_id);
+    tree->Branch("lep_id",&lep_ID);
     tree->Branch("lep_pt",&lep_pt_float);
-    tree->Branch("lep_pterr",&lep_pterr_float);
-    tree->Branch("lep_pterrold",&lep_pterrold_float);
+    //tree->Branch("lep_pterr",&lep_pterr_float);
+    //tree->Branch("lep_pterrold",&lep_pterrold_float);
     tree->Branch("lep_eta",&lep_eta_float);
     tree->Branch("lep_phi",&lep_phi_float);
     tree->Branch("lep_mass",&lep_mass_float);
-    tree->Branch("lepFSR_pt",&lepFSR_pt_float);
+    /*tree->Branch("lepFSR_pt",&lepFSR_pt_float);
     tree->Branch("lepFSR_eta",&lepFSR_eta_float);
     tree->Branch("lepFSR_phi",&lepFSR_phi_float);
     tree->Branch("lepFSR_mass",&lepFSR_mass_float);
@@ -2561,7 +2190,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("massZ1_Z1L",&massZ1_Z1L,"massZ1_Z1L/F");
     tree->Branch("massZ2",&massZ2,"massZ2/F");  
     tree->Branch("pTZ1",&pTZ1,"pTZ1/F");
-    tree->Branch("pTZ2",&pTZ2,"pTZ2/F");
+    tree->Branch("pTZ2",&pTZ2,"pTZ2/F");*/
 
     // MET
     tree->Branch("met",&met,"met/F");
@@ -2576,22 +2205,23 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("met_phi_uncendn",&met_phi_uncendn,"met_phi_uncendn/F");
 
     // Jets
-    tree->Branch("jet_iscleanH4l",&jet_iscleanH4l);
-    tree->Branch("jet1index",&jet1index,"jet1index/I");
-    tree->Branch("jet2index",&jet2index,"jet2index/I");
+    tree->Branch("n_jets", &n_jets);
+    //tree->Branch("jet_iscleanH4l",&jet_iscleanH4l);
+    //tree->Branch("jet1index",&jet1index,"jet1index/I");
+    //tree->Branch("jet2index",&jet2index,"jet2index/I");
     tree->Branch("jet_pt",&jet_pt_float);
-    tree->Branch("jet_pt_raw",&jet_pt_raw_float);
-    tree->Branch("jet_relpterr",&jet_relpterr);    
+    //tree->Branch("jet_pt_raw",&jet_pt_raw_float);
+    //tree->Branch("jet_relpterr",&jet_relpterr);    
     tree->Branch("jet_eta",&jet_eta_float);
     tree->Branch("jet_phi",&jet_phi_float);
-    tree->Branch("jet_phierr",&jet_phierr);
+    //tree->Branch("jet_phierr",&jet_phierr);
     tree->Branch("jet_csv_cTag_vsL",&jet_csv_cTag_vsL_float);
     tree->Branch("jet_csv_cTag_vsB",&jet_csv_cTag_vsB_float);
-    tree->Branch("jet_bTagEffi",&jet_bTagEffi);
-    tree->Branch("jet_cTagEffi",&jet_cTagEffi);
-    tree->Branch("jet_udsgTagEffi",&jet_udsgTagEffi);
+    //tree->Branch("jet_bTagEffi",&jet_bTagEffi);
+    //tree->Branch("jet_cTagEffi",&jet_cTagEffi);
+    //tree->Branch("jet_udsgTagEffi",&jet_udsgTagEffi);
     tree->Branch("jet_mass",&jet_mass_float);    
-    tree->Branch("jet_jesup_iscleanH4l",&jet_jesup_iscleanH4l);
+    /*tree->Branch("jet_jesup_iscleanH4l",&jet_jesup_iscleanH4l);
     tree->Branch("jet_jesup_pt",&jet_jesup_pt_float);
     tree->Branch("jet_jesup_eta",&jet_jesup_eta_float);
     tree->Branch("jet_jesup_phi",&jet_jesup_phi_float);
@@ -2613,9 +2243,13 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("jet_jerdn_mass",&jet_jerdn_mass_float);
     tree->Branch("jet_pumva",&jet_pumva);
     tree->Branch("jet_csvv2",&jet_csvv2);
-    tree->Branch("jet_csvv2_",&jet_csvv2_);
+    tree->Branch("jet_csvv2_",&jet_csvv2_);*/
     tree->Branch("jet_isbtag",&jet_isbtag);
-    tree->Branch("jet_hadronFlavour",&jet_hadronFlavour);
+	tree->Branch("jet_pfDeepCSVJetTags_probb", &jet_pfDeepCSVJetTags_probb);
+	tree->Branch("jet_pfDeepFlavourJetTags_probbb", &jet_pfDeepFlavourJetTags_probbb);
+	tree->Branch("jet_pfDeepFlavourJetTags_probc", &jet_pfDeepFlavourJetTags_probc);
+	tree->Branch("jet_pfDeepFlavourJetTags_probuds",&jet_pfDeepFlavourJetTags_probuds);
+    /*tree->Branch("jet_hadronFlavour",&jet_hadronFlavour);
     tree->Branch("jet_partonFlavour",&jet_partonFlavour);    
     tree->Branch("jet_QGTagger",&jet_QGTagger);
     tree->Branch("jet_QGTagger_jesup",&jet_QGTagger_jesup);
@@ -2657,11 +2291,76 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("pt_leadingjet_pt30_eta2p5_jesup",&pt_leadingjet_pt30_eta2p5_jesup,"pt_leadingjet_pt30_eta2p5_jesup/F");
     tree->Branch("pt_leadingjet_pt30_eta2p5_jesdn",&pt_leadingjet_pt30_eta2p5_jesdn,"pt_leadingjet_pt30_eta2p5_jesdn/F");
     tree->Branch("pt_leadingjet_pt30_eta2p5_jerup",&pt_leadingjet_pt30_eta2p5_jerup,"pt_leadingjet_pt30_eta2p5_jerup/F");
-    tree->Branch("pt_leadingjet_pt30_eta2p5_jerdn",&pt_leadingjet_pt30_eta2p5_jerdn,"pt_leadingjet_pt30_eta2p5_jerdn/F");
+    tree->Branch("pt_leadingjet_pt30_eta2p5_jerdn",&pt_leadingjet_pt30_eta2p5_jerdn,"pt_leadingjet_pt30_eta2p5_jerdn/F");*/
+
+	// Puppi AK4jets with ParticleNet taggers
+	tree->Branch("AK4PuppiJets_pt",&AK4PuppiJets_pt_float);
+	tree->Branch("AK4PuppiJets_eta",&AK4PuppiJets_eta_float);
+	tree->Branch("AK4PuppiJets_phi",&AK4PuppiJets_phi_float);
+	tree->Branch("AK4PuppiJets_mass",&AK4PuppiJets_mass_float);
+    
+    tree->Branch("jet_pfParticleNetAK4JetTags_probb", &jet_pfParticleNetAK4JetTags_probb);	
+    tree->Branch("jet_pfParticleNetAK4JetTags_probc", &jet_pfParticleNetAK4JetTags_probc);	
+    tree->Branch("jet_pfParticleNetAK4JetTags_probuds", &jet_pfParticleNetAK4JetTags_probuds);	
+    tree->Branch("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg);	
+    tree->Branch("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh);
+
+	// Puppi AK8jets with ParticleNet taggers
+	tree->Branch("AK8PuppiJets_pt",&AK8PuppiJets_pt_float);	
+	tree->Branch("AK8PuppiJets_eta",&AK8PuppiJets_eta_float);
+	tree->Branch("AK8PuppiJets_phi",&AK8PuppiJets_phi_float);
+	tree->Branch("AK8PuppiJets_mass",&AK8PuppiJets_mass_float);
+	
+	   tree->Branch("jet_pfParticleNetJetTags_probZbb", &jet_pfParticleNetJetTags_probZbb);
+	tree->Branch("jet_pfParticleNetJetTags_probZcc", &jet_pfParticleNetJetTags_probZcc);
+	tree->Branch("jet_pfParticleNetJetTags_probZqq", &jet_pfParticleNetJetTags_probZqq);
+	tree->Branch("jet_pfParticleNetJetTags_probQCDbb", &jet_pfParticleNetJetTags_probQCDbb);
+	tree->Branch("jet_pfParticleNetJetTags_probQCDcc", &jet_pfParticleNetJetTags_probQCDcc);
+	tree->Branch("jet_pfParticleNetJetTags_probQCDb", &jet_pfParticleNetJetTags_probQCDb);
+	tree->Branch("jet_pfParticleNetJetTags_probQCDc", &jet_pfParticleNetJetTags_probQCDc);
+	tree->Branch("jet_pfParticleNetJetTags_probQCDothers", &jet_pfParticleNetJetTags_probQCDothers);
+	tree->Branch("jet_pfParticleNetJetTags_probHbb", &jet_pfParticleNetJetTags_probHbb);
+	tree->Branch("jet_pfParticleNetJetTags_probHcc", &jet_pfParticleNetJetTags_probHcc);
+	tree->Branch("jet_pfParticleNetJetTags_probHqqqq", &jet_pfParticleNetJetTags_probHqqqq);
+
+    //hlt jets
+	tree->Branch("hltjetForBTag_pt",&hltjetForBTag_pt_float);
+	tree->Branch("hltjetForBTag_eta",&hltjetForBTag_eta_float);
+	tree->Branch("hltjetForBTag_phi",&hltjetForBTag_phi_float);
+	tree->Branch("hltjetForBTag_mass",&hltjetForBTag_mass_float);
+	tree->Branch("hltjetForBTag_ParticleNet_probb",&hltParticleNetONNXJetTags_probb);
+	tree->Branch("hltjetForBTag_ParticleNet_probc",&hltParticleNetONNXJetTags_probc);
+	tree->Branch("hltjetForBTag_ParticleNet_probuds",&hltParticleNetONNXJetTags_probuds);
+	tree->Branch("hltjetForBTag_ParticleNet_probg",&hltParticleNetONNXJetTags_probg);
+	tree->Branch("hltjetForBTag_ParticleNet_probtauh",&hltParticleNetONNXJetTags_probtauh);
+
+	//hltAK4PFJetsCorrected
+
+	tree->Branch("hltAK4PFJetsCorrected_pt",&hltAK4PFJetsCorrected_pt_float);
+	tree->Branch("hltAK4PFJetsCorrected_eta",&hltAK4PFJetsCorrected_eta_float);
+	tree->Branch("hltAK4PFJetsCorrected_phi",&hltAK4PFJetsCorrected_phi_float);
+	tree->Branch("hltAK4PFJetsCorrected_mass",&hltAK4PFJetsCorrected_mass_float);
+
+	//L1 jets
+	tree->Branch("L1jet_pt",&L1jet_pt_float);
+	tree->Branch("L1jet_eta",&L1jet_eta_float);
+	tree->Branch("L1jet_phi",&L1jet_phi_float);
+	tree->Branch("L1jet_mass",&L1jet_mass_float);
+	
+	//L1 muons
+	tree->Branch("L1muon_pt",&L1muon_pt_float);
+	tree->Branch("L1muon_eta",&L1muon_eta_float);
+	tree->Branch("L1muon_phi",&L1muon_phi_float);
+	tree->Branch("L1muon_mass",&L1muon_mass_float);
+	tree->Branch("L1muon_qual",&L1muon_qual);
+		
+	//L1 HT
+	tree->Branch("L1ht",&L1ht, "L1ht/F");
+		
 
 
     // merged jets
-    tree->Branch("mergedjet_iscleanH4l",&mergedjet_iscleanH4l);
+    /*tree->Branch("mergedjet_iscleanH4l",&mergedjet_iscleanH4l);
     tree->Branch("mergedjet_pt",&mergedjet_pt);
     tree->Branch("mergedjet_eta",&mergedjet_eta);
     tree->Branch("mergedjet_phi",&mergedjet_phi);
@@ -2768,14 +2467,23 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("GENpTZZ",&GENpTZZ,"GENpTZZ/F");
 
     // Higgs variables directly from GEN particle
-    tree->Branch("GENHmass",&GENHmass,"GENHmass/F");
+    tree->Branch("GENHmass",&GENHmass,"GENHmass/F");*/
+
+	//quark
+	tree->Branch("quark_pt", &quark_pt_float);
+    tree->Branch("quark_eta", &quark_eta_float);
+    tree->Branch("quark_phi", &quark_phi_float);
+    tree->Branch("quark_flavour", &quark_flavour);
+    tree->Branch("quark_VBF", &quark_VBF);
+
 
     // Jets
+    tree->Branch("n_GENjets", &n_GENjets);
     tree->Branch("GENjet_pt",&GENjet_pt_float);
     tree->Branch("GENjet_eta",&GENjet_eta_float);
     tree->Branch("GENjet_phi",&GENjet_phi_float);
     tree->Branch("GENjet_mass",&GENjet_mass_float);
-    tree->Branch("GENnjets_pt30_eta4p7",&GENnjets_pt30_eta4p7,"GENnjets_pt30_eta4p7/I");
+    /*tree->Branch("GENnjets_pt30_eta4p7"iamate hltParticleNetONNXJetTags:probtauh&GENnjets_pt30_eta4p7,"GENnjets_pt30_eta4p7/I");
     tree->Branch("GENpt_leadingjet_pt30_eta4p7",&GENpt_leadingjet_pt30_eta4p7,"GENpt_leadingjet_pt30_eta4p7/F");
     tree->Branch("GENabsrapidity_leadingjet_pt30_eta4p7",&GENabsrapidity_leadingjet_pt30_eta4p7,"GENabsrapidity_leadingjet_pt30_eta4p7/F");
     tree->Branch("GENabsdeltarapidity_hleadingjet_pt30_eta4p7",&GENabsdeltarapidity_hleadingjet_pt30_eta4p7,"GENabsdeltarapidity_hleadingjet_pt30_eta4p7/F");
@@ -2783,19 +2491,39 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("GENpt_leadingjet_pt30_eta2p5",&GENpt_leadingjet_pt30_eta2p5,"GENpt_leadingjet_pt30_eta2p5/F");
     tree->Branch("lheNj",&lheNj,"lheNj/I");
     tree->Branch("lheNb",&lheNb,"lheNb/I");
-    tree->Branch("nGenStatus2bHad",&nGenStatus2bHad,"nGenStatus2bHad/I");
+    tree->Branch("nGenStatus2bHad",&nGenStatus2bHad,"nGenStatus2bHad/I");*/
 
 
 
 }
 
-void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& iSetup,
+/*void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& iSetup,
                                    std::vector<pat::Muon> selectedMuons, std::vector<pat::Electron> selectedElectrons, 
                                    std::vector<pat::Muon> recoMuons, std::vector<pat::Electron> recoElectrons, 
                                    std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger, 
                                    std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                                    std::vector<pat::Jet> selectedMergedJets,
-                                   std::map<unsigned int, TLorentzVector> selectedFsrMap)
+                                   std::map<unsigned int, TLorentzVector> selectedFsrMap)*/
+void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSetup& iSetup,
+                                   std::vector<pat::Jet> goodJets, std::vector<float> goodJetQGTagger,
+                                   std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
+                                   std::vector<pat::Jet> selectedMergedJets,
+                                   edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
+				edm::Handle<edm::View<pat::Jet> > AK8PuppiJets,
+                                 //edm::Handle<std::vector<reco::PFJet>> hltjets,
+                                 //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
+                                 //edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
+                                 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobc,
+                                 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobb,
+                                 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobuds,
+                                 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobg,
+                                 //edm::Handle<reco::JetTagCollection> pfJetTagCollectionParticleNetprobtauh,
+                                   edm::Handle<BXVector<l1t::Jet> > bxvCaloJets,
+                                   edm::Handle<BXVector<l1t::Muon> > bxvCaloMuons,
+                                   edm::Handle<BXVector<l1t::EtSum> > bxvCaloHT,
+                                 //edm::Handle<edm::View<pat::Muon> > muons,
+                                 //edm::Handle<edm::View<pat::Electron> > electrons)
+                                   std::vector<pat::Muon> AllMuons, std::vector<pat::Electron> AllElectrons)
 {
 
    
@@ -2808,421 +2536,220 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
     double tempDeltaR = 999.0;
     //std::cout<<"ELISA = "<<"good jets "<<goodJets.size()<<std::endl;
     for( unsigned int k = 0; k < goodJets.size(); k++) {
-
-        if (verbose) cout<<"jet pt: "<<goodJets[k].pt()<<" eta: "<<goodJets[k].eta()<<" phi: "<<goodJets[k].phi()<<endl;
-
-        bool isclean_H4l = true;
-
-        // check overlap with tight ID isolated leptons OR higgs candidate leptons
-        unsigned int Nleptons = lep_pt.size();
-        for (unsigned int i=0; i<Nleptons; i++) {
-        //std::cout<<"ELISA = "<<abs(lep_id[i])<<"\t"<<lep_pt.at(i)<<"\t"<<lep_eta.at(i)<<"\t"<<lep_phi.at(i)<<"\t ISO = "<<lep_RelIsoNoFSR[i]<<"\t tight = "<<lep_tightId[i]<<std::endl;           
-            bool passed_idiso=true;
-            if (abs(lep_id[i])==13 && lep_RelIso[i]>isoCutMu) passed_idiso=false;
-            if (abs(lep_id[i])==11 && lep_RelIso[i]>isoCutEl) passed_idiso=false;
-            if (!(lep_tightId[i])) passed_idiso=false;
-            if (!passed_idiso) continue;
-            TLorentzVector thisLep;
-            thisLep.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-            tempDeltaR=999.0;
-            tempDeltaR=deltaR(goodJets[k].eta(),goodJets[k].phi(),thisLep.Eta(),thisLep.Phi());
-            if (verbose) cout<<" jet DeltaR between Lep"<<i<<" : "<<tempDeltaR;
-            //std::cout<<"ELISA = "<<abs(lep_id[i])<<"\t"<<thisLep.Pt()<<"\t"<<thisLep.Eta()<<"\t"<<thisLep.Phi()<<"\t deltaR = "<<tempDeltaR<<std::endl;
-            if (tempDeltaR<0.4) {
-                isclean_H4l = false;
-            }
-            //std::cout<<"ELISA ------ "<<std::endl;
+			jet_pt.push_back(goodJets[k].pt());
+      jet_pt_raw.push_back(goodJets[k].pt());///jet Pt without JEC applied
+      jet_eta.push_back(goodJets[k].eta());
+      jet_phi.push_back(goodJets[k].phi());
+      jet_mass.push_back(goodJets[k].mass());
+      jet_csv_cTag_vsL.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probuds") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probg")) );
+      jet_csv_cTag_vsB.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probbb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:problepb")) );
+			if ((goodJets[k].bDiscriminator("pfDeepCSVJetTags:probb")+goodJets[k].bDiscriminator("pfDeepCSVJetTags:probbb"))>BTagCut) {
+      	jet_isbtag.push_back(1);
+      } else {
+      	jet_isbtag.push_back(0);
+      }
+			jet_pfDeepCSVJetTags_probb.push_back(goodJets[k].bDiscriminator("pfDeepCSVJetTags:probb"));
+			jet_pfDeepFlavourJetTags_probbb.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probbb"));
+			jet_pfDeepFlavourJetTags_probc.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc"));
+			jet_pfDeepFlavourJetTags_probuds.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probuds"));
+			
+      for(unsigned int imu=0; imu<AllMuons.size(); imu++){
+        double this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), AllMuons[imu].eta(), AllMuons[imu].phi());
+        if(this_dR_jetLep<0.6){
+          lep_pt.push_back(AllMuons[imu].pt());
+          lep_eta.push_back(AllMuons[imu].eta());
+          lep_phi.push_back(AllMuons[imu].phi());
+          lep_mass.push_back(AllMuons[imu].mass());
+          lep_ID.push_back(AllMuons[imu].pdgId());
         }
-        //std::cout<<"ELISA ----------------- "<<std::endl;
+      }
 
-        // check overlap with fsr photons
-        unsigned int N = fsrPhotons_pt.size();
-        for(unsigned int i=0; i<N; i++) {
-            // don't clean jet from fsr if the photon wasn't matched to tight Id and Isolated lepton
-            if (!lep_tightId[fsrPhotons_lepindex[i]]) continue;
-            double RelIsoNoFSR=lep_RelIsoNoFSR[fsrPhotons_lepindex[i]];
-            if (RelIsoNoFSR>((abs(lep_id[fsrPhotons_lepindex[i]])==11) ? isoCutEl : isoCutMu)) continue;
-
-            TLorentzVector pho;
-            pho.SetPtEtaPhiM(fsrPhotons_pt[i],fsrPhotons_eta[i],fsrPhotons_phi[i],0.0);
-            tempDeltaR=999.0;
-            tempDeltaR=deltaR(goodJets[k].eta(),goodJets[k].phi(),pho.Eta(),pho.Phi());
-            if (verbose) cout<<" jet DeltaR between pho"<<i<<" : "<<tempDeltaR;
-            if (tempDeltaR<0.4) {
-                isclean_H4l = false;
-            }
-        }
-
-		JME::JetParameters parameters;
-        parameters.setJetPt(goodJets[k].pt());
-        parameters.setJetEta(goodJets[k].eta());
-        parameters.setRho(muRho);
-        float relpterr = resolution_pt.getResolution(parameters);
-        float phierr = resolution_phi.getResolution(parameters);
-        
-        double jercorr = 1.0; double jercorrup = 1.0; double jercorrdn = 1.0;
-        
-        if (isMC && doJER) {
-            JME::JetParameters sf_parameters = {{JME::Binning::JetPt, goodJets[k].pt()}, {JME::Binning::JetEta, goodJets[k].eta()}, {JME::Binning::Rho, muRho}};
-            float factor = resolution_sf.getScaleFactor(sf_parameters);
-            float factorup = resolution_sf.getScaleFactor(sf_parameters, Variation::UP);
-            float factordn = resolution_sf.getScaleFactor(sf_parameters, Variation::DOWN);
-            
-            double pt_jer, pt_jerup, pt_jerdn;
-            const reco::GenJet * genJet = goodJets[k].genJet();
-            if (genJet && deltaR(goodJets[k].eta(),goodJets[k].phi(),genJet->eta(),genJet->phi())<0.2
-                && (abs(goodJets[k].pt()-genJet->pt())<3*relpterr*goodJets[k].pt())) {
-                double gen_pt = genJet->pt();
-                pt_jer = max(0.0,gen_pt+factor*(goodJets[k].pt()-gen_pt));
-                pt_jerup = max(0.0,gen_pt+factorup*(goodJets[k].pt()-gen_pt));
-                pt_jerdn = max(0.0,gen_pt+factordn*(goodJets[k].pt()-gen_pt));
-            } else {
-                TRandom3 rand;
-                rand.SetSeed(abs(static_cast<int>(sin(goodJets[k].phi())*100000)));
-                float smear = rand.Gaus(0,1.0);
-                float sigma = sqrt(factor*factor-1.0)*relpterr*goodJets[k].pt();
-                float sigmaup = sqrt(factorup*factorup-1.0)*relpterr*goodJets[k].pt();
-                float sigmadn = sqrt(factordn*factordn-1.0)*relpterr*goodJets[k].pt();
-                pt_jer = max(0.0,smear*sigma+goodJets[k].pt());
-                pt_jerup = max(0.0,smear*sigmaup+goodJets[k].pt());
-                pt_jerdn = max(0.0,smear*sigmadn+goodJets[k].pt());
-            }
-            
-            jercorr = pt_jer/goodJets[k].pt();
-            jercorrup = pt_jerup/goodJets[k].pt();
-            jercorrdn = pt_jerdn/goodJets[k].pt();
-        }
-        TLorentzVector *jet_jer = new TLorentzVector(jercorr*goodJets[k].px(),jercorr*goodJets[k].py(),jercorr*goodJets[k].pz(),jercorr*goodJets[k].energy());
-        TLorentzVector *jet_jerup = new TLorentzVector(jercorrup*goodJets[k].px(),jercorrup*goodJets[k].py(),jercorrup*goodJets[k].pz(),jercorrup*goodJets[k].energy());
-        TLorentzVector *jet_jerdn = new TLorentzVector(jercorrdn*goodJets[k].px(),jercorrdn*goodJets[k].py(),jercorrdn*goodJets[k].pz(),jercorrdn*goodJets[k].energy());
-
-        bool passPU_;
-        if (doJEC && (year==2017 || year==2018)) {
-             passPU_ = bool(goodJets[k].userInt("pileupJetIdUpdated:fullId") & (1 << 0));
-        } 
-        else if (doJEC && (year==20160 || year==20165)) {
-            passPU_ = bool(goodJets[k].userInt("pileupJetIdUpdated:fullId") & (1 << 2));
-		} 
-		else {
-              passPU_ = bool(goodJets[k].userInt("pileupJetId:fullId") & (1 << 0));
-        }
-//         if(!(passPU_ || !doPUJetID || jet_jer->Pt()>50)) continue;
-        if(!(passPU_ || !doPUJetID || goodJets[k].pt()>50)) continue;
-
-        if(jet_jer->Pt()<10) continue;
-
-        if (verbose) cout<<"Jet nominal: "<<goodJets[k].pt()<<" JER corrected: "<<jet_jer->Pt()<<" JER up: "<<jet_jerup->Pt()<<" JER dn: "<<jet_jerdn->Pt()<<" check Delta between jet and lep / pho: "<<isclean_H4l<<std::endl;
-        if (verbose) cout<<"Jet nominal: "<<goodJets[k].pt()<<" JER corrected: "<<jet_jer->Pt()<<" JER up: "<<jet_jerup->Pt()<<" JER dn: "<<jet_jerdn->Pt()<<"\t"<<isclean_H4l<<std::endl;
-
-        jecunc->setJetPt(jet_jer->Pt());
-        jecunc->setJetEta(goodJets[k].eta());
-        double jecunc_up = 1.0+jecunc->getUncertainty(true);
-        jecunc->setJetPt(jet_jer->Pt());
-        jecunc->setJetEta(goodJets[k].eta());
-        double jecunc_dn = 1.0-jecunc->getUncertainty(false);
-
-//         if (jet_jer->Pt() > 30.0 && fabs(goodJets[k].eta())<4.7) {
-        if (jet_jer->Pt() > 0.0 && fabs(goodJets[k].eta())<47) {
-            if (isclean_H4l) { 
-                njets_pt30_eta4p7++;
-                jet_iscleanH4l.push_back((int)jet_pt.size());
-                if (jet_jer->Pt() > pt_leadingjet_pt30_eta4p7) {
-                    pt_leadingjet_pt30_eta4p7 = jet_jer->Pt();
-                    absrapidity_leadingjet_pt30_eta4p7 = jet_jer->Rapidity(); //take abs later
-                }
-                if (jet_jer->Pt()>jet1pt) {
-                    jet2pt=jet1pt; jet2index=jet1index;
-                    jet1pt=jet_jer->Pt(); jet1index=(int)jet_pt.size();
-                } else if (jet_jer->Pt()>jet2pt) {
-                    jet2pt=jet_jer->Pt(); jet2index=(int)jet_pt.size();
-                }
-                if (fabs(goodJets[k].eta())<2.5) {
-                    njets_pt30_eta2p5++;
-                    if (jet_jer->Pt() > pt_leadingjet_pt30_eta2p5) {
-                        pt_leadingjet_pt30_eta2p5 = jet_jer->Pt();
-                    }
-                }
-
-            }
-            jet_pt.push_back(jet_jer->Pt());
-            jet_pt_raw.push_back(goodJets[k].correctedJet("Uncorrected").pt());///jet Pt without JEC applied
-            jet_eta.push_back(jet_jer->Eta());
-            jet_phi.push_back(jet_jer->Phi());
-            jet_mass.push_back(jet_jer->M());
-            if (doJEC && (year==2017 || year==2018)) {
-                jet_pumva.push_back(goodJets[k].userFloat("pileupJetIdUpdated:fullDiscriminant"));
-            } else if (doJEC && (year==20160 || year==20165)) {
-               jet_pumva.push_back(goodJets[k].userFloat("pileupJetIdUpdated:fullDiscriminant"));
-            } 
-			else {
-				jet_pumva.push_back(goodJets[k].userFloat("pileupJetId:fullDiscriminant"));
-            }
-//             jet_csvv2.push_back(goodJets[k].bDiscriminator("pfDeepCSVDiscriminatorsJetTags:BvsAll"));
-            jet_csvv2.push_back(goodJets[k].bDiscriminator("pfDeepCSVJetTags:probb")+goodJets[k].bDiscriminator("pfDeepCSVJetTags:probbb"));
-            jet_csvv2_.push_back(goodJets[k].bDiscriminator("pfDeepCSVDiscriminatorsJetTags:BvsAll"));
-
-            TRandom3 rand;
-            rand.SetSeed(abs(static_cast<int>(sin(goodJets[k].phi())*100000)));
-            float coin = rand.Uniform(1.); 
-
-            double jet_scalefactor    = 1.0;
-            
-            jet_scalefactor    = reader->eval_auto_bounds(
-                "central", 
-                BTagEntry::FLAV_B, 
-                goodJets[k].eta(), 
-                goodJets[k].pt()
-                ); 
-            
-            if ((goodJets[k].bDiscriminator("pfDeepCSVJetTags:probb")+goodJets[k].bDiscriminator("pfDeepCSVJetTags:probbb"))>BTagCut && coin>(1.0-jet_scalefactor)) {
-            //if (goodJets[k].bDiscriminator("pfDeepCSVDiscriminatorsJetTags:BvsAll")>BTagCut && coin>(1.0-jet_scalefactor)) {
-                jet_isbtag.push_back(1);
-            } else {
-                jet_isbtag.push_back(0);
-            }
-
-            if ((goodJets[k].bDiscriminator("pfDeepCSVJetTags:probb")+goodJets[k].bDiscriminator("pfDeepCSVJetTags:probbb"))>BTagCut && isclean_H4l) nbjets_pt30_eta4p7++;
-            //if (goodJets[k].bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>BTagCut && isclean_H4l) nbjets_pt30_eta4p7++;
-            if (isMC) {
-                jet_hadronFlavour.push_back(goodJets[k].hadronFlavour());
-                jet_partonFlavour.push_back(goodJets[k].partonFlavour());
-            } else {
-                jet_hadronFlavour.push_back(-1);
-                jet_partonFlavour.push_back(-1);
-            }
-            
-            jet_csv_cTag_vsL.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probuds") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probg")) );
-            jet_csv_cTag_vsB.push_back(goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") / (goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probc") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:probbb") + goodJets[k].bDiscriminator("pfDeepFlavourJetTags:problepb")) );
-            
-            jet_QGTagger.push_back(goodJetQGTagger[k]);
-            jet_axis2.push_back(goodJetaxis2[k]);
-            jet_ptD.push_back(goodJetptD[k]);
-            jet_mult.push_back(goodJetmult[k]);
-            jet_relpterr.push_back(relpterr);
-            jet_phierr.push_back(phierr);
-
-            jet_bTagEffi.push_back(helper.get_bTagEffi(jet_jer->Pt(), jet_jer->Eta(), hbTagEffi));
-            jet_cTagEffi.push_back(helper.get_bTagEffi(jet_jer->Pt(), jet_jer->Eta(), hcTagEffi));
-            jet_udsgTagEffi.push_back(helper.get_bTagEffi(jet_jer->Pt(), jet_jer->Eta(), hudsgTagEffi));
-        }
-        
-        // JER up
-        if (jet_jerup->Pt() > 30.0 && fabs(jet_jerup->Eta())<4.7) {
-            if (isclean_H4l) {
-                njets_pt30_eta4p7_jerup++;
-                jet_jerup_iscleanH4l.push_back((int)jet_jerup_pt.size());
-                if (jet_jerup->Pt() > pt_leadingjet_pt30_eta4p7_jerup) {
-                    pt_leadingjet_pt30_eta4p7_jerup = jet_jerup->Pt();
-                    absrapidity_leadingjet_pt30_eta4p7_jerup = jet_jerup->Rapidity(); //take abs later
-                }
-                if (fabs(jet_jerup->Eta())<2.5) {
-                    njets_pt30_eta2p5_jerup++;
-                    if (jet_jerup->Pt() > pt_leadingjet_pt30_eta2p5_jerup) {
-                        pt_leadingjet_pt30_eta2p5_jerup = jet_jerup->Pt();
-                    }
-                }
-
-            }
-            jet_jerup_pt.push_back(jet_jerup->Pt());
-            jet_jerup_eta.push_back(jet_jerup->Eta());
-            jet_jerup_phi.push_back(jet_jerup->Phi());
-            jet_jerup_mass.push_back(jet_jerup->M());            
-        }
-
-        // JER dn
-        if (jet_jerdn->Pt() > 30.0 && fabs(jet_jerdn->Eta())<4.7) {
-            if (isclean_H4l) {
-                njets_pt30_eta4p7_jerdn++;
-                jet_jerdn_iscleanH4l.push_back((int)jet_jerdn_pt.size());
-                if (jet_jerdn->Pt() > pt_leadingjet_pt30_eta4p7_jerdn) {
-                    pt_leadingjet_pt30_eta4p7_jerdn = jet_jerdn->Pt();
-                    absrapidity_leadingjet_pt30_eta4p7_jerdn = jet_jerdn->Rapidity(); //take abs later
-                }
-                if (fabs(jet_jerdn->Eta())<2.5) {
-                    njets_pt30_eta2p5_jerdn++;
-                    if (jet_jerdn->Pt() > pt_leadingjet_pt30_eta2p5_jerdn) {
-                        pt_leadingjet_pt30_eta2p5_jerdn = jet_jerdn->Pt();
-                    }
-                }
-
-            }
-            jet_jerdn_pt.push_back(jet_jerdn->Pt());
-            jet_jerdn_eta.push_back(jet_jerdn->Eta());
-            jet_jerdn_phi.push_back(jet_jerdn->Phi());
-            jet_jerdn_mass.push_back(jet_jerdn->M());
-        }
-
-        double jetPx_jesup = jecunc_up * jet_jer->Px();
-        double jetPy_jesup = jecunc_up * jet_jer->Py();
-        double jetPz_jesup = jecunc_up * jet_jer->Pz();
-        double jetE_jesup = sqrt(jetPx_jesup*jetPx_jesup + jetPy_jesup*jetPy_jesup + jetPz_jesup*jetPz_jesup + jet_jer->M()*jet_jer->M());
-        TLorentzVector *jet_jesup = new TLorentzVector(jetPx_jesup,jetPy_jesup,jetPz_jesup,jetE_jesup);
-            
-        if (jet_jesup->Pt() > 30.0 && fabs(jet_jesup->Eta())<4.7) {
-            if (isclean_H4l) {
-                njets_pt30_eta4p7_jesup++;
-                jet_jesup_iscleanH4l.push_back((int)jet_jesup_pt.size());
-                if (jet_jesup->Pt() > pt_leadingjet_pt30_eta4p7_jesup) {
-                    pt_leadingjet_pt30_eta4p7_jesup = jet_jesup->Pt();
-                    absrapidity_leadingjet_pt30_eta4p7_jesup = jet_jesup->Rapidity(); //take abs later
-                }                
-                if (fabs(jet_jesup->Eta())<2.5) {
-                    njets_pt30_eta2p5_jesup++;
-                    if (jet_jesup->Pt() > pt_leadingjet_pt30_eta2p5_jesup) {
-                        pt_leadingjet_pt30_eta2p5_jesup = jet_jesup->Pt();
-                    }                
-                }
-             
-            }
-            TLorentzVector jet_jesup(jetPx_jesup,jetPy_jesup,jetPz_jesup,jetE_jesup);
-            jet_jesup_pt.push_back(jet_jesup.Pt());
-            jet_jesup_eta.push_back(jet_jesup.Eta());
-            jet_jesup_phi.push_back(jet_jesup.Phi());
-            jet_jesup_mass.push_back(jet_jesup.M());
-            jet_QGTagger_jesup.push_back(goodJetQGTagger[k]);
-        }
-
-        double jetPx_jesdn = jecunc_dn * jet_jer->Px();
-        double jetPy_jesdn = jecunc_dn * jet_jer->Py();
-        double jetPz_jesdn = jecunc_dn * jet_jer->Pz();
-        double jetE_jesdn = sqrt(jetPx_jesdn*jetPx_jesdn + jetPy_jesdn*jetPy_jesdn + jetPz_jesdn*jetPz_jesdn + jet_jer->M()*jet_jer->M());
-        TLorentzVector *jet_jesdn = new TLorentzVector(jetPx_jesdn,jetPy_jesdn,jetPz_jesdn,jetE_jesdn);
-
-        if (jet_jesdn->Pt() > 30.0 && fabs(jet_jesdn->Eta())<4.7) {
-            if (isclean_H4l) {
-                njets_pt30_eta4p7_jesdn++;
-                jet_jesdn_iscleanH4l.push_back(jet_jesdn_pt.size());
-                if (jet_jesdn->Pt() > pt_leadingjet_pt30_eta4p7_jesdn) {
-                    pt_leadingjet_pt30_eta4p7_jesdn = jet_jesdn->Pt();
-                    absrapidity_leadingjet_pt30_eta4p7_jesdn = jet_jesdn->Rapidity(); //take abs later
-                }        
-                if (fabs(jet_jesdn->Eta())<2.5) {
-                    njets_pt30_eta2p5_jesdn++;
-                    if (jet_jesdn->Pt() > pt_leadingjet_pt30_eta2p5_jesdn) {
-                        pt_leadingjet_pt30_eta2p5_jesdn = jet_jesdn->Pt();
-                    }                
-                }            
-            }
-            TLorentzVector jet_jesdn(jetPx_jesdn,jetPy_jesdn,jetPz_jesdn,jetE_jesdn);
-            jet_jesdn_pt.push_back(jet_jesdn.Pt());
-            jet_jesdn_eta.push_back(jet_jesdn.Eta());
-            jet_jesdn_phi.push_back(jet_jesdn.Phi());
-            jet_jesdn_mass.push_back(jet_jesdn.M());
-            jet_QGTagger_jesdn.push_back(goodJetQGTagger[k]);
-
-        }
+      for(unsigned int iel=0; iel<AllElectrons.size(); iel++){
+        double this_dR_jetLep = deltaR(goodJets[k].eta(), goodJets[k].phi(), AllElectrons[iel].eta(), AllElectrons[iel].phi());
+        if(this_dR_jetLep<0.6){
+          lep_pt.push_back(AllElectrons[iel].pt());
+          lep_eta.push_back(AllElectrons[iel].eta());
+          lep_phi.push_back(AllElectrons[iel].phi());
+          lep_mass.push_back(AllElectrons[iel].mass());
+          lep_ID.push_back(AllElectrons[iel].pdgId());
+         }
+       }
 
        
     } // loop over jets
-
-    /*
-    // merged jet
-    for( unsigned int k = 0; k < selectedMergedJets.size(); k++) {
-        
-        double tempDeltaR = 999.0;
-        bool isclean_H4l = true;
-        
-        unsigned int Nleptons = lep_pt.size();
-        for (unsigned int i=0; i<Nleptons; i++) {
-            
-            if (abs(lep_id[i])==13 && lep_RelIsoNoFSR[i]>isoCutMu) continue;
-            if (abs(lep_id[i])==11 && lep_RelIsoNoFSR[i]>isoCutEl) continue;
-            if (!(lep_tightId[i])) continue;
-            TLorentzVector thisLep;
-            thisLep.SetPtEtaPhiM(lep_pt[i],lep_eta[i],lep_phi[i],lep_mass[i]);
-            tempDeltaR=999.0;
-            tempDeltaR=deltaR(selectedMergedJets[k].eta(),selectedMergedJets[k].phi(),thisLep.Eta(),thisLep.Phi());
-            if (tempDeltaR<0.8) {
-                isclean_H4l = false;
-            }
-        }
-             
-        // check overlap with fsr photons  
-        unsigned int N = fsrPhotons_pt.size();
-        for(unsigned int i=0; i<N; i++) {
-
-            // don't clean jet from fsr if the photon wasn't matched to tight Id and Isolated lepton                                                                                                                                    
-            if (!lep_tightId[fsrPhotons_lepindex[i]]) continue;
-            double RelIsoNoFSR=lep_RelIsoNoFSR[fsrPhotons_lepindex[i]];
-            if (RelIsoNoFSR>((abs(lep_id[fsrPhotons_lepindex[i]])==11) ? isoCutEl : isoCutMu)) continue;
-
-            TLorentzVector pho;
-            pho.SetPtEtaPhiM(fsrPhotons_pt[i],fsrPhotons_eta[i],fsrPhotons_phi[i],0.0);
-            tempDeltaR=999.0;
-            tempDeltaR=deltaR(selectedMergedJets[k].eta(),selectedMergedJets[k].phi(),pho.Eta(),pho.Phi());
-            if (tempDeltaR<0.8) {
-                isclean_H4l = false;
-            }
-       } 
-
-        if (isclean_H4l) mergedjet_iscleanH4l.push_back((int)mergedjet_pt.size());
-        mergedjet_pt.push_back((float)selectedMergedJets[k].pt());
-        mergedjet_eta.push_back((float)selectedMergedJets[k].eta());             
-        mergedjet_phi.push_back((float)selectedMergedJets[k].phi());
-        mergedjet_mass.push_back((float)selectedMergedJets[k].mass());            
-        mergedjet_L1.push_back((float)selectedMergedJets[k].jecFactor("L1FastJet")); // current JEC to L1
-
-        mergedjet_softdropmass.push_back((float)selectedMergedJets[k].userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass"));
-        mergedjet_prunedmass.push_back((float)selectedMergedJets[k].userFloat("ak8PFJetsCHSCorrPrunedMass"));
-        mergedjet_tau1.push_back((float)selectedMergedJets[k].userFloat("NjettinessAK8Puppi:tau1") );
-        mergedjet_tau2.push_back((float)selectedMergedJets[k].userFloat("NjettinessAK8Puppi:tau2") );
-        mergedjet_btag.push_back((float)selectedMergedJets[k].bDiscriminator("pfBoostedDoubleSecondaryVertexAK8BJetTags") );
-
-        if (verbose) cout<<"double btag: "<<selectedMergedJets[k].bDiscriminator("pfBoostedDoubleSecondaryVertexAK8BJetTags")<<endl;
-        
-        auto wSubjets = selectedMergedJets[k].subjets("SoftDrop");
-        int nsub = 0;
-        vector<float> subjets_pt, subjets_eta, subjets_phi, subjets_mass, subjets_btag; 
-        vector<int> subjets_hadronFlavour, subjets_partonFlavour;
-        for ( auto const & iw : wSubjets ) {                        
-            nsub = nsub + 1;            
-            subjets_pt.push_back((float)iw->pt());
-            subjets_eta.push_back((float)iw->eta());
-            subjets_phi.push_back((float)iw->phi());
-            subjets_mass.push_back((float)iw->mass());
-            subjets_btag.push_back((float)iw->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
-            subjets_hadronFlavour.push_back(iw->hadronFlavour());
-            subjets_partonFlavour.push_back(iw->partonFlavour());
-            if (verbose) cout<<"subjet parton "<<iw->partonFlavour()<<" hadron "<<iw->hadronFlavour()<<endl;
-
-        }        
-
-        mergedjet_nsubjet.push_back(nsub);
-        mergedjet_subjet_pt.push_back(subjets_pt);
-        mergedjet_subjet_eta.push_back(subjets_eta);
-        mergedjet_subjet_phi.push_back(subjets_phi);
-        mergedjet_subjet_mass.push_back(subjets_mass);
-        mergedjet_subjet_btag.push_back(subjets_btag);        
-        mergedjet_subjet_partonFlavour.push_back(subjets_partonFlavour);
-        mergedjet_subjet_hadronFlavour.push_back(subjets_hadronFlavour);
-            
-    }
-    */
-
-    // Higgs Variables
-    H_pt.push_back(HVec.Pt());
-    H_eta.push_back(HVec.Eta());
-    H_phi.push_back(HVec.Phi());
-    H_mass.push_back(HVec.M());
-    mass4l = HVec.M();
-    mass4l_noFSR = HVecNoFSR.M();
-
-    pT4l = HVec.Pt(); eta4l = HVec.Eta(); rapidity4l = HVec.Rapidity(); phi4l = HVec.Phi();
-
-    pTZ1 = Z1Vec.Pt(); pTZ2 = Z2Vec.Pt(); massZ1 = Z1Vec.M(); massZ2 = Z2Vec.M();
 	
-    if (njets_pt30_eta4p7>0) absdeltarapidity_hleadingjet_pt30_eta4p7 = fabs(rapidity4l-absrapidity_leadingjet_pt30_eta4p7);
-    if (njets_pt30_eta4p7_jesup>0) absdeltarapidity_hleadingjet_pt30_eta4p7_jesup = fabs(rapidity4l-absrapidity_leadingjet_pt30_eta4p7_jesup);
-    if (njets_pt30_eta4p7_jesdn>0) absdeltarapidity_hleadingjet_pt30_eta4p7_jesdn = fabs(rapidity4l-absrapidity_leadingjet_pt30_eta4p7_jesdn);
-    if (njets_pt30_eta4p7_jerup>0) absdeltarapidity_hleadingjet_pt30_eta4p7_jerup = fabs(rapidity4l-absrapidity_leadingjet_pt30_eta4p7_jerup);
-    if (njets_pt30_eta4p7_jerdn>0) absdeltarapidity_hleadingjet_pt30_eta4p7_jerdn = fabs(rapidity4l-absrapidity_leadingjet_pt30_eta4p7_jerdn);
-    
-    if (njets_pt30_eta4p7>0) absrapidity_leadingjet_pt30_eta4p7 = fabs(absrapidity_leadingjet_pt30_eta4p7);
-    if (njets_pt30_eta4p7_jesup>0) absrapidity_leadingjet_pt30_eta4p7_jesup = fabs(absrapidity_leadingjet_pt30_eta4p7_jesup);
-    if (njets_pt30_eta4p7_jesdn>0) absrapidity_leadingjet_pt30_eta4p7_jesdn = fabs(absrapidity_leadingjet_pt30_eta4p7_jesdn);
-    if (njets_pt30_eta4p7_jerup>0) absrapidity_leadingjet_pt30_eta4p7_jerup = fabs(absrapidity_leadingjet_pt30_eta4p7_jerup);
-    if (njets_pt30_eta4p7_jerdn>0) absrapidity_leadingjet_pt30_eta4p7_jerdn = fabs(absrapidity_leadingjet_pt30_eta4p7_jerdn);
+    //L1 jets Variables
+	for (std::vector<l1t::Jet>::const_iterator l1jet = bxvCaloJets->begin(0); l1jet != bxvCaloJets->end(0); ++l1jet) {
+      L1jet_pt.push_back(l1jet->pt());
+      L1jet_eta.push_back(l1jet->eta());
+      L1jet_phi.push_back(l1jet->phi());
+      L1jet_mass.push_back(l1jet->mass());
+    }
 
+	//L1 muon Variables
+	for (std::vector<l1t::Muon>::const_iterator l1muon = bxvCaloMuons->begin(0); l1muon != bxvCaloMuons->end(0); ++l1muon) {
+      L1muon_pt.push_back(l1muon->pt());
+      L1muon_eta.push_back(l1muon->eta());
+      L1muon_phi.push_back(l1muon->phi());
+      L1muon_mass.push_back(l1muon->mass());
+      L1muon_qual.push_back(l1muon->hwQual());
+    }
+
+	//L1 HT sum
+	for (std::vector<l1t::EtSum>::const_iterator l1Et = bxvCaloHT->begin(0); l1Et != bxvCaloHT->end(0); ++l1Et) {
+      if (l1Et->getType() == l1t::EtSum::EtSumType::kTotalHt){
+        L1ht= l1Et->et();
+      }
+    }
+
+	
+	//hltAK4PFJetsCorrected
+	/*for(unsigned int ijet=0; ijet<hltAK4PFJetsCorrected->size(); ijet++){
+	  //std::cout<<"index jet: "<<ijet<<std::endl;
+      //std::cout<<"jet pt: "<<hltjets->at(ijet).pt()<<std::endl;
+	  hltAK4PFJetsCorrected_pt.push_back(hltAK4PFJetsCorrected->at(ijet).pt());
+	  hltAK4PFJetsCorrected_eta.push_back(hltAK4PFJetsCorrected->at(ijet).eta());
+	  hltAK4PFJetsCorrected_phi.push_back(hltAK4PFJetsCorrected->at(ijet).phi());
+	  hltAK4PFJetsCorrected_mass.push_back(hltAK4PFJetsCorrected->at(ijet).mass());
+	}*/
+
+	//Puppi AK4jets with ParticleNet taggers
+	for(unsigned int ijet=0; ijet<AK4PuppiJets->size(); ijet++){
+	  AK4PuppiJets_pt.push_back(AK4PuppiJets->at(ijet).pt());
+	  AK4PuppiJets_eta.push_back(AK4PuppiJets->at(ijet).eta());
+	  AK4PuppiJets_phi.push_back(AK4PuppiJets->at(ijet).phi());
+	  AK4PuppiJets_mass.push_back(AK4PuppiJets->at(ijet).mass());
+
+      jet_pfParticleNetAK4JetTags_probb.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probb"));
+      jet_pfParticleNetAK4JetTags_probc.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probc"));
+      jet_pfParticleNetAK4JetTags_probuds.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probuds"));
+      jet_pfParticleNetAK4JetTags_probg.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probg"));
+      jet_pfParticleNetAK4JetTags_probtauh.push_back(AK4PuppiJets->at(ijet).bDiscriminator("pfParticleNetAK4JetTags:probtauh"));
+	}
+
+	//Puppi AK8jets with ParticleNet taggers      ricordati di cambiare ijet in jjet
+	for(unsigned int jjet=0; jjet<AK8PuppiJets->size(); jjet++){
+	  AK8PuppiJets_pt.push_back(AK8PuppiJets->at(jjet).pt());
+	AK8PuppiJets_eta.push_back(AK8PuppiJets->at(jjet).eta());
+	  AK8PuppiJets_phi.push_back(AK8PuppiJets->at(jjet).phi());
+	  AK8PuppiJets_mass.push_back(AK8PuppiJets->at(jjet).mass());
+
+      jet_pfParticleNetJetTags_probZbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZbb"));
+      jet_pfParticleNetJetTags_probZcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZcc"));
+      jet_pfParticleNetJetTags_probZqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probZqq"));
+	jet_pfParticleNetJetTags_probQCDbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDbb"));
+	jet_pfParticleNetJetTags_probQCDcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDcc"));
+	jet_pfParticleNetJetTags_probQCDb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDb"));
+	jet_pfParticleNetJetTags_probQCDc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDc"));
+	jet_pfParticleNetJetTags_probQCDothers.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probQCDothers"));
+	jet_pfParticleNetJetTags_probHbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHbb"));
+	jet_pfParticleNetJetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHcc"));
+	jet_pfParticleNetJetTags_probHqqqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHqqqq"));
+	}
+
+		//hlt jets
+		/*if(hltjets->size()==0){
+			cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<endl;
+		}*/
+		//std::cout<<"hltPFJetForBtag size: "<< hltjets->size()<<std::endl;
+		//std::cout<<"pfJetTagCollection: "<<pfJetTagCollection->size()<<std::endl;
+		/*for(unsigned int ijet=0; ijet<hltjetsForBTag->size(); ijet++){
+			//std::cout<<"index jet: "<<ijet<<std::endl;
+			//std::cout<<"jet pt: "<<hltjets->at(ijet).pt()<<std::endl;
+			hltjetForBTag_pt.push_back(hltjetsForBTag->at(ijet).pt());
+			hltjetForBTag_eta.push_back(hltjetsForBTag->at(ijet).eta());
+			hltjetForBTag_phi.push_back(hltjetsForBTag->at(ijet).phi());
+			hltjetForBTag_mass.push_back(hltjetsForBTag->at(ijet).mass());
+			//hltParticleNetONNXJetTags_probb.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probb"));
+			//hltParticleNetONNXJetTags_probc.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probc"));
+			//hltParticleNetONNXJetTags_probuds.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probuds"));
+			//hltParticleNetONNXJetTags_probtauh.push_back(hltjets->at(ijet).bDiscriminator("hltParticleNetONNXJetTags:probtauh"));
+		
+			float tagValue_b = -20;
+			float tagValue_c = -20;
+			float tagValue_uds = -20;
+			float tagValue_g = -20;
+			float tagValue_tauh = -20;
+      float minDR2_b = 0.01;
+      float minDR2_c = 0.01;
+      float minDR2_uds = 0.01;
+      float minDR2_g = 0.01;
+      float minDR2_tauh = 0.01;
+      
+			int index_tag=0;
+			//std::cout<<"pfJetTagCollection: "<<pfJetTagCollection->size()<<std::endl;
+	
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobc) {
+      	float dR2 = reco::deltaR2(hltjetsForBTag->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_c) {
+            minDR2_c = dR2;
+            tagValue_c = tag.second;
+          }
+				index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobb) {
+      	float dR2 = reco::deltaR2(hltjetsForBTag->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_b) {
+            minDR2_b = dR2;
+            tagValue_b = tag.second;
+          }
+				//index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobuds) {
+      	float dR2 = reco::deltaR2(hltjetsForBTag->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_uds) {
+            minDR2_uds = dR2;
+            tagValue_uds = tag.second;
+          }
+				//index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobg) {
+      	float dR2 = reco::deltaR2(hltjetsForBTag->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_g) {
+            minDR2_g = dR2;
+            tagValue_g = tag.second;
+          }
+				//index_tag++;
+      }
+      for (auto const &tag : *pfJetTagCollectionParticleNetprobtauh) {
+      	float dR2 = reco::deltaR2(hltjetsForBTag->at(ijet), *(tag.first));
+					//std::cout<<"tag "<<index_tag<<"   deltaR= "<<dR2<<std::endl;
+          if (dR2 < minDR2_tauh) {
+            minDR2_tauh = dR2;
+            tagValue_tauh = tag.second;
+          }
+				//index_tag++;
+      }
+			hltParticleNetONNXJetTags_probc.push_back(tagValue_c);	
+			hltParticleNetONNXJetTags_probb.push_back(tagValue_b);	
+			hltParticleNetONNXJetTags_probuds.push_back(tagValue_uds);	
+			hltParticleNetONNXJetTags_probg.push_back(tagValue_g);	
+			hltParticleNetONNXJetTags_probtauh.push_back(tagValue_tauh);	
+    } */ 
+
+		//std::cout<<"hltPFJetForBtag size: "<< hltjets->size()<<std::endl;
+
+		/*for (auto const &hltjet : *hltjets) {
+			std::cout<<"jet pt "<<hltjet.pt()<<std::endl;
+			hltjet_pt.push_back(hltjet.pt());
+			float tagValue = -20;
+      float minDR2 = 0.01;
+      
+      for (auto const &tag : *pfJetTagCollection) {
+      	float dR2 = reco::deltaR2(hltjet, *(tag.first));
+          if (dR2 < minDR2) {
+            minDR2 = dR2;
+            tagValue = tag.second;
+          }
+      }
+			hltParticleNetONNXJetTags_probc.push_back(tagValue);	
+      
+				
+		}*/
 }
 
 
@@ -3230,166 +2757,66 @@ void UFHZZ4LAna::setGENVariables(edm::Handle<reco::GenParticleCollection> pruned
                                  edm::Handle<edm::View<pat::PackedGenParticle> > packedgenParticles,
                                  edm::Handle<edm::View<reco::GenJet> > genJets)
 {
-
-    reco::GenParticleCollection::const_iterator genPart;
-    int j = -1;
-    int nGENLeptons=0;
-
-    if (verbose) cout<<"begin looping on gen particles"<<endl;
-    for(genPart = prunedgenParticles->begin(); genPart != prunedgenParticles->end(); genPart++) {
-        j++;
-
-        if (abs(genPart->pdgId())==11  || abs(genPart->pdgId())==13 || abs(genPart->pdgId())==15) {
-
-            if (!(genPart->status()==1 || abs(genPart->pdgId())==15)) continue;
-            if (!(genAna.MotherID(&prunedgenParticles->at(j))==23 || genAna.MotherID(&prunedgenParticles->at(j))==443 || genAna.MotherID(&prunedgenParticles->at(j))==553 || abs(genAna.MotherID(&prunedgenParticles->at(j)))==24) ) continue;
-            
-            nGENLeptons++;
-            if (verbose) cout<<"found a gen lepton: id "<<genPart->pdgId()<<" pt: "<<genPart->pt()<<" eta: "<<genPart->eta()<<" status: "<<genPart->status()<<endl;
-
-            // Collect FSR photons
-            TLorentzVector lep_dressed;            
-            lep_dressed.SetPtEtaPhiE(genPart->pt(),genPart->eta(),genPart->phi(),genPart->energy());
-            set<int> gen_fsrset;
-            for(size_t k=0; k<packedgenParticles->size();k++){
-                if( (*packedgenParticles)[k].status() != 1) continue; // stable particles only
-                if( (*packedgenParticles)[k].pdgId() != 22) continue; // only photons
-                double this_dR_lgamma = deltaR(genPart->eta(), genPart->phi(), (*packedgenParticles)[k].eta(), (*packedgenParticles)[k].phi());
-                bool idmatch=false;
-                if ((*packedgenParticles)[k].mother(0)->pdgId()==genPart->pdgId() ) idmatch=true;
-                const reco::Candidate * mother = (*packedgenParticles)[k].mother(0);
-                for(size_t m=0;m<mother->numberOfMothers();m++) {
-                    if ( (*packedgenParticles)[k].mother(m)->pdgId() == genPart->pdgId() ) idmatch=true;
-                }
-                if (!idmatch) continue;                
-                if(this_dR_lgamma<((abs(genPart->pdgId())==11)?genIsoConeSizeEl:genIsoConeSizeMu)) {
-                    gen_fsrset.insert(k);
-                    TLorentzVector gamma;
-                    gamma.SetPtEtaPhiE((*packedgenParticles)[k].pt(),(*packedgenParticles)[k].eta(),(*packedgenParticles)[k].phi(),(*packedgenParticles)[k].energy());
-                    lep_dressed = lep_dressed+gamma;
-                }
-            } // Dressed leptons loop
-            if (verbose) cout<<"gen lep pt "<<genPart->pt()<< " dressed pt: " << lep_dressed.Pt()<<endl;
-  
-            GENlep_id.push_back( genPart->pdgId() );
-            GENlep_status.push_back(genPart->status());
-            GENlep_pt.push_back( lep_dressed.Pt() );
-            GENlep_eta.push_back( lep_dressed.Eta() );
-            GENlep_phi.push_back( lep_dressed.Phi() );
-            GENlep_mass.push_back( lep_dressed.M() );
-            GENlep_MomId.push_back(genAna.MotherID(&prunedgenParticles->at(j)));
-            GENlep_MomMomId.push_back(genAna.MotherMotherID(&prunedgenParticles->at(j)));
-       
-            TLorentzVector thisLep;
-            thisLep.SetPtEtaPhiM(lep_dressed.Pt(),lep_dressed.Eta(),lep_dressed.Phi(),lep_dressed.M());
-            // GEN iso calculation
-            double this_GENiso=0.0;
-            double this_GENneutraliso=0.0;
-            double this_GENchargediso=0.0;
-            if (verbose) cout<<"gen iso calculation"<<endl;
-            for(size_t k=0; k<packedgenParticles->size();k++){
-                if( (*packedgenParticles)[k].status() != 1 ) continue; // stable particles only         
-                if (abs((*packedgenParticles)[k].pdgId())==12 || abs((*packedgenParticles)[k].pdgId())==14 || abs((*packedgenParticles)[k].pdgId())==16) continue; // exclude neutrinos
-                if ((abs((*packedgenParticles)[k].pdgId())==11 || abs((*packedgenParticles)[k].pdgId())==13)) continue; // exclude leptons
-                if (gen_fsrset.find(k)!=gen_fsrset.end()) continue; // exclude particles which were selected as fsr photons
-                double this_dRvL = deltaR(thisLep.Eta(), thisLep.Phi(), (*packedgenParticles)[k].eta(), (*packedgenParticles)[k].phi());
-                if(this_dRvL<((abs(genPart->pdgId())==11)?genIsoConeSizeEl:genIsoConeSizeMu)) {
-                    if (verbose) cout<<"adding to geniso id: "<<(*packedgenParticles)[k].pdgId()<<" status: "<<(*packedgenParticles)[k].status()<<" pt: "<<(*packedgenParticles)[k].pt()<<" dR: "<<this_dRvL<<endl;
-                    this_GENiso = this_GENiso + (*packedgenParticles)[k].pt();
-                    if ((*packedgenParticles)[k].charge()==0) this_GENneutraliso = this_GENneutraliso + (*packedgenParticles)[k].pt();
-                    if ((*packedgenParticles)[k].charge()!=0) this_GENchargediso = this_GENchargediso + (*packedgenParticles)[k].pt();
-                }
-            } // GEN iso loop
-            this_GENiso = this_GENiso/thisLep.Pt();
-            if (verbose) cout<<"gen lep pt: "<<thisLep.Pt()<<" rel iso: "<<this_GENiso<<endl;
-            GENlep_RelIso.push_back(this_GENiso);
-            // END GEN iso calculation
-
-        } // leptons
-        
-        if (genPart->pdgId()==25) {
-            GENMH=genPart->mass();
-            GENH_pt.push_back(genPart->pt());
-            GENH_eta.push_back(genPart->eta());
-            GENH_phi.push_back(genPart->phi());
-            GENH_mass.push_back(genPart->mass());
+	 reco::GenParticleCollection::const_iterator genPart;
+  bool first_quarkgen=false;
+  for(genPart = prunedgenParticles->begin(); genPart != prunedgenParticles->end(); genPart++) {
+    if(abs(genPart->pdgId())==1 || abs(genPart->pdgId())==2 || abs(genPart->pdgId())==3 || abs(genPart->pdgId())==4 || abs(genPart->pdgId())==5 || abs(genPart->pdgId())==6  || abs(genPart->pdgId())==7  || abs(genPart->pdgId())==23  || abs(genPart->pdgId())==24 || abs(genPart->pdgId())==25){
+		//cout<<"pdg: "<< abs(genPart->pdgId()) <<"  pT: "<<genPart->pt() <<"   eta: "<<genPart->eta() <<"   phi: "<<genPart->phi() <<endl;
+		const reco::Candidate * mom = genPart->mother(0);
+		//cout<<"mother: "<< mom->pdgId()<<"   pT: "<< mom->pt() <<"   eta: "<< mom->eta() <<"   phi: "<< mom->phi() <<endl;
+		bool Higgs_daughter=false;
+    int n = genPart->numberOfDaughters();
+    if(mom->pdgId()==2212 && first_quarkgen==false){
+      for(int j_d = 0; j_d < n; ++ j_d) {
+        const reco::Candidate * d = genPart->daughter( j_d );
+        if((d->pdgId())==25){
+          Higgs_daughter=true;
         }
 
-        
-        if ((genPart->pdgId()==23 || genPart->pdgId()==443 || genPart->pdgId()==553) && (genPart->status()>=20 && genPart->status()<30) ) {
-            const reco::Candidate *Zdau0=genPart->daughter(0);
-            int ZdauId = fabs(Zdau0->pdgId());
-            if (fabs(Zdau0->pdgId())==23) {
-                int ndau = genPart->numberOfDaughters();
-                for (int d=0; d<ndau; d++) {
-                    const reco::Candidate *Zdau=genPart->daughter(d);
-                    if (verbose) cout<<"ZDau "<<d<<" id "<<fabs(Zdau->pdgId())<<endl;
-                    if (fabs(Zdau->pdgId())<17) {
-                        ZdauId = fabs(Zdau->pdgId());
-                        break;
-                    }
-                }
-            }
-            if (verbose) cout<<"GENZ status "<<genPart->status()<<" MomId: "<<genAna.MotherID(&prunedgenParticles->at(j))<< "DauId: "<<ZdauId<<endl;
-
-            if (Zdau0) GENZ_DaughtersId.push_back(ZdauId);           
-            GENZ_MomId.push_back(genAna.MotherID(&prunedgenParticles->at(j)));                
-            GENZ_pt.push_back(genPart->pt());
-            GENZ_eta.push_back(genPart->eta());
-            GENZ_phi.push_back(genPart->phi());
-            GENZ_mass.push_back(genPart->mass());
+        if(Higgs_daughter==true && (abs(d->pdgId())==1 || abs(d->pdgId())==2 || abs(d->pdgId())==3  || abs(d->pdgId())==4 || abs(d->pdgId())==5 || abs(d->pdgId())==6 || abs(d->pdgId())==7)){
+          quark_pt.push_back(d->pt());
+          quark_eta.push_back(d->eta());
+          quark_phi.push_back(d->phi());
+          quark_flavour.push_back(d->pdgId());
+          quark_VBF.push_back(true);
+          first_quarkgen=true;
         }
 
-        if (abs(genPart->pdgId())>500 && abs(genPart->pdgId())<600 && genPart->status()==2) {
-            nGenStatus2bHad+=1;
-        }
-        
-        if(fabs(genPart->pdgId()) < 5 && genPart->status() == 2){
-        	std::cout<<genPart->pdgId()<<"\t"<<genAna.MotherID(&prunedgenParticles->at(j))<<"\t"<<genAna.MotherMotherID(&prunedgenParticles->at(j))<<std::endl;
-        }
+      }
+    }
+		
+		if(( abs(genPart->pdgId())==4 || abs(genPart->pdgId())==5) && (mom->pdgId())==25){
+      quark_pt.push_back(genPart->pt());
+      quark_eta.push_back(genPart->eta());
+      quark_phi.push_back(genPart->phi());
+      quark_flavour.push_back(genPart->pdgId());
+      quark_VBF.push_back(false);
+     }
+
+		
 
     }
 
-	edm::View<reco::GenJet>::const_iterator genjet;  
-	for(genjet = genJets->begin(); genjet != genJets->end(); genjet++) {
-		
-		double pt = genjet->pt();  double eta = genjet->eta();
-		if (pt<0.0 || abs(eta)>47) continue;
+		/*if( abs(genPart->pdgId())==1 || abs(genPart->pdgId())==2 || abs(genPart->pdgId())==3 || abs(genPart->pdgId())==4 || abs(genPart->pdgId())==5 || abs(genPart->pdgId())==17 || abs(genPart->pdgId())==21   ){
+    quark_pt.push_back(genPart->pt());
+    quark_eta.push_back(genPart->eta());
+    quark_phi.push_back(genPart->phi());
+    quark_flavour.push_back(genPart->pdgId());
+    }*/
 
-// 		bool inDR_pt30_eta4p7 = false;
-// 		unsigned int N=GENlep_pt.size();
-// 		for(unsigned int i = 0; i<N; i++) {
-// 			//if (GENlep_status[i]!=1) continue;
-// 			if (!(abs(GENlep_id[i])==11 || abs(GENlep_id[i])==13)) continue;
-// 			TLorentzVector genlep;
-// 			genlep.SetPtEtaPhiM(GENlep_pt[i],GENlep_eta[i],GENlep_phi[i],GENlep_mass[i]);
-// 			double dR = deltaR(genlep.Eta(), genlep.Phi(), genjet->eta(),genjet->phi());                        
-// 			if(dR<0.4) {
-// 				inDR_pt30_eta4p7=true;
-// 			}                                
-// 		}
-		
-		if (verbose) cout<<"check overlap of gen jet with gen leptons"<<endl;
-		// count number of gen jets which no gen leptons are inside its cone
-// 		if (!inDR_pt30_eta4p7) { 
-// 			GENnjets_pt30_eta4p7++;
+	}
+
+	edm::View<reco::GenJet>::const_iterator genjet;
+
+  for(genjet = genJets->begin(); genjet != genJets->end(); genjet++) {
+
+      double pt = genjet->pt();  double eta = genjet->eta();
 			GENjet_pt.push_back(genjet->pt());
-			GENjet_eta.push_back(genjet->eta());
-			GENjet_phi.push_back(genjet->phi());
-			GENjet_mass.push_back(genjet->mass());
-// 			if (pt>GENpt_leadingjet_pt30_eta4p7) {
-// 				GENpt_leadingjet_pt30_eta4p7=pt;
-// 				GENabsrapidity_leadingjet_pt30_eta4p7=genjet->rapidity(); //take abs later
-// 			}
-// 			if (abs(genjet->eta())<2.5) {
-// 				GENnjets_pt30_eta2p5++;
-// 				if (pt>GENpt_leadingjet_pt30_eta2p5) {
-// 					GENpt_leadingjet_pt30_eta2p5=pt;
-// 				}
-// 			}
-// 		}
+      GENjet_eta.push_back(genjet->eta());
+      GENjet_phi.push_back(genjet->phi());
+      GENjet_mass.push_back(genjet->mass());
+	} //loop over gen jets
 
-	}// loop over gen jets
 
 }
 

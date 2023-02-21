@@ -17,8 +17,9 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
-
-#include "PhysicsTools/PatAlgos/plugins/JetCorrFactorsProducer.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+//#include "PhysicsTools/PatAlgos/plugins/JetCorrFactorsProducer.h"
+#include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 
 class CorrJetsProducer : public edm::EDProducer {
    public:
@@ -31,7 +32,7 @@ class CorrJetsProducer : public edm::EDProducer {
       edm::EDGetTokenT<pat::JetCollection>         jetToken_;
       edm::EDGetTokenT<reco::VertexCollection>  vertexToken_;
       edm::EDGetTokenT<double>                          rho_;
-      std::string                                   payload_;
+edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> mPayloadToken;
       bool                                           isData_;
       int                                              year_;
 };
@@ -40,7 +41,7 @@ CorrJetsProducer::CorrJetsProducer(const edm::ParameterSet& iConfig):
     jetToken_   ( consumes<pat::JetCollection>     ( iConfig.getParameter<edm::InputTag>( "jets"    ) ) ),
     vertexToken_( consumes<reco::VertexCollection> ( iConfig.getParameter<edm::InputTag>( "vertex"  ) ) ),
     rho_        ( consumes<double>                 ( iConfig.getParameter<edm::InputTag>( "rho"     ) ) ),
-    payload_    (                                    iConfig.getParameter<std::string>  ( "payload"   ) ),
+    mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::string>("payload")))},
     isData_     (                                    iConfig.getParameter<bool>         ( "isData"    ) ),
     year_       (                                    iConfig.getUntrackedParameter<int> ( "year"      ) )
 {
@@ -69,21 +70,39 @@ void CorrJetsProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
     double rho =           *rhoHandle;
 
     // Jet Energy Corrections
-    ESHandle<JetCorrectorParametersCollection>       JetCorParColl;
-    iSetup.get<JetCorrectionsRecord>().get(payload_, JetCorParColl); 
+//    ESHandle<JetCorrectorParametersCollection>       JetCorParColl;
+//    iSetup.get<JetCorrectionsRecord>().get(payload_, JetCorParColl); 
+
+auto const& JetCorParColl = iSetup.getData(mPayloadToken);
+std::vector<JetCorrectorParametersCollection::key_type> keys;
+JetCorParColl.validKeys(keys);
+
     vector<string> jecAK8PayloadNames;
     jecAK8PayloadNames.push_back("L2Relative");
     jecAK8PayloadNames.push_back("L3Absolute");
     if(isData_)
     jecAK8PayloadNames.push_back("L2L3Residual");
     vector<JetCorrectorParameters> vPar;
+
+
+
     for ( vector<std::string>::const_iterator payloadBegin = jecAK8PayloadNames.begin(), 
                                               payloadEnd   = jecAK8PayloadNames.end()  , 
                                               ipayload     = payloadBegin; 
                                               ipayload    != payloadEnd; 
-                                            ++ipayload )  vPar.push_back( (*JetCorParColl)[*ipayload] );
-    // Make the FactorizedJetCorrector
+                                            ++ipayload )  vPar.push_back( (JetCorParColl)[*ipayload] );
+    
+
+
+
+
+
+
+
+// Make the FactorizedJetCorrector
     shared_ptr<FactorizedJetCorrector> jecAK8 = shared_ptr<FactorizedJetCorrector> ( new FactorizedJetCorrector(vPar) ); 
+//    FactorizedJetCorrector jecAK8 =  new FactorizedJetCorrector(vPar);
+
     jecAK8->setRho( rho  );
     jecAK8->setNPV( nVtx );
     for ( size_t i=0; i<mult; ++i ) {
