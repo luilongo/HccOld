@@ -404,6 +404,8 @@ private:
 		vector<double> AK8PuppiJets_mass;
 	
 		vector<float> jet_pfParticleNetJetTags_probZbb, jet_pfParticleNetJetTags_probZcc, jet_pfParticleNetJetTags_probZqq, jet_pfParticleNetJetTags_probQCDbb, jet_pfParticleNetJetTags_probQCDcc, jet_pfParticleNetJetTags_probQCDb, jet_pfParticleNetJetTags_probQCDc, jet_pfParticleNetJetTags_probQCDothers, jet_pfParticleNetJetTags_probHbb, jet_pfParticleNetJetTags_probHcc, jet_pfParticleNetJetTags_probHqqqq;  
+		
+		vector<float> jet_pfMassDecorrelatedParticleNetJetTags_probXbb, jet_pfMassDecorrelatedParticleNetJetTags_probXcc, jet_pfMassDecorrelatedParticleNetJetTags_probXqq, jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb, jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc, jet_pfMassDecorrelatedParticleNetJetTags_probQCDb, jet_pfMassDecorrelatedParticleNetJetTags_probQCDc, jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers;
 
   vector<float> jet_pfDeepDoubleXJetTags_BvQ_noMD, jet_pfDeepDoubleXJetTags_CvQ_noMD, jet_pfDeepDoubleXJetTags_CvB_noMD,jet_pfDeepDoubleXJetTags_BvQ, jet_pfDeepDoubleXJetTags_CvQ, jet_pfDeepDoubleXJetTags_CvB;
 
@@ -1322,6 +1324,8 @@ jetCorrParameterSet.validKeys(keys);
     AK8PuppiJets_mass.clear();
 
     jet_pfParticleNetJetTags_probZbb.clear(); jet_pfParticleNetJetTags_probZcc.clear(); jet_pfParticleNetJetTags_probZqq.clear(); jet_pfParticleNetJetTags_probQCDbb .clear();  jet_pfParticleNetJetTags_probQCDcc.clear(); jet_pfParticleNetJetTags_probQCDb.clear(); jet_pfParticleNetJetTags_probQCDc.clear(); jet_pfParticleNetJetTags_probQCDothers.clear(); jet_pfParticleNetJetTags_probHbb.clear(); jet_pfParticleNetJetTags_probHcc.clear(); jet_pfParticleNetJetTags_probHqqqq.clear(); 
+	
+	jet_pfMassDecorrelatedParticleNetJetTags_probXbb.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probXcc.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probXqq.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probQCDb.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probQCDc.clear(); jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers.clear();
 
 jet_pfDeepDoubleXJetTags_BvQ_noMD.clear(); jet_pfDeepDoubleXJetTags_CvQ_noMD.clear(); jet_pfDeepDoubleXJetTags_CvB_noMD.clear();jet_pfDeepDoubleXJetTags_BvQ.clear(); jet_pfDeepDoubleXJetTags_CvQ.clear(); jet_pfDeepDoubleXJetTags_CvB.clear();
     
@@ -2313,7 +2317,7 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("jet_pfParticleNetAK4JetTags_probg", &jet_pfParticleNetAK4JetTags_probg);	
     tree->Branch("jet_pfParticleNetAK4JetTags_probtauh", &jet_pfParticleNetAK4JetTags_probtauh);
 
-	// Puppi AK8jets with ParticleNet and DeepDoubleX taggers
+	// Puppi AK8jets with ParticleNet(-MD) and DeepDoubleX taggers
 	tree->Branch("AK8PuppiJets_pt",&AK8PuppiJets_pt_float);	
 	tree->Branch("AK8PuppiJets_eta",&AK8PuppiJets_eta_float);
 	tree->Branch("AK8PuppiJets_phi",&AK8PuppiJets_phi_float);
@@ -2330,6 +2334,16 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
 	tree->Branch("jet_pfParticleNetJetTags_probHbb", &jet_pfParticleNetJetTags_probHbb);
 	tree->Branch("jet_pfParticleNetJetTags_probHcc", &jet_pfParticleNetJetTags_probHcc);
 	tree->Branch("jet_pfParticleNetJetTags_probHqqqq", &jet_pfParticleNetJetTags_probHqqqq);
+
+	tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probXbb", &jet_pfMassDecorrelatedParticleNetJetTags_probXbb);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probXcc", &jet_pfMassDecorrelatedParticleNetJetTags_probXcc);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probXqq", &jet_pfMassDecorrelatedParticleNetJetTags_probXqq);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb", &jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc", &jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probQCDb", &jet_pfMassDecorrelatedParticleNetJetTags_probQCDb);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probQCDc", &jet_pfMassDecorrelatedParticleNetJetTags_probQCDc);
+        tree->Branch("jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers", &jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers);
+
 	tree->Branch("jet_pfDeepDoubleXJetTags_BvQ_noMD", &jet_pfDeepDoubleXJetTags_BvQ_noMD);
 	tree->Branch("jet_pfDeepDoubleXJetTags_CvQ_noMD", &jet_pfDeepDoubleXJetTags_CvQ_noMD);
 	tree->Branch("jet_pfDeepDoubleXJetTags_CvB_noMD", &jet_pfDeepDoubleXJetTags_CvB_noMD);
@@ -2659,12 +2673,19 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 	jet_pfParticleNetJetTags_probHbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHbb"));
 	jet_pfParticleNetJetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHcc"));
 	jet_pfParticleNetJetTags_probHqqqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfParticleNetJetTags:probHqqqq"));
-	jet_pfDeepDoubleXJetTags_BvQ_noMD.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfDeepDoubleBvLJetTags:probHbb"));// DeepDoubleX discriminator (no mass-decorrelation) for H(Z)->bb vs QCD
-	jet_pfDeepDoubleXJetTags_CvQ_noMD.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfDeepDoubleCvLJetTags:probHcc"));// DeepDoubleX discriminator (no mass-decorrelation) for H(Z)->cc vs QCD
-	jet_pfDeepDoubleXJetTags_CvB_noMD.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfDeepDoubleCvBJetTags:probHcc"));// DeepDoubleX discriminator (no mass-decorrelation) for H(Z)->cc vs for H(Z)->bb
-	jet_pfDeepDoubleXJetTags_BvQ.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleBvLJetTags:probHbb"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->bb vs QCD
-	jet_pfDeepDoubleXJetTags_CvQ.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvLJetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs QCD
-	jet_pfDeepDoubleXJetTags_CvB.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvBJetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs for H(Z)->bb
+
+	jet_pfMassDecorrelatedParticleNetJetTags_probXbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXbb"));
+	jet_pfMassDecorrelatedParticleNetJetTags_probXcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXcc"));
+    	jet_pfMassDecorrelatedParticleNetJetTags_probXqq.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probXqq"));
+        jet_pfMassDecorrelatedParticleNetJetTags_probQCDbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDbb"));
+        jet_pfMassDecorrelatedParticleNetJetTags_probQCDcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDcc"));
+        jet_pfMassDecorrelatedParticleNetJetTags_probQCDb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDb"));
+        jet_pfMassDecorrelatedParticleNetJetTags_probQCDc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDc"));
+        jet_pfMassDecorrelatedParticleNetJetTags_probQCDothers.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassDecorrelatedParticleNetJetTags:probQCDothers"));
+    
+	jet_pfDeepDoubleXJetTags_BvQ.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleBvLV2JetTags:probHbb"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->bb vs QCD
+	jet_pfDeepDoubleXJetTags_CvQ.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvLV2JetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs QCD
+	jet_pfDeepDoubleXJetTags_CvB.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvBV2JetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs for H(Z)->bb
 	}
 
 		//hlt jets
