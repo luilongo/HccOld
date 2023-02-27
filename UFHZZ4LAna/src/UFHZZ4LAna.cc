@@ -305,6 +305,10 @@ private:
     float pdfRMSup, pdfRMSdown, pdfENVup, pdfENVdown;
     // lepton variables
     vector<double> lep_pt; vector<double> lep_eta; vector<double> lep_phi; vector<double> lep_mass; vector<int> lep_ID;
+	vector<double> ALLlep_pt; vector<double> ALLlep_eta; vector<double> ALLlep_phi; vector<double> ALLlep_mass; vector<int> ALLlep_id;
+	vector<double> AK4lep_pt; vector<double> AK4lep_eta; vector<double> AK4lep_phi; vector<double> AK4lep_mass; vector<int> AK4lep_id;
+
+
    /* vector<double> lep_pt_genFromReco;
     vector<double> lep_pt; vector<double> lep_pterr; vector<double> lep_pterrold; 
     vector<double> lep_p; vector<double> lep_ecalEnergy; vector<int> lep_isEB; vector<int> lep_isEE;
@@ -1243,7 +1247,9 @@ jetCorrParameterSet.validKeys(keys);
 
     //lepton variables
 		lep_pt.clear(); lep_eta.clear(); lep_phi.clear(); lep_mass.clear(); lep_ID.clear();    
-
+		
+		ALLlep_pt.clear(); ALLlep_eta.clear(); ALLlep_phi.clear(); ALLlep_mass.clear(); ALLlep_id.clear();
+        	AK4lep_pt.clear(); AK4lep_eta.clear(); AK4lep_phi.clear(); AK4lep_mass.clear(); AK4lep_id.clear();
     /*lep_d0BS.clear();
     lep_d0PV.clear();
 	lep_numberOfValidPixelHits.clear();
@@ -2116,6 +2122,16 @@ void UFHZZ4LAna::bookPassedEventTree(TString treeName, TTree *tree)
     tree->Branch("lep_eta",&lep_eta_float);
     tree->Branch("lep_phi",&lep_phi_float);
     tree->Branch("lep_mass",&lep_mass_float);
+	tree->Branch("ALLlep_id",&ALLlep_id);
+    	tree->Branch("ALLlep_pt",&ALLlep_pt);
+    	tree->Branch("ALLlep_eta",&ALLlep_eta);
+    	tree->Branch("ALLlep_phi",&ALLlep_phi);
+    	tree->Branch("ALLlep_mass",&ALLlep_mass);
+	tree->Branch("AK4lep_id",&AK4lep_id);
+        tree->Branch("AK4lep_pt",&AK4lep_pt);
+        tree->Branch("AK4lep_eta",&AK4lep_eta);
+        tree->Branch("AK4lep_phi",&AK4lep_phi);
+        tree->Branch("AK4lep_mass",&AK4lep_mass);
     /*tree->Branch("lepFSR_pt",&lepFSR_pt_float);
     tree->Branch("lepFSR_eta",&lepFSR_eta_float);
     tree->Branch("lepFSR_phi",&lepFSR_phi_float);
@@ -2602,7 +2618,24 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 
        
     } // loop over jets
-	
+
+
+	for(unsigned int jmu=0; jmu<AllMuons.size(); jmu++){
+       		ALLlep_pt.push_back(AllMuons[jmu].pt());
+          	ALLlep_eta.push_back(AllMuons[jmu].eta());
+          	ALLlep_phi.push_back(AllMuons[jmu].phi());
+          	ALLlep_mass.push_back(AllMuons[jmu].mass());
+          	ALLlep_id.push_back(AllMuons[jmu].pdgId());
+        }
+
+	for(unsigned int jel=0; jel<AllElectrons.size(); jel++){
+        	ALLlep_pt.push_back(AllElectrons[jel].pt());
+          	ALLlep_eta.push_back(AllElectrons[jel].eta());
+          	ALLlep_phi.push_back(AllElectrons[jel].phi());
+          	ALLlep_mass.push_back(AllElectrons[jel].mass());
+          	ALLlep_id.push_back(AllElectrons[jel].pdgId());
+         }
+       	
     //L1 jets Variables
 	for (std::vector<l1t::Jet>::const_iterator l1jet = bxvCaloJets->begin(0); l1jet != bxvCaloJets->end(0); ++l1jet) {
       L1jet_pt.push_back(l1jet->pt());
@@ -2683,6 +2716,30 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 	jet_pfMassIndependentDeepDoubleBvLV2JetTags_probHbb.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleBvLV2JetTags:probHbb"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->bb vs QCD
 	jet_pfMassIndependentDeepDoubleCvLV2JetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvLV2JetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs QCD
 	jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvBV2JetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs for H(Z)->bb
+	}
+	
+	for( unsigned int kk = 0; kk < AK4PuppiJets->size(); kk++) {
+
+		for(unsigned int kmu=0; kmu<AllMuons.size(); kmu++){
+        		double this_dR_AKmu = deltaR(AK4PuppiJets_eta.at(kk), AK4PuppiJets_phi.at(kk), AllMuons[kmu].eta(), AllMuons[kmu].phi());
+        		if(this_dR_AKmu<0.6){ 	
+	     			AK4lep_pt.push_back(AllMuons[kmu].pt());
+                		AK4lep_eta.push_back(AllMuons[kmu].eta());
+                		AK4lep_phi.push_back(AllMuons[kmu].phi());
+                		AK4lep_mass.push_back(AllMuons[kmu].mass());
+                		AK4lep_id.push_back(AllMuons[kmu].pdgId());
+      			}	
+		}
+        	for(unsigned int kel=0; kel<AllElectrons.size(); kel++){
+			double this_dR_AKel = deltaR(AK4PuppiJets_eta.at(kk), AK4PuppiJets_phi.at(kk), AllElectrons[kel].eta(), AllElectrons[kel].phi());
+			if(this_dR_AKel<0.6){
+              		AK4lep_pt.push_back(AllElectrons[kel].pt());
+                	AK4lep_eta.push_back(AllElectrons[kel].eta());
+                	AK4lep_phi.push_back(AllElectrons[kel].phi());
+                	AK4lep_mass.push_back(AllElectrons[kel].mass());
+                	AK4lep_id.push_back(AllElectrons[kel].pdgId());
+         		}
+		}
 	}
 
 		//hlt jets
