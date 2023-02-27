@@ -2718,9 +2718,9 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 	jet_pfMassIndependentDeepDoubleCvBV2JetTags_probHcc.push_back(AK8PuppiJets->at(jjet).bDiscriminator("pfMassIndependentDeepDoubleCvBV2JetTags:probHcc"));// DeepDoubleX discriminator (mass-decorrelation) for H(Z)->cc vs for H(Z)->bb
 	}
 	
-	for( unsigned int kk = 0; kk < AK4PuppiJets->size(); kk++) {
+	for( unsigned int kmu = 0; kmu < AllMuons.size(); kmu++) {
 
-		for(unsigned int kmu=0; kmu<AllMuons.size(); kmu++){
+		for(unsigned int kk=0; kk < AK4PuppiJets->size(); kk++){
         		double this_dR_AKmu = deltaR(AK4PuppiJets_eta.at(kk), AK4PuppiJets_phi.at(kk), AllMuons[kmu].eta(), AllMuons[kmu].phi());
         		if(this_dR_AKmu<0.6){ 	
 	     			AK4lep_pt.push_back(AllMuons[kmu].pt());
@@ -2730,8 +2730,12 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
                 		AK4lep_id.push_back(AllMuons[kmu].pdgId());
       			}	
 		}
-        	for(unsigned int kel=0; kel<AllElectrons.size(); kel++){
-			double this_dR_AKel = deltaR(AK4PuppiJets_eta.at(kk), AK4PuppiJets_phi.at(kk), AllElectrons[kel].eta(), AllElectrons[kel].phi());
+	}
+
+ 	for(unsigned int kel=0; kel<AllElectrons.size(); kel++){
+
+		for(unsigned int jk=0; jk < AK4PuppiJets->size(); jk++){
+			double this_dR_AKel = deltaR(AK4PuppiJets_eta.at(jk), AK4PuppiJets_phi.at(jk), AllElectrons[kel].eta(), AllElectrons[kel].phi());
 			if(this_dR_AKel<0.6){
               		AK4lep_pt.push_back(AllElectrons[kel].pt());
                 	AK4lep_eta.push_back(AllElectrons[kel].eta());
