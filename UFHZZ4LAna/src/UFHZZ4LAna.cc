@@ -2721,13 +2721,15 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
 	for( unsigned int kmu = 0; kmu < AllMuons.size(); kmu++) {
 
 		for(unsigned int kk=0; kk < AK4PuppiJets->size(); kk++){
+			bool isMuonFound = false;			
         		double this_dR_AKmu = deltaR(AK4PuppiJets_eta.at(kk), AK4PuppiJets_phi.at(kk), AllMuons[kmu].eta(), AllMuons[kmu].phi());
-        		if(this_dR_AKmu<0.6){ 	
+        		if(this_dR_AKmu<0.4 && !isMuonFound){ 	
 	     			AK4lep_pt.push_back(AllMuons[kmu].pt());
                 		AK4lep_eta.push_back(AllMuons[kmu].eta());
                 		AK4lep_phi.push_back(AllMuons[kmu].phi());
                 		AK4lep_mass.push_back(AllMuons[kmu].mass());
                 		AK4lep_id.push_back(AllMuons[kmu].pdgId());
+				isMuonFound = true;//stop jet cicle if the muon is asscociated to one AK4 jet
       			}	
 		}
 	}
@@ -2735,14 +2737,16 @@ void UFHZZ4LAna::setTreeVariables( const edm::Event& iEvent, const edm::EventSet
  	for(unsigned int kel=0; kel<AllElectrons.size(); kel++){
 
 		for(unsigned int jk=0; jk < AK4PuppiJets->size(); jk++){
+			bool isElectronFound = false;
 			double this_dR_AKel = deltaR(AK4PuppiJets_eta.at(jk), AK4PuppiJets_phi.at(jk), AllElectrons[kel].eta(), AllElectrons[kel].phi());
-			if(this_dR_AKel<0.6){
+			if(this_dR_AKel<0.4 && !isElectronFound){
               		AK4lep_pt.push_back(AllElectrons[kel].pt());
                 	AK4lep_eta.push_back(AllElectrons[kel].eta());
                 	AK4lep_phi.push_back(AllElectrons[kel].phi());
                 	AK4lep_mass.push_back(AllElectrons[kel].mass());
                 	AK4lep_id.push_back(AllElectrons[kel].pdgId());
-         		}
+         		isElectronFound = true;//stop jet cicle if the muon is asscociated to one AK4 jet
+			}
 		}
 	}
 
