@@ -253,7 +253,7 @@ private:
                            std::vector<float> goodJetaxis2, std::vector<float> goodJetptD, std::vector<int> goodJetmult,
                            std::vector<pat::Jet> selectedMergedJets,
                            edm::Handle<edm::View<pat::Jet> > AK4PuppiJets,
-                           edm::Handle<std::vector<reco::PFJet>> hltjets,
+                           //edm::Handle<std::vector<reco::PFJet>> hltjets,
                            //edm::Handle<edm::View<reco::PFJet>> hltjetsForBTag,
                            //edm::Handle<edm::View<reco::PFJet>> hltAK4PFJetsCorrected,
                            //edm::Handle<reco::JetTagCollection> pfJetTagCollectionPrticleNetprobc,
@@ -1563,14 +1563,8 @@ jetCorrParameterSet.validKeys(keys);
         setGENVariables(prunedgenParticles,packedgenParticles,genJets); 
         if (verbose) { cout<<"finshed setting gen variables"<<endl;  }
 
-        /*if (int(GENZ_pt.size()) == 2) {        
-            GENZ1Vec.SetPtEtaPhiM(GENZ_pt[0], GENZ_eta[0], GENZ_phi[0], GENZ_mass[0]);
-            GENZ2Vec.SetPtEtaPhiM(GENZ_pt[1], GENZ_eta[1], GENZ_phi[1], GENZ_mass[1]);
-            k_qqZZ_ewk = getEwkCorrections(prunedgenParticles, tableEwk, genEventInfo, GENZ1Vec, GENZ2Vec);
 
-        }*/
-
-    }
+    } //end if isMC
     sumWeightsTotal += genWeight;
     sumWeightsTotalPU += pileupWeight*genWeight;
 
@@ -1684,7 +1678,7 @@ if(trigConditionData && verbose)
 // }
         //MET
         if (verbose) {cout<<"get met value"<<endl;}
-        if (!mets->empty()) {
+        /*if (!mets->empty()) {
             met = (*mets)[0].et();
             met_phi = (*mets)[0].phi();
             met_jesup = (*mets)[0].shiftedPt(pat::MET::JetEnUp);
@@ -1695,7 +1689,7 @@ if(trigConditionData && verbose)
             met_phi_uncenup = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnUp);
             met_uncendn = (*mets)[0].shiftedPt(pat::MET::UnclusteredEnDown);
             met_phi_uncendn = (*mets)[0].shiftedPhi(pat::MET::UnclusteredEnDown);        
-        }
+        }*/
 
         if (verbose) cout<<"start lepton analysis"<<endl;           
         vector<pat::Electron> AllElectrons; 
@@ -1748,11 +1742,11 @@ if(trigConditionData && verbose)
           float jpumva=0.;
           bool passPU;
           if (doJEC && (year==2017 || year==2018)) {
-          	passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 0));
-            jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
+          	passPU = bool(jet.userInt("pileupJetId:fullId") & (1 << 0));
+            jpumva=jet.userFloat("pileupJetId:fullDiscriminant");
           } else if (doJEC && (year==20160 || year==20165)) { 
-            passPU = bool(jet.userInt("pileupJetIdUpdated:fullId") & (1 << 2));
-            jpumva=jet.userFloat("pileupJetIdUpdated:fullDiscriminant");
+            passPU = bool(jet.userInt("pileupJetId:fullId") & (1 << 2));
+            jpumva=jet.userFloat("pileupJetId:fullDiscriminant");
           } else {
             passPU = bool(jet.userInt("pileupJetId:fullId") & (1 << 2));
             jpumva=jet.userFloat("pileupJetId:fullDiscriminant");
@@ -1784,7 +1778,7 @@ if(trigConditionData && verbose)
        
         if (verbose) cout<<"before vector assign"<<std::endl;
 				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets,  hltAK4PFJetsCorrected, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
-				setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
+				setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, AK4PuppiJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
 				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, hltjetsForBTag,  hltAK4PFJetsCorrected, pfJetTagCollectionParticleNetprobc , pfJetTagCollectionParticleNetprobb , pfJetTagCollectionParticleNetprobuds , pfJetTagCollectionParticleNetprobg ,pfJetTagCollectionParticleNetprobtauh ,  bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
 				//setTreeVariables(iEvent, iSetup, goodJets, goodJetQGTagger,goodJetaxis2, goodJetptD, goodJetmult, selectedMergedJets, bxvCaloJets, bxvCaloMuons, bxvCaloHT, AllMuons, AllElectrons);
       	if (verbose) cout<<"finshed setting tree variables"<<endl;
@@ -1853,7 +1847,7 @@ if(trigConditionData && verbose)
 // 	std::cout<<"PIPPO\t before filling 11\n";				                                  
               
         //if (!isMC && passedFullSelection==true) passedEventsTree_All->Fill();        
-        if (!isMC) passedEventsTree_All->Fill();        
+        if (!isMC && passedTrig==true) passedEventsTree_All->Fill();        
     }    //primary vertex,notDuplicate
     else { if (verbose) cout<<Run<<":"<<LumiSect<<":"<<Event<<" failed primary vertex"<<endl;}
     
