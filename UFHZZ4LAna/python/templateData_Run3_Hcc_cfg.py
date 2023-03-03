@@ -218,7 +218,7 @@ qgDatabaseVersion = 'cmssw8020_v2'
 QGdBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
 #QGdBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
-QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),
@@ -286,6 +286,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
                               tauSrc      = cms.untracked.InputTag("slimmedTaus"),
                               jetSrc       = cms.untracked.InputTag("slimmedJets"),
                               AK4PuppiJetSrc       = cms.untracked.InputTag("slimmedJetsPuppi"),
+                              AK8PuppiJetSrc       = cms.untracked.InputTag("slimmedJetsAK8"),
                               hltAK4PFJetsCorrectedSrc  = cms.InputTag("hltAK4PFJetsCorrected", "", "HLT"),
                               bxvCaloJetSrc =  cms.InputTag("caloStage2Digis","Jet"),
                               bxvCaloMuonSrc =  cms.InputTag("gmtStage2Digis","Muon"),
