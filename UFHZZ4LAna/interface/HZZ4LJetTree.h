@@ -65,7 +65,7 @@
  #include "DataFormats/Provenance/interface/Timestamp.h"
  #include "DataFormats/Candidate/interface/Candidate.h"
  #include "DataFormats/PatCandidates/interface/CompositeCandidate.h"
- #include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LJets.h"
+ #include "hcc_v2/UFHZZ4LAna/interface/HZZ4LJets.h"
  //#include "CMGTools/External/interface/PileupJetIdAlgo.h" // for miniAOD
  //#include "CMGTools/External/interface/PileupJetIdentifier.h" // for miniAOD
 

@@ -20,7 +20,7 @@
 <use   name="PhysicsTools/UtilAlgos"/>
 <use   name="PhysicsTools/Utilities"/>
 <use   name="SimDataFormats/PileupSummaryInfo"/>
-<use   name="SimDataFormats/GeneratorProducts">
+<use   name="SimDataFormats/GeneratorProducts"/>
 <use   name="EgammaAnalysis/ElectronTools"/> 
 <use   name="RecoEgamma/EgammaTools"/>
 <use   name="RecoParticleFlow/PFClusterTools"/>
@@ -30,7 +30,9 @@
 <use   name="TrackingTools/Records"/>
 <use   name="RecoVertex/GaussianSumVertexFit"/>
 <use   name="PhysicsTools/IsolationAlgos"/>
+<!--
 <use   name="SimTracker/Records"/>
+-->
 <use   name="SimTracker/TrackAssociation"/>
 <use   name="DataFormats/EcalRecHit"/>
 <use   name="Geometry/CaloTopology"/>
@@ -38,18 +40,25 @@
 <use   name="RecoEcal/EgammaCoreTools"/>
 <use   name="PhysicsTools/SelectorUtils"/>
 <use   name="MagneticField/Records"/>
+<!--
 <use   name="KinZfitter/KinZfitter"/>
+-->
 <use   name="RecoJets/JetProducers"/>
 <use   name="CondFormats/JetMETObjects"/>
+<!--
 <use   name="JetMETCorrections/Objects"/>
+-->
 <use   name="CondCore/PluginSystem"/>
 <use   name="CondFormats/DataRecord"/>
+<!--
 <use   name="CondCore/DBCommon"/>
+-->
 <use   name="CondCore/DBOutputService"/>
 <use   name="JetMETCorrections/Algorithms"/>
 <use   name="JetMETCorrections/JetCorrector"/>
 <use   name="JetMETCorrections/Modules"/>
 <use   name="CondFormats/BTauObjects"/>
 <use   name="CondTools/BTau"/>
+<use   name="L1Trigger/L1TGlobal"/>
 <flags EDM_PLUGIN="1"/>
-<Flags CXXFLAGS="-g"/>
+<flags CXXFLAGS="-g"/>

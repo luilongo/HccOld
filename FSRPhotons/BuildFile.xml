@@ -18,4 +18,4 @@
 <use   name="RecoVertex/PrimaryVertexProducer"/>
 <use   name="TrackingTools/Records"/>
 <export> <lib name="1"/> </export>
-<Flags CXXFLAGS="-g"/>
+<flags CXXFLAGS="-g"/>

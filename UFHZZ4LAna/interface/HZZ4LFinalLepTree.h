@@ -65,7 +65,7 @@
  #include "DataFormats/Provenance/interface/Timestamp.h"
  #include "DataFormats/Candidate/interface/Candidate.h"
  #include "DataFormats/PatCandidates/interface/CompositeCandidate.h"
- #include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/HZZ4LHelper.h"
+ #include "hcc_v2/UFHZZ4LAna/interface/HZZ4LHelper.h"
 
 class HZZ4LFinalLepTree
 {

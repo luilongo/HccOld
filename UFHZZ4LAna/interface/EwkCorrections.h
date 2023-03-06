@@ -35,7 +35,9 @@
 //#include "UserCode/llvv_fwk/interface/LumiUtils.h"
 //#include "UserCode/llvv_fwk/interface/SmartSelectionMonitor.h"
 //
-#include "RecoEgamma/ElectronIdentification/interface/VersionedPatElectronSelector.h"
+//#include "RecoEgamma/ElectronIdentification/interface/VersionedPatElectronSelector.h"
+#include "PhysicsTools/SelectorUtils/interface/VersionedSelector.h"
+typedef VersionedSelector<edm::Ptr<pat::Electron> > VersionedPatElectronSelector;
 //
 #include <vector>
 #include "TVector3.h"
@@ -70,7 +72,7 @@ namespace EwkCorrections
 		TString path = cmssw_path+"/src/EwkCorrections/EwkCorrections/src/";
 		
 //		if(dtag.Contains("ZZ")) name = path+"EwkCorrections/ZZ_EwkCorrections.dat";
-        if(dtag.Contains("ZZ")) name = cmssw_path+"/src/UFHZZAnalysisRun2/UFHZZ4LAna/data/ZZ_EwkCorrections.dat";
+        if(dtag.Contains("ZZ")) name = cmssw_path+"/src/hcc_v2/UFHZZ4LAna/data/ZZ_EwkCorrections.dat";
 		
 		myReadFile.open(name);
 		if(!myReadFile.is_open()) cout<<"WARNING: "+name+" NOT FOUND"<<endl;
