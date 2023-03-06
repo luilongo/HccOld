@@ -1,5 +1,7 @@
 HZZ Analyzer for CMS Run2
 
+CMSSW: 12.4.3 
+
 ------
 
 To install:
