@@ -72,7 +72,7 @@ namespace EwkCorrections
 		TString path = cmssw_path+"/src/EwkCorrections/EwkCorrections/src/";
 		
 //		if(dtag.Contains("ZZ")) name = path+"EwkCorrections/ZZ_EwkCorrections.dat";
-        if(dtag.Contains("ZZ")) name = cmssw_path+"/src/hcc_v2/UFHZZ4LAna/data/ZZ_EwkCorrections.dat";
+        if(dtag.Contains("ZZ")) name = cmssw_path+"/src/Hcc/UFHZZ4LAna/data/ZZ_EwkCorrections.dat";
 		
 		myReadFile.open(name);
 		if(!myReadFile.is_open()) cout<<"WARNING: "+name+" NOT FOUND"<<endl;

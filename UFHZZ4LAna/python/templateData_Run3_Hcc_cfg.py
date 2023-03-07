@@ -117,7 +117,7 @@ process.electronsMVA = cms.EDProducer("SlimmedElectronMvaIDProducer",
 )
 
 # FSR Photons
-process.load('hcc_v2.FSRPhotons.fsrPhotons_cff')
+process.load('Hcc.FSRPhotons.fsrPhotons_cff')
 
 import os
 # Jet Energy Corrections
@@ -125,9 +125,9 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 #from CondCore.CondDB.CondDB_cfi import *
 era = "Fall17_17Nov2017BCDEF_V6_DATA"
 # for HPC
-#dBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/"+era+".db"
+#dBFile = os.environ.get('CMSSW_BASE')+"/src/Hcc/UFHZZ4LAna/data/"+era+".db"
 # for crab
-#dBFile = "src/hcc_v2/UFHZZ4LAna/data/"+era+".db"
+#dBFile = "src/Hcc/UFHZZ4LAna/data/"+era+".db"
 #process.jec = cms.ESSource("PoolDBESSource",
 #                           CondDBSetup,
 #                           connect = cms.string("sqlite_file:"+dBFile),
@@ -215,10 +215,10 @@ process.slimmedJetsAK8JEC = process.updatedPatJets.clone(
 process.load("CondCore.CondDB.CondDB_cfi")
 qgDatabaseVersion = 'cmssw8020_v2'
 # for hpc
-QGdBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+QGdBFile = os.environ.get('CMSSW_BASE')+"/src/Hcc/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
 #QGdBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
-#QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/Hcc/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),

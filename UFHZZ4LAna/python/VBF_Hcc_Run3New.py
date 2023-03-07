@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 
 process = cms.Process("UFHZZ4LAnalysis")
-#process = cms.Process("hcc_v2")
+#process = cms.Process("Hcc")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
@@ -191,7 +191,7 @@ process.calibratedPatElectrons.src = cms.InputTag("slimmedElectrons")
 ##  )
 
 # FSR Photons
-process.load('hcc_v2.FSRPhotons.fsrPhotons_cff')
+process.load('Hcc.FSRPhotons.fsrPhotons_cff')
 
 import os
 # Jet Energy Corrections
@@ -201,7 +201,7 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 ## must be un-commented
 #era = "Summer19UL18_V5_MC"
 ### for HPC
-#dBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/"+era+".db"
+#dBFile = os.environ.get('CMSSW_BASE')+"/src/Hcc/UFHZZ4LAna/data/"+era+".db"
 ### for crab
 #dBFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/"+era+".db"
 #process.jec = cms.ESSource("PoolDBESSource",
@@ -272,7 +272,7 @@ process.slimmedJetsJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
 # JER   un-comment this pat
 #process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
 ### for hpc
-#dBJERFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/Summer19UL18_JRV2_MC.db"   
+#dBJERFile = os.environ.get('CMSSW_BASE')+"/src/Hcc/UFHZZ4LAna/data/Summer19UL18_JRV2_MC.db"   
 ### for crab
 #dBJERFile = "src/UFHZZAnalysisRun2/UFHZZ4LAna/data/Summer19UL18_JRV2_MC.db"
 #process.jer = cms.ESSource("PoolDBESSource",
@@ -303,9 +303,9 @@ process.slimmedJetsJEC.userData.userInts.src += ['pileupJetIdUpdated:fullId']
 process.load("CondCore.CondDB.CondDB_cfi")
 qgDatabaseVersion = 'cmssw8020_v2'
 # for hpc
-QGdBFile = os.environ.get('CMSSW_BASE')+"/src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+QGdBFile = os.environ.get('CMSSW_BASE')+"/src/Hcc/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 # for crab
-#QGdBFile = "src/hcc_v2/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
+#QGdBFile = "src/Hcc/UFHZZ4LAna/data/QGL_"+qgDatabaseVersion+".db"
 process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
       DBParameters = cms.PSet(messageLevel = cms.untracked.int32(1)),
       timetype = cms.string('runnumber'),
@@ -405,7 +405,7 @@ process.Ana = cms.EDAnalyzer('UFHZZ4LAna',
 
                               mergedjetSrc = cms.untracked.InputTag("slimmedJets"),
                               metSrc       = cms.untracked.InputTag("slimmedMETs","","UFHZZ4LAnalysis"),
-#                              metSrc       = cms.untracked.InputTag("slimmedMETs","","hcc_v2"),
+#                              metSrc       = cms.untracked.InputTag("slimmedMETs","","Hcc"),
                               #metSrc       = cms.untracked.InputTag("slimmedMETs"),
                               vertexSrc    = cms.untracked.InputTag("offlineSlimmedPrimaryVertices"),
                               beamSpotSrc  = cms.untracked.InputTag("offlineBeamSpot"),

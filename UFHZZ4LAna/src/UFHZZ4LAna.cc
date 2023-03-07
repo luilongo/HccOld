@@ -116,29 +116,29 @@
 #include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
 
 //Helper
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LHelper.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LHelper.h"
 //Muons
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LMuonAna.h"
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LMuonTree.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LMuonAna.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LMuonTree.h"
 //Electrons
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LElectronTree.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LElectronTree.h"
 //Photons
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LPhotonTree.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LPhotonTree.h"
 //Jets
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LJetTree.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LJetTree.h"
 //Final Leps
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LFinalLepTree.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LFinalLepTree.h"
 //Sip
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LSipAna.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LSipAna.h"
 //PU
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LPileUp.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LPileUp.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 //GEN
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LGENAna.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LGENAna.h"
 //VBF Jets
-#include "hcc_v2/UFHZZ4LAna/interface/HZZ4LJets.h"
+#include "Hcc/UFHZZ4LAna/interface/HZZ4LJets.h"
 
 // Jet energy correction
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
@@ -151,7 +151,7 @@
 #include "RecoParticleFlow/PFClusterTools/interface/PFEnergyResolution.h"
 
 // EWK corrections
-#include "hcc_v2/UFHZZ4LAna/interface/EwkCorrections.h"
+#include "Hcc/UFHZZ4LAna/interface/EwkCorrections.h"
 
 // JEC related
 //#include "PhysicsTools/PatAlgos/plugins/PATJetUpdater.h"
@@ -176,7 +176,7 @@
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 // Rochester Corrections
-//#include "hcc_v2/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
+//#include "Hcc/KalmanMuonCalibrationsProducer/src/RoccoR.cc"
 
 #include "RecoVertex/KalmanVertexFit/interface/SingleTrackVertexConstraint.h"
 
@@ -854,24 +854,24 @@ mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::strin
    
     //string elec_scalefac_Cracks_name_161718[3] = {"egammaEffi.txt_EGM2D_cracks.root", "egammaEffi.txt_EGM2D_Moriond2018v1_gap.root", "egammaEffi.txt_EGM2D_Moriond2019_v1_gap.root"};
     string elec_scalefac_Cracks_name_161718[4] = {"ElectronSF_UL2016preVFP_gap.root", "ElectronSF_UL2016postVFP_gap.root", "ElectronSF_UL2017_gap.root", "ElectronSF_UL2018_gap.root"};
-    edm::FileInPath elec_scalefacFileInPathCracks(("hcc_v2/UFHZZ4LAna/data/"+elec_scalefac_Cracks_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_scalefacFileInPathCracks(("Hcc/UFHZZ4LAna/data/"+elec_scalefac_Cracks_name_161718[YEAR]).c_str());
     TFile *fElecScalFacCracks = TFile::Open(elec_scalefacFileInPathCracks.fullPath().c_str());
     hElecScaleFac_Cracks = (TH2F*)fElecScalFacCracks->Get("EGamma_SF2D");    
     //string elec_scalefac_name_161718[3] = {"egammaEffi.txt_EGM2D.root", "egammaEffi.txt_EGM2D_Moriond2018v1.root", "egammaEffi.txt_EGM2D_Moriond2019_v1.root"};
     string elec_scalefac_name_161718[4] = {"ElectronSF_UL2016preVFP_nogap.root", "ElectronSF_UL2016postVFP_nogap.root", "ElectronSF_UL2017_nogap.root", "ElectronSF_UL2018_nogap.root"};
-    edm::FileInPath elec_scalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_scalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_scalefacFileInPath(("Hcc/UFHZZ4LAna/data/"+elec_scalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFac = TFile::Open(elec_scalefacFileInPath.fullPath().c_str());
     hElecScaleFac = (TH2F*)fElecScalFac->Get("EGamma_SF2D");    
 
     //string elec_Gsfscalefac_name_161718[3] = {"egammaEffi.txt_EGM2D_GSF.root", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO.root", "Ele_Reco_2018.root"};//was previous;
     string elec_Gsfscalefac_name_161718[4] = {"egammaEffi_ptAbove20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2017.root", "egammaEffi_ptAbove20.txt_EGM2D_UL2018.root"};
-    edm::FileInPath elec_GsfscalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_Gsfscalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_GsfscalefacFileInPath(("Hcc/UFHZZ4LAna/data/"+elec_Gsfscalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFacGsf = TFile::Open(elec_GsfscalefacFileInPath.fullPath().c_str());
     hElecScaleFacGsf = (TH2F*)fElecScalFacGsf->Get("EGamma_SF2D");
 
     //string elec_GsfLowETscalefac_name_161718[3]= {"", "egammaEffi.txt_EGM2D_Moriond2018v1_runBCDEF_passingRECO_lowEt.root", "Ele_Reco_LowEt_2018.root"};//was previous
     string elec_GsfLowETscalefac_name_161718[4]= {"egammaEffi_ptBelow20.txt_EGM2D_UL2016preVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2016postVFP.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2017.root", "egammaEffi_ptBelow20.txt_EGM2D_UL2018.root"};
-    edm::FileInPath elec_GsfLowETscalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+elec_GsfLowETscalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath elec_GsfLowETscalefacFileInPath(("Hcc/UFHZZ4LAna/data/"+elec_GsfLowETscalefac_name_161718[YEAR]).c_str());
     TFile *fElecScalFacGsfLowET = TFile::Open(elec_GsfLowETscalefacFileInPath.fullPath().c_str());
     hElecScaleFacGsfLowET = (TH2F*)fElecScalFacGsfLowET->Get("EGamma_SF2D");
 
@@ -879,7 +879,7 @@ mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::strin
 //         string mu_scalefac_name_161718[3] = {"final_HZZ_SF_2016_legacy_mupogsysts.root", "final_HZZ_SF_2017_rereco_mupogsysts_3010.root", "final_HZZ_SF_2018_rereco_mupogsysts_3010.root"};
 //         string mu_scalefac_name_161718[4] = {"final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root", "final_HZZ_muon_SF_2017_newLooseIso_mupogSysts_paper.root", "final_HZZ_muon_SF_2018RunA2D_ER_newLoose_newIso_paper.root"};
         string mu_scalefac_name_161718[4] = {"final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2016UL_mupogsysts_newLoose.root","final_HZZ_SF_2017UL_mupogsysts_newLoose.root","final_HZZ_SF_2018UL_mupogsysts_newLoose.root"};
-    edm::FileInPath mu_scalefacFileInPath(("hcc_v2/UFHZZ4LAna/data/"+mu_scalefac_name_161718[YEAR]).c_str());
+    edm::FileInPath mu_scalefacFileInPath(("Hcc/UFHZZ4LAna/data/"+mu_scalefac_name_161718[YEAR]).c_str());
     TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.fullPath().c_str());
     hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
     hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");
@@ -887,14 +887,14 @@ mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::strin
     //string pileup_name_161718[3] = {"puWeightsMoriond17_v2.root", "puWeightsMoriond18.root", "pu_weights_2018.root"};///was previous
 //    string pileup_name_161718[3] = {"pu_weights_2016.root", "pu_weights_2017.root", "pu_weights_2018.root"};
     string pileup_name_161718[4] = {"pileup_UL_2016_1plusShift.root", "pileup_UL_2016_1plusShift.root", "pileup_UL_2017_1plusShift.root", "pileup_UL_2018_1plusShift.root"};
-    edm::FileInPath pileup_FileInPath(("hcc_v2/UFHZZ4LAna/data/"+pileup_name_161718[YEAR]).c_str());
+    edm::FileInPath pileup_FileInPath(("Hcc/UFHZZ4LAna/data/"+pileup_name_161718[YEAR]).c_str());
     TFile *f_pileup = TFile::Open(pileup_FileInPath.fullPath().c_str());
     h_pileup = (TH1D*)f_pileup->Get("weights");
     h_pileupUp = (TH1D*)f_pileup->Get("weights_varUp");
     h_pileupDn = (TH1D*)f_pileup->Get("weights_varDn");
 
     string bTagEffi_name_161718[4] = {"bTagEfficiencies_2016.root", "bTagEfficiencies_2016.root", "bTagEfficiencies_2017.root", "bTagEfficiencies_2018.root"};
-    edm::FileInPath BTagEffiInPath(("hcc_v2/UFHZZ4LAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
+    edm::FileInPath BTagEffiInPath(("Hcc/UFHZZ4LAna/data/"+bTagEffi_name_161718[YEAR]).c_str());
     TFile *fbTagEffi = TFile::Open(BTagEffiInPath.fullPath().c_str());
     hbTagEffi = (TH2F*)fbTagEffi->Get("eff_b_M_ALL");
     hcTagEffi = (TH2F*)fbTagEffi->Get("eff_c_M_ALL");
@@ -903,7 +903,7 @@ mPayloadToken    {esConsumes(edm::ESInputTag("", iConfig.getParameter<std::strin
     //BTag calibration
 //     string csv_name_161718[4] = {"DeepCSV_2016LegacySF_V1.csv", "DeepCSV_2016LegacySF_V1.csv", "DeepCSV_106XUL17SF_V2p1.csv", "DeepCSV_106XUL18SF.csv"};
     string csv_name_161718[4] = {"DeepCSV_106XUL16preVFPSF_v1_hzz.csv", "DeepCSV_106XUL16postVFPSF_v2_hzz.csv", "wp_deepCSV_106XUL17_v3_hzz.csv", "wp_deepCSV_106XUL18_v2_hzz.csv"};
-    edm::FileInPath btagfileInPath(("hcc_v2/UFHZZ4LAna/data/"+csv_name_161718[YEAR]).c_str());
+    edm::FileInPath btagfileInPath(("Hcc/UFHZZ4LAna/data/"+csv_name_161718[YEAR]).c_str());
 
 
 bool validate = true; // HARDCODED --> IT COULD BE FALSE!!!
